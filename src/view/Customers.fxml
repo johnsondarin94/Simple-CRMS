@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="550" prefWidth="750" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Customers">
+   <children>
+      <TableView layoutX="48.0" layoutY="77.0" prefHeight="394.0" prefWidth="544.0">
+        <columns>
+          <TableColumn prefWidth="75.0" text="C1" />
+          <TableColumn prefWidth="75.0" text="C2" />
+            <TableColumn prefWidth="75.0" text="C1" />
+            <TableColumn prefWidth="75.0" text="C2" />
+            <TableColumn prefWidth="75.0" text="C2" />
+            <TableColumn prefWidth="75.0" text="C1" />
+            <TableColumn prefWidth="93.0" text="C2" />
+        </columns>
+      </TableView>
+      <Button fx:id="addButton" layoutX="48.0" layoutY="484.0" mnemonicParsing="false" onAction="#onAdd" text="Add" />
+      <Button fx:id="updateButton" layoutX="103.0" layoutY="484.0" mnemonicParsing="false" onAction="#onUpdate" text="Update" />
+      <Button layoutX="541.0" layoutY="484.0" mnemonicParsing="false" text="Delete" />
+      <Button fx:id="reportsButton" layoutX="648.0" layoutY="196.0" mnemonicParsing="false" onAction="#onReports" text="Reports" />
+      <Button fx:id="appointmentsButton" layoutX="630.0" layoutY="101.0" mnemonicParsing="false" onAction="#onAppointments" text="Appointments" />
+      <Label layoutX="210.0" layoutY="14.0" text="Customers Table">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
+      <Button fx:id="signOff" layoutX="647.0" layoutY="393.0" mnemonicParsing="false" onAction="#onSignOff" text="Sign Off" />
+   </children>
+</AnchorPane>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="500" prefWidth="450" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UpdateCustomer">
+   <children>
+      <Label layoutX="108.0" layoutY="42.0" text="Update Customer">
+         <font>
+            <Font size="30.0" />
+         </font></Label>
+      <TextField layoutX="42.0" layoutY="349.0" promptText="Phone Number" />
+      <TextField layoutX="42.0" layoutY="198.0" promptText="Name" />
+      <TextField layoutX="42.0" layoutY="250.0" promptText="Address" />
+      <TextField layoutX="42.0" layoutY="300.0" promptText="Postal Code" />
+      <TextField editable="false" layoutX="42.0" layoutY="146.0" promptText="ID - Auto Generated" />
+      <ComboBox layoutX="251.0" layoutY="198.0" prefWidth="150.0" promptText="State/Province" />
+      <ComboBox layoutX="251.0" layoutY="146.0" prefWidth="150.0" promptText="Country" />
+      <Button layoutX="98.0" layoutY="429.0" mnemonicParsing="false" text="Add" />
+      <Button fx:id="cancelButton" layoutX="300.0" layoutY="429.0" mnemonicParsing="false" onAction="#onCancel" text="Cancel" />
+   </children>
+</AnchorPane>

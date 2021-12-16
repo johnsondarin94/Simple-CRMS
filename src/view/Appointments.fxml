@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="550.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Appointments">
+   <children>
+      <Pane prefHeight="200.0" prefWidth="200.0" />
+      <Label layoutX="300.0" layoutY="53.0" text="Appointments">
+         <font>
+            <Font size="30.0" />
+         </font></Label>
+      <Button fx:id="updateButton" layoutX="174.0" layoutY="451.0" mnemonicParsing="false" onAction="#onUpdate" text="Update" />
+      <Button fx:id="addButton" layoutX="74.0" layoutY="451.0" mnemonicParsing="false" onAction="#onAdd" text="Add" />
+      <Button layoutX="311.0" layoutY="451.0" mnemonicParsing="false" text="Delete" />
+      <Button fx:id="cancelButton" layoutX="594.0" layoutY="464.0" mnemonicParsing="false" onAction="#onCancel" text="Cancel" />
+      <TableView layoutX="28.0" layoutY="136.0" prefHeight="288.0" prefWidth="671.0">
+        <columns>
+          <TableColumn prefWidth="48.0" text="ID" />
+          <TableColumn prefWidth="84.0" text="C2" />
+            <TableColumn prefWidth="93.0" text="C1" />
+            <TableColumn prefWidth="75.0" text="C2" />
+            <TableColumn prefWidth="75.0" text="C1" />
+            <TableColumn prefWidth="48.0" text="C2" />
+            <TableColumn prefWidth="73.0" text="C1" />
+            <TableColumn prefWidth="69.0" text="C2" />
+            <TableColumn minWidth="0.0" prefWidth="53.0" text="C2" />
+            <TableColumn minWidth="0.0" prefWidth="57.0" text="C2" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>
