@@ -1,15 +1,12 @@
 package main;
 
-import Database.DatabaseAccess;
+import Database.DatabaseConnection;
+import Database.DatabaseCustomers;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.time.ZoneId;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 public class Main extends Application {
     @Override
@@ -21,8 +18,9 @@ public class Main extends Application {
     }
 
     public static void main(String[] args){
-        DatabaseAccess.openConnection();
+        DatabaseConnection.openConnection();
+        DatabaseCustomers.getAllCustomers();
         launch(args);
-        DatabaseAccess.closeConnection();
+        DatabaseConnection.closeConnection();
     }
 }

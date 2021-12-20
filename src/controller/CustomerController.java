@@ -1,21 +1,40 @@
 package controller;
 
+import Database.DatabaseCustomers;
+import model.Customers;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class Customers {
+public class CustomerController implements Initializable {
     public Button signOff;
     public Button updateButton;
     public Button addButton;
     public Button reportsButton;
     public Button appointmentsButton;
+    public TableView customerTable;
+    public TableColumn customerId;
+    public TableColumn customerName;
+    public TableColumn address;
+    public TableColumn zipCode;
+    public TableColumn phoneNumber;
+    public TableColumn createDate;
+    public TableColumn createdBy;
+    public TableColumn lastUpdate;
+    public TableColumn divisionId;
+    public TableColumn lastUpdatedBy;
 
     public void onSignOff(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/view/Login.fxml"));
@@ -60,5 +79,15 @@ public class Customers {
         stage.setTitle("Appointments");
         stage.setScene(scene);
         stage.show();
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        ObservableList<Customers> customerList = DatabaseCustomers.getAllCustomers();
+        for(Customers C : customerList){
+            customerTable.setItems(customerList);
+        }
+
     }
 }
