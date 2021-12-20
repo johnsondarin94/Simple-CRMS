@@ -1,6 +1,7 @@
 package controller;
 
 import Database.DatabaseCustomers;
+import javafx.scene.control.cell.PropertyValueFactory;
 import model.Customers;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -87,6 +88,17 @@ public class CustomerController implements Initializable {
         ObservableList<Customers> customerList = DatabaseCustomers.getAllCustomers();
         for(Customers C : customerList){
             customerTable.setItems(customerList);
+            customerId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+            customerName.setCellValueFactory(new PropertyValueFactory<>("name"));
+            address.setCellValueFactory(new PropertyValueFactory<>("address"));
+            zipCode.setCellValueFactory(new PropertyValueFactory<>("zipCode"));
+            phoneNumber.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
+            createDate.setCellValueFactory(new PropertyValueFactory<>("createDate"));
+            createdBy.setCellValueFactory(new PropertyValueFactory<>("createdBy"));
+            lastUpdate.setCellValueFactory(new PropertyValueFactory<>("lastUpdate"));
+            lastUpdatedBy.setCellValueFactory(new PropertyValueFactory<>("lastUpdatedBy"));
+            divisionId.setCellValueFactory(new PropertyValueFactory<>("divisionId"));
+
         }
 
     }
