@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import model.Users;
 import util.ReaderWriter;
 
 import java.io.File;
@@ -49,6 +50,7 @@ public class Login implements Initializable {
         } catch (Exception e) {
             System.out.println("Language pack not found");
         }
+
 
     }
 
@@ -92,7 +94,9 @@ public class Login implements Initializable {
     }
 */
     public void onLogin(ActionEvent actionEvent) throws IOException {
-        if (userName.getText().equals("test") && passWord.getText().equals("test")) {
+        Users test = new Users(1, "test", "test");
+        Users bobPeterson = new Users(2, "bob", "peterson");
+        if (userName.getText().equals(test.getUserName()) && passWord.getText().equals(test.getPassWord())) {
             writer(true);
             Parent root = FXMLLoader.load(getClass().getResource("/view/Customers.fxml"));
             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();

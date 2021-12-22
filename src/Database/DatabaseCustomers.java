@@ -5,10 +5,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Customers;
 
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class DatabaseCustomers {
@@ -46,4 +44,32 @@ public class DatabaseCustomers {
         }
     return customerList;
     }
+
+    public static void addCustomer(String customerName, String customerAddress, String customerZipCode, String customerPhone, String createdBy, String lastUpdatedBy) {
+        try {
+
+           //String sql = "INSERT INTO customers (Customer_ID, Customer_Name, Address, Postal_Code, Phone, Create_Date, Created_By, Last_Update, Last_Updated_By, Division_ID)" +
+          //  "VALUES (4,"+ customerName +", '123 main street', '84511', '1234567894', NULL, 'bob', NULL, 'bob', 10)";
+            PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("INSERT INTO customers(Customer_ID, Customer_Name, Address, Postal_Code, Phone, Create_Date, Created_By, Last_Update, Last_Updated_By, Division_ID) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            ps.setInt(1, 5);
+            ps.setString(2, customerName);
+            ps.setString(3, customerAddress);
+            ps.setString(4, customerZipCode);
+            ps.setString(5, customerPhone);
+            ps.setDate(6, Date.valueOf(LocalDate.now()));
+            ps.setString(7, createdBy);
+            ps.setDate(8, Date.valueOf(LocalDate.now()));
+            ps.setString(9, lastUpdatedBy);
+            ps.setInt(10, 5);
+
+
+            ps.executeUpdate();
+
+            System.out.println("Added Customer to Database");
+
+        } catch(SQLException throwables){
+            throwables.printStackTrace();
+        }
+    }
+
 }
