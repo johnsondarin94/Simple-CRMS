@@ -37,6 +37,8 @@ public class CustomerController implements Initializable {
     public TableColumn divisionId;
     public TableColumn lastUpdatedBy;
 
+    private static Customers customerHandOff = null;
+
     public void onSignOff(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/view/Login.fxml"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -55,13 +57,23 @@ public class CustomerController implements Initializable {
         stage.show();
     }
 
+
     public void onUpdate(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/view/UpdateCustomer.fxml"));
-        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 450, 500);
-        stage.setTitle("Update Customer");
-        stage.setScene(scene);
-        stage.show();
+        try {
+            customerHandOff = (Customers) customerTable.getSelectionModel().getSelectedItem();
+            Parent root = FXMLLoader.load(getClass().getResource("/view/UpdateCustomer.fxml"));
+            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root, 450, 500);
+            stage.setTitle("Update Customer");
+            stage.setScene(scene);
+            stage.show();
+        } catch (Exception e){
+            System.out.println("Please select a Customer to update (REPLACE ME WITH PROPER ERROR HANDLING");
+        }
+    }
+
+    public static Customers getCustomerHandOff(){
+        return customerHandOff;
     }
 
     public void onReports(ActionEvent actionEvent) throws IOException {

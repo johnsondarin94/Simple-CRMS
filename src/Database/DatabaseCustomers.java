@@ -48,8 +48,6 @@ public class DatabaseCustomers {
     public static void addCustomer(String customerName, String customerAddress, String customerZipCode, String customerPhone, String createdBy, String lastUpdatedBy) {
         try {
 
-           //String sql = "INSERT INTO customers (Customer_ID, Customer_Name, Address, Postal_Code, Phone, Create_Date, Created_By, Last_Update, Last_Updated_By, Division_ID)" +
-          //  "VALUES (4,"+ customerName +", '123 main street', '84511', '1234567894', NULL, 'bob', NULL, 'bob', 10)";
             PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("INSERT INTO customers(Customer_ID, Customer_Name, Address, Postal_Code, Phone, Create_Date, Created_By, Last_Update, Last_Updated_By, Division_ID) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setInt(1, 5);
             ps.setString(2, customerName);
@@ -72,4 +70,22 @@ public class DatabaseCustomers {
         }
     }
 
-}
+    public static void updateCustomer(Integer customerId, String customerName, String customerAddress, String customerZipCode, String customerPhone){
+        Date updateTime = Date.valueOf(LocalDate.now());
+        try {
+
+            PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("UPDATE customers SET Customer_Name='"+customerName+"', " +
+                    "Address='"+customerAddress+"', Postal_Code='"+customerZipCode+"', " + "Phone='"+customerPhone+"', Last_Update='"+updateTime+"' , " +
+                    "Last_Updated_By='test' WHERE Customer_ID='"+customerId+"'");
+
+            ps.executeUpdate();
+
+            System.out.println("Updated Customer to Database");
+
+        } catch(SQLException throwables){
+            throwables.printStackTrace();
+        }
+    }
+    }
+
+
