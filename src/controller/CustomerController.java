@@ -38,6 +38,7 @@ public class CustomerController implements Initializable {
     public TableColumn lastUpdatedBy;
 
     private static Customers customerHandOff = null;
+    public Button deleteButton;
 
     public void onSignOff(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/view/Login.fxml"));
@@ -113,5 +114,12 @@ public class CustomerController implements Initializable {
 
         }
 
+    }
+
+    public void onDelete(ActionEvent actionEvent) {
+        customerHandOff = (Customers) customerTable.getSelectionModel().getSelectedItem();
+        int id = getCustomerHandOff().getCustomerId();
+        DatabaseCustomers.deleteCustomer(id);
+        customerTable.getSelectionModel().clearSelection();
     }
 }

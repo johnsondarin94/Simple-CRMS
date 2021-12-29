@@ -49,7 +49,7 @@ public class DatabaseCustomers {
         try {
 
             PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("INSERT INTO customers(Customer_ID, Customer_Name, Address, Postal_Code, Phone, Create_Date, Created_By, Last_Update, Last_Updated_By, Division_ID) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            ps.setInt(1, 5);
+            ps.setInt(1, 6);
             ps.setString(2, customerName);
             ps.setString(3, customerAddress);
             ps.setString(4, customerZipCode);
@@ -84,6 +84,19 @@ public class DatabaseCustomers {
 
         } catch(SQLException throwables){
             throwables.printStackTrace();
+        }
+    }
+    public static void deleteCustomer(int customerId){
+        try{
+
+            PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("DELETE FROM Customers WHERE Customer_ID='"+customerId+"'");
+
+            ps.executeUpdate();
+
+            System.out.println("Successfully deleted Customer from database.");
+
+        } catch(SQLException throwables){
+
         }
     }
     }

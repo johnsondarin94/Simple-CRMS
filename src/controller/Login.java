@@ -100,7 +100,7 @@ public class Login implements Initializable {
             writer(true);
             Parent root = FXMLLoader.load(getClass().getResource("/view/Customers.fxml"));
             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root, 750, 550);
+            Scene scene = new Scene(root, 1100, 550);
             stage.setTitle("Customers");
             stage.setScene(scene);
             stage.show();
