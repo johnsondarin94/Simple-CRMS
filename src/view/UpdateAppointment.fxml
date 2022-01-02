@@ -4,26 +4,26 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="500.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UpdateAppointment">
+<AnchorPane prefHeight="500.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UpdateAppointment">
    <children>
       <HBox prefHeight="100.0" prefWidth="200.0" />
       <Label layoutX="85.0" layoutY="28.0" text="Update Appointment">
          <font>
             <Font size="30.0" />
          </font></Label>
-      <ComboBox layoutX="259.0" layoutY="263.0" prefWidth="150.0" promptText="Customer ID" />
-      <DatePicker layoutX="259.0" layoutY="116.0" promptText="Start Date" />
-      <DatePicker layoutX="259.0" layoutY="188.0" promptText="End Date" />
-      <TextField editable="false" layoutX="31.0" layoutY="116.0" prefHeight="25.0" prefWidth="200.0" promptText="Appointment ID - Auto Generated" />
-      <TextField layoutX="31.0" layoutY="154.0" prefHeight="25.0" prefWidth="200.0" promptText="Title" />
-      <TextArea layoutX="31.0" layoutY="188.0" prefHeight="200.0" prefWidth="200.0" promptText="Description" />
-      <TextField layoutX="31.0" layoutY="435.0" prefHeight="25.0" prefWidth="200.0" promptText="Type" />
-      <TextField layoutX="31.0" layoutY="401.0" prefHeight="25.0" prefWidth="200.0" promptText="Contact" />
+      <ComboBox fx:id="appointmentCustomerID" layoutX="259.0" layoutY="263.0" prefWidth="150.0" promptText="Customer ID" />
+      <DatePicker fx:id="appointmentStartDate" layoutX="259.0" layoutY="116.0" promptText="Start Date" />
+      <DatePicker fx:id="appointmentEndDate" layoutX="259.0" layoutY="188.0" promptText="End Date" />
+      <TextField fx:id="appointmentID" editable="false" layoutX="31.0" layoutY="116.0" prefHeight="25.0" prefWidth="200.0" promptText="Appointment ID - Auto Generated" />
+      <TextField fx:id="appointmentTitle" layoutX="31.0" layoutY="154.0" prefHeight="25.0" prefWidth="200.0" promptText="Title" />
+      <TextArea fx:id="appointmentDescription" layoutX="31.0" layoutY="188.0" prefHeight="200.0" prefWidth="200.0" promptText="Description" />
+      <TextField fx:id="appointmentType" layoutX="31.0" layoutY="435.0" prefHeight="25.0" prefWidth="200.0" promptText="Type" />
+      <TextField fx:id="appointmentContact" layoutX="31.0" layoutY="401.0" prefHeight="25.0" prefWidth="200.0" promptText="Contact" />
       <HBox prefHeight="100.0" prefWidth="200.0" />
-      <ComboBox layoutX="259.0" layoutY="142.0" prefHeight="25.0" prefWidth="150.0" promptText="Start Time" />
-      <ComboBox layoutX="259.0" layoutY="213.0" prefWidth="150.0" promptText="End Time" />
-      <ComboBox layoutX="259.0" layoutY="303.0" prefWidth="150.0" promptText="User ID" />
-      <Button layoutX="259.0" layoutY="435.0" mnemonicParsing="false" text="Update" />
+      <ComboBox fx:id="appointmentStartTime" layoutX="259.0" layoutY="142.0" prefHeight="25.0" prefWidth="150.0" promptText="Start Time" />
+      <ComboBox fx:id="appointmentEndTime" layoutX="259.0" layoutY="213.0" prefWidth="150.0" promptText="End Time" />
+      <ComboBox fx:id="appointmentUserID" layoutX="259.0" layoutY="303.0" prefWidth="150.0" promptText="User ID" />
+      <Button fx:id="updateButton" layoutX="259.0" layoutY="435.0" mnemonicParsing="false" onAction="#onUpdate" text="Update" />
       <Button fx:id="cancelButton" layoutX="357.0" layoutY="435.0" mnemonicParsing="false" onAction="#onCancel" text="Cancel" />
    </children>
 </AnchorPane>

@@ -70,7 +70,7 @@ public class DatabaseCustomers {
         }
     }
 
-    public static void updateCustomer(Integer customerId, String customerName, String customerAddress, String customerZipCode, String customerPhone){
+    public static void updateCustomer(int customerId, String customerName, String customerAddress, String customerZipCode, String customerPhone){
         Date updateTime = Date.valueOf(LocalDate.now());
         try {
 
