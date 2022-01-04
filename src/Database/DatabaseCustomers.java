@@ -48,7 +48,9 @@ public class DatabaseCustomers {
     public static void addCustomer(String customerName, String customerAddress, String customerZipCode, String customerPhone, String createdBy, String lastUpdatedBy) {
         try {
 
-            PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("INSERT INTO customers(Customer_ID, Customer_Name, Address, Postal_Code, Phone, Create_Date, Created_By, Last_Update, Last_Updated_By, Division_ID) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("INSERT INTO customers(Customer_ID, Customer_Name, Address, Postal_Code, Phone, Create_Date, Created_By, " +
+                    "Last_Update, Last_Updated_By, Division_ID) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
             ps.setInt(1, 6);
             ps.setString(2, customerName);
             ps.setString(3, customerAddress);
@@ -59,7 +61,6 @@ public class DatabaseCustomers {
             ps.setDate(8, Date.valueOf(LocalDate.now()));
             ps.setString(9, lastUpdatedBy);
             ps.setInt(10, 5);
-
 
             ps.executeUpdate();
 

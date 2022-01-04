@@ -94,4 +94,18 @@ public class DatabaseAppointments {
         }
 
     }
+
+    public static void deleteAppointment(int appointmentId){
+        try{
+
+            PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("DELETE FROM appointments WHERE Appointment_ID='"+appointmentId+"'");
+
+            ps.executeUpdate();
+
+            System.out.println("Successfully deleted Appointment from database.");
+
+        } catch(SQLException throwables){
+
+        }
+    }
 }

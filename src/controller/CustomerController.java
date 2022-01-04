@@ -14,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
+import util.ErrorHandling;
 
 import java.io.IOException;
 import java.net.URL;
@@ -50,6 +51,7 @@ public class CustomerController implements Initializable {
     }
 
     public void onAdd(ActionEvent actionEvent) throws IOException {
+
         Parent root = FXMLLoader.load(getClass().getResource("/view/AddCustomer.fxml"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(root, 450, 500);
@@ -57,7 +59,6 @@ public class CustomerController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
-
 
     public void onUpdate(ActionEvent actionEvent) throws IOException {
         try {
@@ -69,7 +70,7 @@ public class CustomerController implements Initializable {
             stage.setScene(scene);
             stage.show();
         } catch (Exception e){
-            System.out.println("Please select a Customer to update (REPLACE ME WITH PROPER ERROR HANDLING");
+            ErrorHandling.displayError("No Customer selected.");
         }
     }
 
@@ -119,6 +120,7 @@ public class CustomerController implements Initializable {
     public void onDelete(ActionEvent actionEvent) {
         customerHandOff = (Customers) customerTable.getSelectionModel().getSelectedItem();
         int id = getCustomerHandOff().getCustomerId();
+
         DatabaseCustomers.deleteCustomer(id);
         customerTable.getSelectionModel().clearSelection();
     }

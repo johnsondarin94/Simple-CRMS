@@ -1,6 +1,7 @@
 package controller;
 
 import Database.DatabaseAppointments;
+import Database.DatabaseCustomers;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -37,6 +38,7 @@ public class AppointmentsController implements Initializable {
     public TableView appointmentsTable;
 
     private static Appointments appointmentHandOff = null;
+    public Button deleteButton;
 
     public void onUpdate(ActionEvent actionEvent) throws IOException {
 
@@ -95,5 +97,12 @@ public class AppointmentsController implements Initializable {
             userID.setCellValueFactory(new PropertyValueFactory<>("userId"));
 
         }
+    }
+
+    public void onDelete(ActionEvent actionEvent) {
+            appointmentHandOff = (Appointments) appointmentsTable.getSelectionModel().getSelectedItem();
+            int id = getAppointmentHandOff().getCustomerId();
+            DatabaseCustomers.deleteCustomer(id);
+            appointmentsTable.getSelectionModel().clearSelection();
     }
 }

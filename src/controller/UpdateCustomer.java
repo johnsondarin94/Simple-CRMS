@@ -41,7 +41,6 @@ public class UpdateCustomer implements Initializable{
         stage.show();
     }
 
-
     public void onUpdate(ActionEvent actionEvent) {
         int customerId = Integer.parseInt(updateCustomerId.getText());
         String customerName = updateCustomerName.getText();
