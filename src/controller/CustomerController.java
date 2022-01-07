@@ -1,7 +1,9 @@
 package controller;
 
+import Database.DatabaseAppointments;
 import Database.DatabaseCustomers;
 import javafx.scene.control.cell.PropertyValueFactory;
+import model.Appointments;
 import model.Customers;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -120,8 +122,20 @@ public class CustomerController implements Initializable {
     public void onDelete(ActionEvent actionEvent) {
         customerHandOff = (Customers) customerTable.getSelectionModel().getSelectedItem();
         int id = getCustomerHandOff().getCustomerId();
+        ObservableList<Appointments> associatedAppointments = DatabaseAppointments.getAllAppointments();
 
-        DatabaseCustomers.deleteCustomer(id);
-        customerTable.getSelectionModel().clearSelection();
+        for(Appointments A : associatedAppointments){
+            if(A.getCustomerId() == id){
+                ErrorHandling.displayError("Cannot delete Customer, has Associated Appointments");
+                break;
+            }
+            if(A.getCustomerId() != id) {
+                DatabaseCustomers.deleteCustomer(id);
+                customerTable.getSelectionModel().clearSelection();
+                System.out.println("Successfully deleted Customer");
+                break;
+            }
+        }
+
     }
 }
