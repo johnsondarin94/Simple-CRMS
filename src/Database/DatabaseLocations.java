@@ -35,10 +35,10 @@ public class DatabaseLocations {
         return countries;
     }
 
-    public static ObservableList<FirstLevelDivisions> getAllFirstLevelDivisions() {
+    public static ObservableList<FirstLevelDivisions> getSelectedFirstLevelDivisions(int countryID) {
         ObservableList<FirstLevelDivisions> firstleveldivisions = FXCollections.observableArrayList();
         try{
-            String sql = "SELECT Division_ID, Division FROM first_level_divisions";
+            String sql = "SELECT Division_ID, Division FROM first_level_divisions WHERE Country_ID='"+countryID+"'";
 
             PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(sql);
 

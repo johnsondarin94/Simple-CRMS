@@ -16,6 +16,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointments;
 import model.Customers;
+import util.ErrorHandling;
 
 import java.io.IOException;
 import java.net.URL;
@@ -73,7 +74,7 @@ public class AppointmentsController implements Initializable {
     public void onCancel(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/view/Customers.fxml"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 750, 550);
+        Scene scene = new Scene(root, 1100, 550);
         stage.setTitle("Customers");
         stage.setScene(scene);
         stage.show();
@@ -100,9 +101,14 @@ public class AppointmentsController implements Initializable {
     }
 
     public void onDelete(ActionEvent actionEvent) {
+        try{
             appointmentHandOff = (Appointments) appointmentsTable.getSelectionModel().getSelectedItem();
             int id = getAppointmentHandOff().getCustomerId();
             DatabaseCustomers.deleteCustomer(id);
             appointmentsTable.getSelectionModel().clearSelection();
+        } catch (Exception e) {
+            ErrorHandling.displayError("Please select an Appointment to delete");
+        }
+
     }
 }

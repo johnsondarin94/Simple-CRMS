@@ -4,15 +4,18 @@ public class Users {
     private int userID;
     private String userName;
     private String passWord;
+    private boolean active;
 
     public Users(){
 
     }
 
-    public Users(int userID, String userName, String passWord) {
+
+    public Users(int userID, String userName, String passWord, boolean active) {
         this.userID = userID;
         this.userName = userName;
         this.passWord = passWord;
+        this.active = false;
     }
 
     public int getUserID() {
@@ -39,5 +42,17 @@ public class Users {
         this.passWord = passWord;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    @Override
+    public String toString(){
+        return(userID + " - " + userName);
+    }
 
 }

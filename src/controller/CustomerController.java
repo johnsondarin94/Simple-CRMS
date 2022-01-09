@@ -2,6 +2,7 @@ package controller;
 
 import Database.DatabaseAppointments;
 import Database.DatabaseCustomers;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Appointments;
 import model.Customers;
@@ -12,14 +13,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import util.ErrorHandling;
+import controller.Login;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class CustomerController implements Initializable {
@@ -53,7 +53,6 @@ public class CustomerController implements Initializable {
     }
 
     public void onAdd(ActionEvent actionEvent) throws IOException {
-
         Parent root = FXMLLoader.load(getClass().getResource("/view/AddCustomer.fxml"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(root, 450, 500);
@@ -120,22 +119,28 @@ public class CustomerController implements Initializable {
     }
 
     public void onDelete(ActionEvent actionEvent) {
-        customerHandOff = (Customers) customerTable.getSelectionModel().getSelectedItem();
-        int id = getCustomerHandOff().getCustomerId();
-        ObservableList<Appointments> associatedAppointments = DatabaseAppointments.getAllAppointments();
+        try{
+            Customers selectedCustomer = (Customers) customerTable.getSelectionModel().getSelectedItem();
+            int id = selectedCustomer.getCustomerId();
+            System.out.println(id);
 
-        for(Appointments A : associatedAppointments){
-            if(A.getCustomerId() == id){
-                ErrorHandling.displayError("Cannot delete Customer, has Associated Appointments");
-                break;
-            }
-            if(A.getCustomerId() != id) {
-                DatabaseCustomers.deleteCustomer(id);
-                customerTable.getSelectionModel().clearSelection();
-                System.out.println("Successfully deleted Customer");
-                break;
-            }
+            ObservableList<Appointments> associatedAppointments = DatabaseAppointments.getAssociatedAppointments();
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete Selected Customer?");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK)
+                if (associatedAppointments.size() >= 2) {
+                    ErrorHandling.displayError("Cannot delete Customer, has Associated Appointments");
+                }
+                else {
+                    DatabaseCustomers.deleteCustomer(id);
+                    customerTable.getSelectionModel().clearSelection();
+                    System.out.println("Successfully deleted Customer");
+                }
+
+        } catch (Exception e) {
+            ErrorHandling.displayError("Please select a Customer to delete");
         }
 
     }
-}
+    }

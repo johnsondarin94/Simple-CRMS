@@ -3,6 +3,13 @@ package model;
 public class FirstLevelDivisions {
     private int divisionID;
     private String divisionName;
+    private int countryID;
+
+    public FirstLevelDivisions(int divisionID, String divisionName){
+        this.divisionID = divisionID;
+        this.divisionName = divisionName;
+
+    }
 
     public int getDivisionID() {
         return divisionID;
@@ -17,11 +24,6 @@ public class FirstLevelDivisions {
     }
 
     public void setDivisionName(String divisionName) {
-        this.divisionName = divisionName;
-    }
-
-    public FirstLevelDivisions(int divisionID, String divisionName){
-        this.divisionID = divisionID;
         this.divisionName = divisionName;
     }
 

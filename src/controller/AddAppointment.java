@@ -1,22 +1,29 @@
 package controller;
 
 import Database.DatabaseAppointments;
+import Database.DatabaseCustomers;
+import Database.DatabaseUsers;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import model.Customers;
+import model.Users;
 
 import java.io.IOException;
+import java.net.URL;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ResourceBundle;
 
-public class AddAppointment {
+public class AddAppointment implements Initializable{
     public Button addButton;
     public Button cancelButton;
-    public ComboBox appointmentCustomerId;
     public DatePicker appointmentStartDate;
     public DatePicker appointmentEndDate;
     public TextField appointmentId;
@@ -26,16 +33,22 @@ public class AddAppointment {
     public TextField appointmentContact;
     public ComboBox appointmentStartTime;
     public ComboBox appointmentEndTime;
+    public ComboBox userIDComboBox;
+    public ComboBox customerIDComboBox;
 
     public void onAdd(ActionEvent actionEvent) {
         String title = appointmentTitle.getText();
         String description = appointmentDescription.getText();
         String contact = appointmentContact.getText();
         String type = appointmentType.getText();
-        int customerId = 5; // FIX ME RETURN CUSTOMER ID
-        int userId = 6; // FIX ME RETURN USER ID
 
-        DatabaseAppointments.addAppointment(3, title, description, contact, type, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()),customerId, userId);
+        Customers selectedCustomer = (Customers) customerIDComboBox.getSelectionModel().getSelectedItem();
+        int customerId = selectedCustomer.getCustomerId();
+
+        Users selectedUser = (Users) userIDComboBox.getSelectionModel().getSelectedItem();
+        int userId = selectedUser.getUserID();
+
+        DatabaseAppointments.addAppointment(title, description, contact, type, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()),customerId, userId);
     }
 
     public void onCancel(ActionEvent actionEvent) throws IOException {
@@ -45,5 +58,25 @@ public class AddAppointment {
         stage.setTitle("Appointments");
         stage.setScene(scene);
         stage.show();
+    }
+
+    public void onCustomerID(ActionEvent actionEvent) {
+    }
+
+    public void onStartTime(ActionEvent actionEvent) {
+    }
+
+    public void onEndTime(ActionEvent actionEvent) {
+    }
+
+    public void onUserID(ActionEvent actionEvent) {
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        ObservableList<Customers> customers = DatabaseCustomers.getAllCustomers();
+        customerIDComboBox.setItems(customers);
+        ObservableList<Users> users = DatabaseUsers.getUsers();
+        userIDComboBox.setItems(users);
     }
 }

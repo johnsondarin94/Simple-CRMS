@@ -24,7 +24,7 @@ public class DatabaseUsers {
                 String userName = rs.getString("User_Name");
                 String passWord = rs.getString("Password");
 
-                Users u = new Users(userId, userName, passWord);
+                Users u = new Users(userId, userName, passWord, false);
 
                 userList.add(u);
             }

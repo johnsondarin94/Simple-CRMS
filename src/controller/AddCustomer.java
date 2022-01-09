@@ -35,25 +35,36 @@ public class AddCustomer implements Initializable {
     public void onCancel(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/view/Customers.fxml"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 750, 550);
+        Scene scene = new Scene(root, 1100, 550);
         stage.setTitle("Customers");
         stage.setScene(scene);
         stage.show();
     }
 
     public void onAdd(ActionEvent actionEvent) {
+        String activeUser = Login.getUserHandoff().getUserName();
         String customerName = addCustomerName.getText();
         String address = addCustomerAddress.getText();
         String zipCode = addCustomerZip.getText();
         String phone = addCustomerPhone.getText();
-        DatabaseCustomers.addCustomer(customerName, address, zipCode, phone, "test", "test" );
+        int divisionID =  stateProvinceComboBox.getSelectionModel().getSelectedItem().getDivisionID();
+
+        DatabaseCustomers.addCustomer(customerName, address, zipCode, phone, activeUser, activeUser, divisionID);
+    }
+
+    public void onStateProvince(ActionEvent actionEvent) {
+        ObservableList<FirstLevelDivisions> firstLevelDivisions = DatabaseLocations.getSelectedFirstLevelDivisions(
+                addCustomerCountryComboBox.getSelectionModel().getSelectedItem().getCountryID());
+
+        stateProvinceComboBox.setItems(firstLevelDivisions);
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ObservableList<Countries> countries = DatabaseLocations.getAllCountries();
         addCustomerCountryComboBox.setItems(countries);
-        ObservableList<FirstLevelDivisions> firstleveldivisions = DatabaseLocations.getAllFirstLevelDivisions();
-        stateProvinceComboBox.setItems(firstleveldivisions);
     }
-}
+
+    }
+
+

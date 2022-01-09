@@ -1,6 +1,7 @@
 package Database;
 
 
+import controller.Login;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Customers;
@@ -45,22 +46,21 @@ public class DatabaseCustomers {
     return customerList;
     }
 
-    public static void addCustomer(String customerName, String customerAddress, String customerZipCode, String customerPhone, String createdBy, String lastUpdatedBy) {
+    public static void addCustomer(String customerName, String customerAddress, String customerZipCode, String customerPhone, String createdBy, String lastUpdatedBy, int divisionID) {
         try {
 
-            PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("INSERT INTO customers(Customer_ID, Customer_Name, Address, Postal_Code, Phone, Create_Date, Created_By, " +
-                    "Last_Update, Last_Updated_By, Division_ID) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("INSERT INTO customers(Customer_Name, Address, Postal_Code, Phone, Create_Date, Created_By, " +
+                    "Last_Update, Last_Updated_By, Division_ID) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-            ps.setInt(1, 6);
-            ps.setString(2, customerName);
-            ps.setString(3, customerAddress);
-            ps.setString(4, customerZipCode);
-            ps.setString(5, customerPhone);
-            ps.setDate(6, Date.valueOf(LocalDate.now()));
-            ps.setString(7, createdBy);
-            ps.setDate(8, Date.valueOf(LocalDate.now()));
-            ps.setString(9, lastUpdatedBy);
-            ps.setInt(10, 5);
+            ps.setString(1, customerName);
+            ps.setString(2, customerAddress);
+            ps.setString(3, customerZipCode);
+            ps.setString(4, customerPhone);
+            ps.setDate(5, Date.valueOf(LocalDate.now()));
+            ps.setString(6, createdBy);
+            ps.setDate(7, Date.valueOf(LocalDate.now()));
+            ps.setString(8, lastUpdatedBy);
+            ps.setInt(9, divisionID);
 
             ps.executeUpdate();
 
@@ -73,11 +73,12 @@ public class DatabaseCustomers {
 
     public static void updateCustomer(int customerId, String customerName, String customerAddress, String customerZipCode, String customerPhone){
         Date updateTime = Date.valueOf(LocalDate.now());
+        String lastUpdatedBy = Login.getUserHandoff().getUserName();
         try {
 
             PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("UPDATE customers SET Customer_Name='"+customerName+"', " +
                     "Address='"+customerAddress+"', Postal_Code='"+customerZipCode+"', " + "Phone='"+customerPhone+"', Last_Update='"+updateTime+"' , " +
-                    "Last_Updated_By='test' WHERE Customer_ID='"+customerId+"'");
+                    "Last_Updated_By='"+lastUpdatedBy+"' WHERE Customer_ID='"+customerId+"'");
 
             ps.executeUpdate();
 

@@ -11,7 +11,7 @@
          <font>
             <Font size="30.0" />
          </font></Label>
-      <ComboBox fx:id="appointmentCustomerId" layoutX="259.0" layoutY="263.0" prefWidth="150.0" promptText="Customer ID" />
+      <ComboBox fx:id="customerIDComboBox" layoutX="259.0" layoutY="263.0" onAction="#onCustomerID" prefWidth="150.0" promptText="Customer ID" />
       <DatePicker fx:id="appointmentStartDate" layoutX="259.0" layoutY="116.0" promptText="Start Date" />
       <DatePicker fx:id="appointmentEndDate" layoutX="259.0" layoutY="188.0" promptText="End Date" />
       <TextField fx:id="appointmentId" editable="false" layoutX="31.0" layoutY="116.0" prefHeight="25.0" prefWidth="200.0" promptText="Appointment ID - Auto Generated" />
@@ -20,9 +20,9 @@
       <TextField fx:id="appointmentType" layoutX="31.0" layoutY="435.0" prefHeight="25.0" prefWidth="200.0" promptText="Type" />
       <TextField fx:id="appointmentContact" layoutX="31.0" layoutY="401.0" prefHeight="25.0" prefWidth="200.0" promptText="Contact" />
       <HBox prefHeight="100.0" prefWidth="200.0" />
-      <ComboBox fx:id="appointmentStartTime" layoutX="259.0" layoutY="142.0" prefHeight="25.0" prefWidth="150.0" promptText="Start Time" />
-      <ComboBox fx:id="appointmentEndTime" layoutX="259.0" layoutY="213.0" prefWidth="150.0" promptText="End Time" />
-      <ComboBox layoutX="259.0" layoutY="303.0" prefWidth="150.0" promptText="User ID" />
+      <ComboBox fx:id="appointmentStartTime" layoutX="259.0" layoutY="142.0" onAction="#onStartTime" prefHeight="25.0" prefWidth="150.0" promptText="Start Time" />
+      <ComboBox fx:id="appointmentEndTime" layoutX="259.0" layoutY="213.0" onAction="#onEndTime" prefWidth="150.0" promptText="End Time" />
+      <ComboBox fx:id="userIDComboBox" layoutX="259.0" layoutY="303.0" onAction="#onUserID" prefWidth="150.0" promptText="User ID" />
       <Button fx:id="addButton" layoutX="259.0" layoutY="435.0" mnemonicParsing="false" onAction="#onAdd" text="Add" />
       <Button fx:id="cancelButton" layoutX="357.0" layoutY="435.0" mnemonicParsing="false" onAction="#onCancel" text="Cancel" />
    </children>

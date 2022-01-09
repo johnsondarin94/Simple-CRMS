@@ -32,6 +32,8 @@ public class Login implements Initializable {
     public Button loginButton;
     public Label welcomeLabel;
 
+    public static Users userHandoff = null;
+
     LocalDateTime nowDateTime = LocalDateTime.now();
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss");
     DateTimeFormatter dtfFrance = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
@@ -81,11 +83,18 @@ public class Login implements Initializable {
         pw.close();
     }
 
+    public static Users getUserHandoff(){
+        return userHandoff;
+    }
+
+
+
     public void onLogin(ActionEvent actionEvent) throws IOException {
         for(Users u : users){
             if(userName.getText().equals(u.getUserName())){
                 if(passWord.getText().equals(u.getPassWord())){
-                    Users activeUser = u;
+                    u.setActive(true);
+                    userHandoff = u;
                     String name = u.getUserName();
                     writer(true);
                     Parent root = FXMLLoader.load(getClass().getResource("/view/Customers.fxml"));

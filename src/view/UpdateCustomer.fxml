@@ -15,7 +15,7 @@
       <TextField fx:id="updateCustomerAddress" layoutX="42.0" layoutY="250.0" promptText="Address" />
       <TextField fx:id="updateCustomerZip" layoutX="42.0" layoutY="300.0" promptText="Postal Code" />
       <TextField fx:id="updateCustomerId" editable="false" layoutX="42.0" layoutY="146.0" promptText="ID - Auto Generated" />
-      <ComboBox fx:id="updateCustomerState" layoutX="251.0" layoutY="198.0" prefWidth="150.0" promptText="State/Province" />
+      <ComboBox fx:id="updateCustomerState" layoutX="251.0" layoutY="198.0" onAction="#onStateProvince" prefWidth="150.0" promptText="State/Province" />
       <ComboBox fx:id="updateCustomerCountry" layoutX="251.0" layoutY="146.0" prefWidth="150.0" promptText="Country" />
       <Button fx:id="updateButton" layoutX="98.0" layoutY="429.0" mnemonicParsing="false" onAction="#onUpdate" text="Update" />
       <Button fx:id="cancelButton" layoutX="300.0" layoutY="429.0" mnemonicParsing="false" onAction="#onCancel" text="Cancel" />

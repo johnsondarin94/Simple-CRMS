@@ -33,6 +33,7 @@ public class Customers {
     }
 
 
+
     public int getCustomerId() {
         return customerId;
     }
@@ -113,5 +114,9 @@ public class Customers {
         this.divisionId = divisionId;
     }
 
+    @Override
+    public String toString(){
+        return(customerId + " - " + name);
+    }
 
 }
