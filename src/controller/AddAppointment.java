@@ -12,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import model.Contacts;
 import model.Customers;
 import model.Users;
 
@@ -35,20 +36,23 @@ public class AddAppointment implements Initializable{
     public ComboBox appointmentEndTime;
     public ComboBox userIDComboBox;
     public ComboBox customerIDComboBox;
+    public ComboBox<Contacts> contactComboBox;
 
     public void onAdd(ActionEvent actionEvent) {
+        String activeUser = Login.getUserHandoff().getUserName();
         String title = appointmentTitle.getText();
         String description = appointmentDescription.getText();
-        String contact = appointmentContact.getText();
+        int contactID = contactComboBox.getSelectionModel().getSelectedItem().getContactID();
         String type = appointmentType.getText();
+
 
         Customers selectedCustomer = (Customers) customerIDComboBox.getSelectionModel().getSelectedItem();
         int customerId = selectedCustomer.getCustomerId();
 
         Users selectedUser = (Users) userIDComboBox.getSelectionModel().getSelectedItem();
-        int userId = selectedUser.getUserID();
+        int userID = selectedUser.getUserID();
 
-        DatabaseAppointments.addAppointment(title, description, contact, type, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()),customerId, userId);
+        DatabaseAppointments.addAppointment(title, description, type, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()), activeUser, customerId, userID, contactID);
     }
 
     public void onCancel(ActionEvent actionEvent) throws IOException {
@@ -78,5 +82,7 @@ public class AddAppointment implements Initializable{
         customerIDComboBox.setItems(customers);
         ObservableList<Users> users = DatabaseUsers.getUsers();
         userIDComboBox.setItems(users);
+        ObservableList<Contacts> contacts = DatabaseAppointments.getAllContacts();
+        contactComboBox.setItems(contacts);
     }
 }

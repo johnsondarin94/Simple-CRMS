@@ -8,14 +8,14 @@ public class Appointments {
     private String title;
     private String description;
     private String location;
-    private String contact;
+    private Contacts contact;
     private String type;
     private Date startDateTime;
     private Date endDateTime;
     private int customerId;
     private int userId;
 
-    public Appointments (int appointment_ID, String title, String description, String location, String contact, String type, Date startDateTime, Date endDateTime
+    public Appointments (int appointment_ID, String title, String description, String location, Contacts contact, String type, Date startDateTime, Date endDateTime
     , int customerId, int userId){
         this.appointment_ID = appointment_ID;
         this.title = title;
@@ -62,11 +62,11 @@ public class Appointments {
         this.location = location;
     }
 
-    public String getContact() {
+    public Contacts getContact() {
         return contact;
     }
 
-    public void setContact(String contact) {
+    public void setContact(Contacts contact) {
         this.contact = contact;
     }
 
