@@ -27,11 +27,12 @@ public class UpdateCustomer implements Initializable{
     public TextField updateCustomerAddress;
     public TextField updateCustomerZip;
     public TextField updateCustomerId;
-    public ComboBox<FirstLevelDivisions> updateCustomerState;
+   // public ComboBox<FirstLevelDivisions> updateCustomerState;
     public ComboBox<Countries> updateCustomerCountry;
 
     public Button cancelButton;
     public Button updateButton;
+    public ComboBox<FirstLevelDivisions> stateProvince;
 
     private Customers customerToModify = null;
 
@@ -51,21 +52,20 @@ public class UpdateCustomer implements Initializable{
         String customerPhone = updateCustomerPhone.getText();
         String customerAddress = updateCustomerAddress.getText();
         String customerZip = updateCustomerZip.getText();
+        int customerDivisionID = stateProvince.getSelectionModel().getSelectedItem().getDivisionID();
 
-        DatabaseCustomers.updateCustomer(customerId, customerName, customerPhone, customerAddress, customerZip);
+        DatabaseCustomers.updateCustomer(customerId, customerName, customerPhone, customerAddress, customerZip, customerDivisionID);
 
     }
 
-    public void onStateProvince(ActionEvent actionEvent) {
-        ObservableList<FirstLevelDivisions> firstLevelDivisions = DatabaseLocations.getSelectedFirstLevelDivisions(
-                updateCustomerCountry.getSelectionModel().getSelectedItem().getCountryID());
-        updateCustomerCountry.getSelectionModel().getSelectedItem().getCountryID();
+    public void onCustomerCountry(ActionEvent actionEvent) {
+        ObservableList<FirstLevelDivisions> firstLevelDivisions = DatabaseLocations.getSelectedFirstLevelDivisions(updateCustomerCountry.getSelectionModel().getSelectedItem().getCountryID());
 
-        updateCustomerState.setItems(firstLevelDivisions);
+        stateProvince.setItems(firstLevelDivisions);
     }
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle){
+    public void initialize(URL url, ResourceBundle resourceBundle) {
         ObservableList<Countries> countries = DatabaseLocations.getAllCountries();
         updateCustomerCountry.setItems(countries);
 
@@ -76,8 +76,5 @@ public class UpdateCustomer implements Initializable{
         updateCustomerPhone.setText(String.valueOf(customerToModify.getPhoneNumber()));
         updateCustomerZip.setText(String.valueOf(customerToModify.getZipCode()));
 
-
     }
-
-
 }

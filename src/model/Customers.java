@@ -10,29 +10,21 @@ public class Customers {
     private String address;
     private String zipCode;
     private String phoneNumber;
-    private Date createDate;
-    private String createdBy;
-    private Date lastUpdate;
-    private String lastUpdatedBy;
-    private int divisionId;
+    private Countries country;
+    private FirstLevelDivisions division;
 
-    public Customers (int customerId, String name, String address, String zipCode, String phoneNumber, Date createDate, String createdBy, Date lastUpdate,
-                      String lastUpdatedBy, int divisionId){
+    public Customers (int customerId, String name, String address, String zipCode, String phoneNumber,
+                      Countries country, FirstLevelDivisions division){
 
         this.customerId = customerId;
         this.name = name;
         this.address = address;
         this.zipCode = zipCode;
         this.phoneNumber = phoneNumber;
-        this.createDate = createDate;
-        this.createdBy = createdBy;
-        this.lastUpdate = lastUpdate;
-        this.lastUpdatedBy = lastUpdatedBy;
-        this.divisionId = divisionId;
+        this.country = country;
+        this.division = division;
 
     }
-
-
 
     public int getCustomerId() {
         return customerId;
@@ -74,44 +66,20 @@ public class Customers {
         this.phoneNumber = phoneNumber;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public Countries getCountry() {
+        return country;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setCountry(Countries country) {
+        this.country = country;
     }
 
-    public String getCreatedBy() {
-        return createdBy;
+    public FirstLevelDivisions getDivision() {
+        return division;
     }
 
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Date getLastUpdate() {
-        return lastUpdate;
-    }
-
-    public void setLastUpdate(Date lastUpdate) {
-        this.lastUpdate = lastUpdate;
-    }
-
-    public String getLastUpdatedBy() {
-        return lastUpdatedBy;
-    }
-
-    public void setLastUpdatedBy(String lastUpdatedBy) {
-        this.lastUpdatedBy = lastUpdatedBy;
-    }
-
-    public int getDivisionId() {
-        return divisionId;
-    }
-
-    public void setDivisionId(int divisionId) {
-        this.divisionId = divisionId;
+    public void setDivision(FirstLevelDivisions division) {
+        this.division = division;
     }
 
     @Override

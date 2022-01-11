@@ -49,6 +49,9 @@ public class AddCustomer implements Initializable {
         String phone = addCustomerPhone.getText();
         int divisionID =  stateProvinceComboBox.getSelectionModel().getSelectedItem().getDivisionID();
 
+        String countryName = addCustomerCountryComboBox.getSelectionModel().getSelectedItem().getCountryName();
+        String stateProvinceName = stateProvinceComboBox.getSelectionModel().getSelectedItem().getDivisionName();
+
         DatabaseCustomers.addCustomer(customerName, address, zipCode, phone, activeUser, activeUser, divisionID);
     }
 

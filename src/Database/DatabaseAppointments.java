@@ -47,19 +47,19 @@ public class DatabaseAppointments {
         return appointmentsList;
     }
 
-    public static ObservableList<Appointments> getAssociatedAppointments(){
+    public static ObservableList<Integer> getAssociatedAppointments(int id){
 
-        ObservableList<Appointments> appointmentsList = FXCollections.observableArrayList();
+        ObservableList<Integer> appointmentsList = FXCollections.observableArrayList();
         try{
-            String sql = "SELECT * FROM appointments, customers WHERE customers.Customer_ID = appointments.Customer_ID";
+            String sql = "SELECT appointments.Customer_ID FROM appointments INNER JOIN customers ON appointments.Customer_ID = customers.Customer_ID;";
 
             PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(sql);
 
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
-                int appointmentId = rs.getInt("Appointment_ID");
-                String title = rs.getString("Title");
+                int customerId = rs.getInt("Customer_ID");
+              /*  String title = rs.getString("Title");
                 String description = rs.getString("Description");
                 String location = rs.getString("Location");
                 String contact = rs.getString("Contact_ID");
@@ -68,10 +68,10 @@ public class DatabaseAppointments {
                 Date endDateTime = rs.getDate("End");
                 int customerId = rs.getInt("Customer_ID");
                 int userId = rs.getInt("User_ID");
+*/
+                //Appointments a = new Appointments(appointmentId, title, description, location, contact, type, startDateTime, endDateTime, customerId, userId);
 
-                Appointments a = new Appointments(appointmentId, title, description, location, contact, type, startDateTime, endDateTime, customerId, userId);
-
-                appointmentsList.add(a);
+                appointmentsList.add(customerId);
             }
 
         } catch (SQLException throwables) {

@@ -54,7 +54,7 @@ public class AppointmentsController implements Initializable {
             stage.show();
 
         } catch (IOException e) {
-            System.out.println("Please select an appointment to update FIX ME");
+            ErrorHandling.displayError("Please select an Appointment to Update");
         }
     }
 

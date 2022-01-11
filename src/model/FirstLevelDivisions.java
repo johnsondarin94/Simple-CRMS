@@ -29,6 +29,6 @@ public class FirstLevelDivisions {
 
     @Override
     public String toString(){
-        return(divisionID + " - " + divisionName);
+        return(divisionID + " - " +divisionName);
     }
 }

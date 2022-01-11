@@ -34,14 +34,12 @@ public class CustomerController implements Initializable {
     public TableColumn address;
     public TableColumn zipCode;
     public TableColumn phoneNumber;
-    public TableColumn createDate;
     public TableColumn createdBy;
-    public TableColumn lastUpdate;
-    public TableColumn divisionId;
-    public TableColumn lastUpdatedBy;
 
     private static Customers customerHandOff = null;
     public Button deleteButton;
+    public TableColumn country;
+    public TableColumn division;
 
     public void onSignOff(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/view/Login.fxml"));
@@ -108,11 +106,8 @@ public class CustomerController implements Initializable {
             address.setCellValueFactory(new PropertyValueFactory<>("address"));
             zipCode.setCellValueFactory(new PropertyValueFactory<>("zipCode"));
             phoneNumber.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
-            createDate.setCellValueFactory(new PropertyValueFactory<>("createDate"));
-            createdBy.setCellValueFactory(new PropertyValueFactory<>("createdBy"));
-            lastUpdate.setCellValueFactory(new PropertyValueFactory<>("lastUpdate"));
-            lastUpdatedBy.setCellValueFactory(new PropertyValueFactory<>("lastUpdatedBy"));
-            divisionId.setCellValueFactory(new PropertyValueFactory<>("divisionId"));
+            division.setCellValueFactory(new PropertyValueFactory<>("division"));
+            country.setCellValueFactory(new PropertyValueFactory<>("country"));
 
         }
 
@@ -124,12 +119,12 @@ public class CustomerController implements Initializable {
             int id = selectedCustomer.getCustomerId();
             System.out.println(id);
 
-            ObservableList<Appointments> associatedAppointments = DatabaseAppointments.getAssociatedAppointments();
+            ObservableList<Integer> associatedAppointments = DatabaseAppointments.getAssociatedAppointments(id);
 
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete Selected Customer?");
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK)
-                if (associatedAppointments.size() >= 2) {
+                if (associatedAppointments.size() >= 1) {
                     ErrorHandling.displayError("Cannot delete Customer, has Associated Appointments");
                 }
                 else {
