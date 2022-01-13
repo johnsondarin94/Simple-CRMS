@@ -6,12 +6,11 @@ import model.Appointments;
 import model.Contacts;
 import model.Customers;
 
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 public class DatabaseAppointments {
     public static ObservableList<Appointments> getAllAppointments() {
@@ -78,6 +77,13 @@ public class DatabaseAppointments {
 
     public static void addAppointment(String title, String description, String type, Date startDateTime, Date endDateTime, String createdBy, int customerId, int userId, int contactID){
         try{
+            LocalDateTime startDateTime1 = LocalDateTime.now();
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String s = dtf.format(startDateTime1);
+            startDateTime1 = startDateTime1.parse(s, dtf);
+
+            Timestamp ts = Timestamp.valueOf(startDateTime1);
+            System.out.println(ts);
 
             PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("INSERT INTO appointments(Title, Description, Location, Type, Start, End, Create_Date, Created_By, " +
                     "Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -86,12 +92,12 @@ public class DatabaseAppointments {
             ps.setString(2, description);
             ps.setString(3, "test");
             ps.setString(4, type);
-            ps.setDate(5, Date.valueOf(LocalDate.now())); //FIX ME POPULATE WITH LOCAL DATE AND TIME
+            ps.setTimestamp(5, ts); //FIX ME POPULATE WITH LOCAL DATE AND TIME
             ps.setDate(6, Date.valueOf(LocalDate.now())); //FIX ME POPULATE WITH LOCAL DATE AND TIME
             ps.setDate(7, Date.valueOf(LocalDate.now())); //FIX ME POPULATE WITH LOCAL DATE AND TIME
-            ps.setString(8, "test"); //FIX ME POPULATE WITH CURRENT USER NAME
+            ps.setString(8,  createdBy);
             ps.setDate(9, Date.valueOf(LocalDate.now()));//FIX ME POPULATE WITH LAST UPDATE DATE AND TIME
-            ps.setString(10, "test"); //FIX ME POPULATE WITH USER NAME
+            ps.setString(10, createdBy);
             ps.setInt(11, customerId);
             ps.setInt(12, userId);
             ps.setInt(13, contactID);

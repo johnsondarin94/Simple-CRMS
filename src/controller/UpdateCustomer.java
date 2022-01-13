@@ -75,6 +75,8 @@ public class UpdateCustomer implements Initializable{
         updateCustomerAddress.setText(String.valueOf(customerToModify.getAddress()));
         updateCustomerPhone.setText(String.valueOf(customerToModify.getPhoneNumber()));
         updateCustomerZip.setText(String.valueOf(customerToModify.getZipCode()));
+        updateCustomerCountry.setValue(customerToModify.getCountry());
+        stateProvince.setValue(customerToModify.getDivision());
 
     }
 }

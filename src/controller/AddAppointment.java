@@ -19,7 +19,10 @@ import model.Users;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ResourceBundle;
 
 public class AddAppointment implements Initializable{
@@ -84,5 +87,6 @@ public class AddAppointment implements Initializable{
         userIDComboBox.setItems(users);
         ObservableList<Contacts> contacts = DatabaseAppointments.getAllContacts();
         contactComboBox.setItems(contacts);
+
     }
 }
