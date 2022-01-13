@@ -9,8 +9,10 @@ import model.Customers;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class DatabaseAppointments {
     public static ObservableList<Appointments> getAllAppointments() {

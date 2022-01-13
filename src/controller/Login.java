@@ -42,12 +42,7 @@ public class Login implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //Locale.setDefault(new Locale("fr"));
-        LocalTime hour = LocalTime.of(1, 0);
 
-        for(int i = 0; i < 24; i++){
-            System.out.println(hour);
-           hour = hour.plusHours(1);
-        }
 
         ResourceBundle rb = ResourceBundle.getBundle("Nat_fr", Locale.getDefault());
         ZoneId zoneId = ZoneId.systemDefault();

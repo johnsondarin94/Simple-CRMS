@@ -3,6 +3,7 @@ package controller;
 import Database.DatabaseAppointments;
 import Database.DatabaseCustomers;
 import Database.DatabaseUsers;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -35,11 +36,14 @@ public class AddAppointment implements Initializable{
     public TextArea appointmentDescription;
     public TextField appointmentType;
     public TextField appointmentContact;
-    public ComboBox appointmentStartTime;
+    public ComboBox<LocalTime> appointmentStartTime;
     public ComboBox appointmentEndTime;
     public ComboBox userIDComboBox;
     public ComboBox customerIDComboBox;
     public ComboBox<Contacts> contactComboBox;
+
+
+
 
     public void onAdd(ActionEvent actionEvent) {
         String activeUser = Login.getUserHandoff().getUserName();
@@ -70,7 +74,20 @@ public class AddAppointment implements Initializable{
     public void onCustomerID(ActionEvent actionEvent) {
     }
 
+    public static ObservableList<LocalTime> getHours(){
+        ObservableList<LocalTime> hours = FXCollections.observableArrayList();
+        LocalTime hour = LocalTime.of(0, 0);
+        System.out.println(hour);
+        for(int i = 0; i < 24; i++){
+            hour = hour.plusHours(1);
+
+            hours.add(hour);
+        }
+        return hours;
+    }
+
     public void onStartTime(ActionEvent actionEvent) {
+
     }
 
     public void onEndTime(ActionEvent actionEvent) {
@@ -87,6 +104,9 @@ public class AddAppointment implements Initializable{
         userIDComboBox.setItems(users);
         ObservableList<Contacts> contacts = DatabaseAppointments.getAllContacts();
         contactComboBox.setItems(contacts);
+        ObservableList<LocalTime> hours = getHours();
+        appointmentStartTime.setItems(hours);
+        appointmentEndTime.setItems(hours);
 
     }
 }
