@@ -37,7 +37,7 @@ public class AddAppointment implements Initializable{
     public TextField appointmentType;
     public TextField appointmentContact;
     public ComboBox<LocalTime> appointmentStartTime;
-    public ComboBox appointmentEndTime;
+    public ComboBox<LocalTime>appointmentEndTime;
     public ComboBox userIDComboBox;
     public ComboBox customerIDComboBox;
     public ComboBox<Contacts> contactComboBox;
@@ -59,7 +59,17 @@ public class AddAppointment implements Initializable{
         Users selectedUser = (Users) userIDComboBox.getSelectionModel().getSelectedItem();
         int userID = selectedUser.getUserID();
 
-        DatabaseAppointments.addAppointment(title, description, type, Date.valueOf(LocalDate.now()), Date.valueOf(LocalDate.now()), activeUser, customerId, userID, contactID);
+        LocalDate startDate = appointmentStartDate.getValue();
+        LocalTime startTime = appointmentStartTime.getSelectionModel().getSelectedItem();
+
+        LocalDateTime startDateTime = LocalDateTime.of(startDate, startTime);
+
+        LocalDate endDate = appointmentEndDate.getValue();
+        LocalTime endTime = appointmentEndTime.getSelectionModel().getSelectedItem();
+
+        LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime);
+
+        DatabaseAppointments.addAppointment(title, description, type, startDateTime, endDateTime, activeUser, customerId, userID, contactID);
     }
 
     public void onCancel(ActionEvent actionEvent) throws IOException {

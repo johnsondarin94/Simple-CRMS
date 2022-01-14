@@ -18,12 +18,12 @@
       <TextField fx:id="appointmentTitle" layoutX="31.0" layoutY="154.0" prefHeight="25.0" prefWidth="200.0" promptText="Title" />
       <TextArea fx:id="appointmentDescription" layoutX="31.0" layoutY="188.0" prefHeight="200.0" prefWidth="200.0" promptText="Description" />
       <TextField fx:id="appointmentType" layoutX="31.0" layoutY="435.0" prefHeight="25.0" prefWidth="200.0" promptText="Type" />
-      <TextField fx:id="appointmentContact" layoutX="31.0" layoutY="401.0" prefHeight="25.0" prefWidth="200.0" promptText="Contact" />
       <HBox prefHeight="100.0" prefWidth="200.0" />
       <ComboBox fx:id="appointmentStartTime" layoutX="259.0" layoutY="142.0" prefHeight="25.0" prefWidth="150.0" promptText="Start Time" />
       <ComboBox fx:id="appointmentEndTime" layoutX="259.0" layoutY="213.0" prefWidth="150.0" promptText="End Time" />
       <ComboBox fx:id="appointmentUserID" layoutX="259.0" layoutY="303.0" prefWidth="150.0" promptText="User ID" />
       <Button fx:id="updateButton" layoutX="259.0" layoutY="435.0" mnemonicParsing="false" onAction="#onUpdate" text="Update" />
       <Button fx:id="cancelButton" layoutX="357.0" layoutY="435.0" mnemonicParsing="false" onAction="#onCancel" text="Cancel" />
+      <ComboBox fx:id="updateAppointmentContact" layoutX="259.0" layoutY="342.0" prefWidth="150.0" promptText="Contact" />
    </children>
 </AnchorPane>

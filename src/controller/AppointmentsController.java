@@ -103,7 +103,7 @@ public class AppointmentsController implements Initializable {
     public void onDelete(ActionEvent actionEvent) {
         try{
             appointmentHandOff = (Appointments) appointmentsTable.getSelectionModel().getSelectedItem();
-            int id = getAppointmentHandOff().getCustomerId();
+            int id = getAppointmentHandOff().getAppointment_ID();
             DatabaseCustomers.deleteCustomer(id);
             appointmentsTable.getSelectionModel().clearSelection();
         } catch (Exception e) {

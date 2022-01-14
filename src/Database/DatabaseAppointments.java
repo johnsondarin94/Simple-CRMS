@@ -10,6 +10,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -36,14 +37,17 @@ public class DatabaseAppointments {
                 String contactName = rs.getString("Contact_Name");
                 String contactEmail = rs.getString("Email");
                 String type = rs.getString("Type");
-                Date startDateTime = rs.getDate("Start");
-                Date endDateTime = rs.getDate("End");
+                Timestamp startDateTime = rs.getTimestamp("Start");
+                Timestamp endDateTime = rs.getTimestamp("End");
                 int customerId = rs.getInt("Customer_ID");
                 int userId = rs.getInt("User_ID");
 
                 Contacts c = new Contacts(contactId, contactName, contactEmail);
 
-                Appointments a = new Appointments(appointmentId, title, description, location, c, type, startDateTime, endDateTime, customerId, userId);
+                LocalDateTime sdt = startDateTime.toLocalDateTime();
+                LocalDateTime edt = endDateTime.toLocalDateTime();
+
+                Appointments a = new Appointments(appointmentId, title, description, location, c, type, sdt, edt, customerId, userId);
 
                 appointmentsList.add(a);
             }
@@ -77,15 +81,17 @@ public class DatabaseAppointments {
         return appointmentsList;
     }
 
-    public static void addAppointment(String title, String description, String type, Date startDateTime, Date endDateTime, String createdBy, int customerId, int userId, int contactID){
+    public static void addAppointment(String title, String description, String type, LocalDateTime startDateTime, LocalDateTime endDateTime, String createdBy, int customerId, int userId, int contactID){
         try{
-            LocalDateTime startDateTime1 = LocalDateTime.now();
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            String s = dtf.format(startDateTime1);
-            startDateTime1 = startDateTime1.parse(s, dtf);
+            String s = dtf.format(startDateTime);
+            String e = dtf.format(endDateTime);
+            startDateTime = startDateTime.parse(s, dtf);
+            endDateTime = endDateTime.parse(e, dtf);
 
-            Timestamp ts = Timestamp.valueOf(startDateTime1);
-            System.out.println(ts);
+            Timestamp st = Timestamp.valueOf(startDateTime);
+            Timestamp et = Timestamp.valueOf(endDateTime);
+            System.out.println(st);
 
             PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("INSERT INTO appointments(Title, Description, Location, Type, Start, End, Create_Date, Created_By, " +
                     "Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -94,8 +100,8 @@ public class DatabaseAppointments {
             ps.setString(2, description);
             ps.setString(3, "test");
             ps.setString(4, type);
-            ps.setTimestamp(5, ts); //FIX ME POPULATE WITH LOCAL DATE AND TIME
-            ps.setDate(6, Date.valueOf(LocalDate.now())); //FIX ME POPULATE WITH LOCAL DATE AND TIME
+            ps.setTimestamp(5, st);
+            ps.setTimestamp(6, et);
             ps.setDate(7, Date.valueOf(LocalDate.now())); //FIX ME POPULATE WITH LOCAL DATE AND TIME
             ps.setString(8,  createdBy);
             ps.setDate(9, Date.valueOf(LocalDate.now()));//FIX ME POPULATE WITH LAST UPDATE DATE AND TIME
@@ -111,22 +117,30 @@ public class DatabaseAppointments {
             throwables.printStackTrace();
         }
     }
-    public static void updateAppointment(int id, String title, String description, String contact, String type){
+    public static void updateAppointment(int id, String title, String description, String type, LocalDateTime startDateTime, LocalDateTime endDateTime, String activeUser, int customerId, int userId, int contactId){
         Date updateTime = Date.valueOf(LocalDate.now());
-        Date startDateTime = Date.valueOf(LocalDate.now()); //FIXED TO PULL FROM COMBO BOX IN UI
-        Date endDateTime = Date.valueOf(LocalDate.now()); //FIXED TO PULL FROM COMBO BOX IN UI
-        String userName = "test";
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String s = dtf.format(startDateTime);
+        String e = dtf.format(endDateTime);
+        startDateTime = startDateTime.parse(s, dtf);
+        endDateTime = endDateTime.parse(e, dtf);
+
+        Timestamp st = Timestamp.valueOf(startDateTime);
+        Timestamp et = Timestamp.valueOf(endDateTime);
+
+        String location = "test";
 
         try{
 
             PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("UPDATE appointments SET Title='"+title+"', Description='"+description+"'," +
-                    "Location='"+contact+"', Type='"+type+"', Start='"+startDateTime+"', End='"+endDateTime+"', Last_Update='"+updateTime+"', Last_Updated_By='"+userName+"' WHERE Appointment_ID='"+id+"'");
+                    "Location='"+location+"', Type='"+type+"', Start='"+st+"', End='"+et+"', Last_Update='"+updateTime+"', Last_Updated_By='"+activeUser+"', " +
+                    "Customer_ID='"+customerId+"', User_ID='"+userId+"', Contact_ID='"+contactId+"' WHERE Appointment_ID='"+id+"'");
 
             ps.executeUpdate();
             System.out.println("Successfully updated appointment");
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception g) {
+            g.printStackTrace();
         }
 
     }
