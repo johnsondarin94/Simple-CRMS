@@ -41,7 +41,7 @@ public class Login implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //Locale.setDefault(new Locale("fr"));
+       // Locale.setDefault(new Locale("fr"));
 
 
         ResourceBundle rb = ResourceBundle.getBundle("Nat_fr", Locale.getDefault());

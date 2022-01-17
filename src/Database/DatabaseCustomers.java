@@ -71,8 +71,6 @@ public class DatabaseCustomers {
 
             ps.executeUpdate();
 
-            System.out.println("Added Customer to Database");
-
         } catch(SQLException throwables){
             throwables.printStackTrace();
         }
@@ -101,8 +99,6 @@ public class DatabaseCustomers {
             PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("DELETE FROM Customers WHERE Customer_ID='"+customerId+"'");
 
             ps.executeUpdate();
-
-            System.out.println("Successfully deleted Customer from database.");
 
         } catch(SQLException throwables){
 

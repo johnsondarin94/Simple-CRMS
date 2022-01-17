@@ -3,9 +3,16 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Reports">
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Reports">
    <children>
-      <Button layoutX="248.0" layoutY="149.0" mnemonicParsing="false" onAction="#onReturn" text="Return" />
+      <Button layoutX="678.0" layoutY="517.0" mnemonicParsing="false" onAction="#onReturn" text="Return" />
+      <TableView layoutX="27.0" layoutY="34.0" prefHeight="466.0" prefWidth="581.0">
+        <columns>
+          <TableColumn prefWidth="75.0" text="C1" />
+          <TableColumn prefWidth="75.0" text="C2" />
+        </columns>
+      </TableView>
+      <ComboBox layoutX="629.0" layoutY="60.0" prefWidth="150.0" />
+      <Button layoutX="678.0" layoutY="213.0" mnemonicParsing="false" text="Button" />
    </children>
 </AnchorPane>

@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="550.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AppointmentsController">
+<AnchorPane prefHeight="550.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AppointmentsController">
    <children>
       <Pane prefHeight="200.0" prefWidth="200.0" />
       <Label layoutX="300.0" layoutY="53.0" text="Appointments">
@@ -15,7 +15,7 @@
       <Button fx:id="addButton" layoutX="74.0" layoutY="451.0" mnemonicParsing="false" onAction="#onAdd" text="Add" />
       <Button fx:id="deleteButton" layoutX="311.0" layoutY="451.0" mnemonicParsing="false" onAction="#onDelete" text="Delete" />
       <Button fx:id="cancelButton" layoutX="594.0" layoutY="464.0" mnemonicParsing="false" onAction="#onCancel" text="Cancel" />
-      <TableView fx:id="appointmentsTable" layoutX="28.0" layoutY="136.0" prefHeight="288.0" prefWidth="671.0">
+      <TableView fx:id="appointmentsTable" layoutX="28.0" layoutY="136.0" prefHeight="288.0" prefWidth="815.0">
         <columns>
           <TableColumn fx:id="appointmentID" prefWidth="48.0" text="Appointment ID" />
           <TableColumn fx:id="title" prefWidth="84.0" text="Title" />
@@ -23,10 +23,10 @@
             <TableColumn fx:id="location" prefWidth="75.0" text="Location" />
             <TableColumn fx:id="contact" prefWidth="75.0" text="Contact" />
             <TableColumn fx:id="type" prefWidth="48.0" text="Type" />
-            <TableColumn fx:id="startDateandTime" prefWidth="73.0" text="Start Date" />
-            <TableColumn fx:id="endDateAndTime" prefWidth="69.0" text="End Date" />
-            <TableColumn fx:id="customerID" minWidth="0.0" prefWidth="53.0" text="Customer ID" />
-            <TableColumn fx:id="userID" minWidth="0.0" prefWidth="57.0" text="User ID" />
+            <TableColumn fx:id="startDateandTime" prefWidth="109.0" text="Start Date" />
+            <TableColumn fx:id="endDateAndTime" prefWidth="118.0" text="End Date" />
+            <TableColumn fx:id="customerID" minWidth="0.0" prefWidth="84.0" text="Customer ID" />
+            <TableColumn fx:id="userID" minWidth="0.0" text="User ID" />
         </columns>
       </TableView>
    </children>

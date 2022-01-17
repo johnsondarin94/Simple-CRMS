@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import model.Countries;
 import model.FirstLevelDivisions;
 import model.Users;
+import util.ErrorHandling;
 
 import java.io.IOException;
 import java.net.URL;
@@ -41,18 +42,28 @@ public class AddCustomer implements Initializable {
         stage.show();
     }
 
-    public void onAdd(ActionEvent actionEvent) {
-        String activeUser = Login.getUserHandoff().getUserName();
-        String customerName = addCustomerName.getText();
-        String address = addCustomerAddress.getText();
-        String zipCode = addCustomerZip.getText();
-        String phone = addCustomerPhone.getText();
-        int divisionID =  stateProvinceComboBox.getSelectionModel().getSelectedItem().getDivisionID();
+    public void onAdd(ActionEvent actionEvent) throws IOException {
+        try{
+            String activeUser = Login.getUserHandoff().getUserName();
+            String customerName = addCustomerName.getText();
+            String address = addCustomerAddress.getText();
+            String zipCode = addCustomerZip.getText();
+            String phone = addCustomerPhone.getText();
+            int divisionID =  stateProvinceComboBox.getSelectionModel().getSelectedItem().getDivisionID();
 
-        String countryName = addCustomerCountryComboBox.getSelectionModel().getSelectedItem().getCountryName();
-        String stateProvinceName = stateProvinceComboBox.getSelectionModel().getSelectedItem().getDivisionName();
+            DatabaseCustomers.addCustomer(customerName, address, zipCode, phone, activeUser, activeUser, divisionID);
+            ErrorHandling.displayInformation("Customer Successfully added!");
+            Parent root = FXMLLoader.load(getClass().getResource("/view/Customers.fxml"));
+            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root, 1100, 550);
+            stage.setTitle("Customers");
+            stage.setScene(scene);
+            stage.show();
 
-        DatabaseCustomers.addCustomer(customerName, address, zipCode, phone, activeUser, activeUser, divisionID);
+        } catch (NullPointerException e) {
+            ErrorHandling.displayError("Please ensure all fields are populated.");
+        }
+
     }
 
     public void onStateProvince(ActionEvent actionEvent) {

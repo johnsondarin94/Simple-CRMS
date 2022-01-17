@@ -19,6 +19,11 @@ public class ErrorHandling {
         alert.setContentText("Are you sure you want to Delete the selected item?");
 
         Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            // ... user chose OK
+        } else {
+            // ... user chose CANCEL or closed the dialog
+        }
 
         return confirm;
     }

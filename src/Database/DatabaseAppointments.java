@@ -4,7 +4,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Appointments;
 import model.Contacts;
-import model.Customers;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -12,8 +11,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
-import java.util.TimeZone;
+
 
 public class DatabaseAppointments {
     public static ObservableList<Appointments> getAllAppointments() {
@@ -59,20 +57,42 @@ public class DatabaseAppointments {
         return appointmentsList;
     }
 
-    public static ObservableList<Integer> getAssociatedAppointments(int id){
+    public static ObservableList<Appointments> getAssociatedAppointments(int id){
 
-        ObservableList<Integer> appointmentsList = FXCollections.observableArrayList();
+        ObservableList<Appointments> appointmentsList = FXCollections.observableArrayList();
         try{
-            String sql = "SELECT appointments.Customer_ID FROM appointments INNER JOIN customers ON appointments.Customer_ID = '"+id+"'";
+            String sql = "SELECT appointments.Appointment_ID, appointments.Title, appointments.Description, appointments.Location, " +
+                    "contacts.Contact_ID, contacts.Contact_Name, contacts.Email, appointments.Type, appointments.Start, appointments.End, " +
+                    "appointments.Customer_ID, appointments.User_ID FROM appointments INNER JOIN contacts ON contacts.Contact_ID = appointments.Contact_ID " +
+                    "INNER JOIN customers ON customers.Customer_ID = appointments.Customer_ID WHERE customers.Customer_ID = '"+id+"'";
 
             PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(sql);
 
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
+                int appointmentId = rs.getInt("Appointment_ID");
+                String title = rs.getString("Title");
+                String description = rs.getString("Description");
+                String location = rs.getString("Location");
+                int contactId = rs.getInt("Contact_ID");
+                String contactName = rs.getString("Contact_Name");
+                String contactEmail = rs.getString("Email");
+                String type = rs.getString("Type");
+                Timestamp startDateTime = rs.getTimestamp("Start");
+                Timestamp endDateTime = rs.getTimestamp("End");
                 int customerId = rs.getInt("Customer_ID");
+                int userId = rs.getInt("User_ID");
 
-                appointmentsList.add(customerId);
+                Contacts c = new Contacts(contactId, contactName, contactEmail);
+
+                LocalDateTime sdt = startDateTime.toLocalDateTime();
+                LocalDateTime edt = endDateTime.toLocalDateTime();
+
+                Appointments a = new Appointments(appointmentId, title, description, location, c, type, sdt, edt, customerId, userId);
+
+                appointmentsList.add(a);
+
             }
 
         } catch (SQLException throwables) {

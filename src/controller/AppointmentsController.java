@@ -104,8 +104,9 @@ public class AppointmentsController implements Initializable {
         try{
             appointmentHandOff = (Appointments) appointmentsTable.getSelectionModel().getSelectedItem();
             int id = getAppointmentHandOff().getAppointment_ID();
-            DatabaseCustomers.deleteCustomer(id);
+            DatabaseAppointments.deleteAppointment(id);
             appointmentsTable.getSelectionModel().clearSelection();
+            ErrorHandling.displayInformation("Appointment Deleted.");
         } catch (Exception e) {
             ErrorHandling.displayError("Please select an Appointment to delete");
         }

@@ -13,24 +13,23 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import model.Appointments;
 import model.Contacts;
 import model.Customers;
 import model.Users;
+import util.ErrorHandling;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.ResourceBundle;
 
 public class AddAppointment implements Initializable{
     public Button addButton;
     public Button cancelButton;
     public DatePicker appointmentStartDate;
-    public DatePicker appointmentEndDate;
     public TextField appointmentId;
     public TextField appointmentTitle;
     public TextArea appointmentDescription;
@@ -43,39 +42,69 @@ public class AddAppointment implements Initializable{
     public ComboBox<Contacts> contactComboBox;
 
 
-
-
     public void onAdd(ActionEvent actionEvent) {
-        String activeUser = Login.getUserHandoff().getUserName();
-        String title = appointmentTitle.getText();
-        String description = appointmentDescription.getText();
-        int contactID = contactComboBox.getSelectionModel().getSelectedItem().getContactID();
-        String type = appointmentType.getText();
+        try{
+            String activeUser = Login.getUserHandoff().getUserName();
+            String title = appointmentTitle.getText();
+            String description = appointmentDescription.getText();
+            int contactID = contactComboBox.getSelectionModel().getSelectedItem().getContactID();
+            String type = appointmentType.getText();
 
+            Customers selectedCustomer = (Customers) customerIDComboBox.getSelectionModel().getSelectedItem();
+            int customerId = selectedCustomer.getCustomerId();
 
-        Customers selectedCustomer = (Customers) customerIDComboBox.getSelectionModel().getSelectedItem();
-        int customerId = selectedCustomer.getCustomerId();
+            Users selectedUser = (Users) userIDComboBox.getSelectionModel().getSelectedItem();
+            int userID = selectedUser.getUserID();
 
-        Users selectedUser = (Users) userIDComboBox.getSelectionModel().getSelectedItem();
-        int userID = selectedUser.getUserID();
+            LocalDate startDate = appointmentStartDate.getValue();
+            LocalTime startTime = appointmentStartTime.getSelectionModel().getSelectedItem();
+            LocalTime endTime = appointmentEndTime.getSelectionModel().getSelectedItem();
+            LocalDateTime startDateTime = LocalDateTime.of(startDate, startTime);
+            LocalDateTime endDateTime = LocalDateTime.of(startDate, endTime);
 
-        LocalDate startDate = appointmentStartDate.getValue();
-        LocalTime startTime = appointmentStartTime.getSelectionModel().getSelectedItem();
+            if(checkForAptOverlap(customerId, startDateTime, endDateTime) && checkBusinessHours(startDateTime, endDateTime)) {
+                DatabaseAppointments.addAppointment(title, description, type, startDateTime, endDateTime, activeUser, customerId, userID, contactID);
+            }
+            else{
+                ErrorHandling.displayError("There is an overlap of appointments with this Customer.");
+            }
+        } catch (NullPointerException e) {
+            ErrorHandling.displayError("Please ensure all fields are populated.");
+        }
+    }
 
-        LocalDateTime startDateTime = LocalDateTime.of(startDate, startTime);
+    public boolean checkForAptOverlap(int customerId, LocalDateTime sdt, LocalDateTime edt) {
+        ObservableList<Appointments> overlapList = DatabaseAppointments.getAssociatedAppointments(customerId);
 
-        LocalDate endDate = appointmentEndDate.getValue();
-        LocalTime endTime = appointmentEndTime.getSelectionModel().getSelectedItem();
+        for (Appointments oLap : overlapList) {
+            LocalDateTime start = oLap.getStartDateTime();
+            LocalDateTime end = oLap.getEndDateTime();
 
-        LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime);
+            if ((sdt.isAfter(start) || sdt.isEqual(start)) && sdt.isBefore(end)) {
+                return false;
+            }
+            if (edt.isAfter(start) && (edt.isBefore(end) || edt.isEqual(end))) {
+                return false;
+            }
+            if ((sdt.isBefore(start) || sdt.isEqual(start) && (edt.isAfter(end) || edt.isEqual(end)))) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+        return true;
+    }
 
-        DatabaseAppointments.addAppointment(title, description, type, startDateTime, endDateTime, activeUser, customerId, userID, contactID);
+    public boolean checkBusinessHours(LocalDateTime sdt, LocalDateTime edt){
+        ZonedDateTime businessStart = ZonedDateTime.of(sdt.toLocalDate(), LocalTime.of(8,0), ZoneId.of("America/New_York"));
+        ZonedDateTime businessEnd = ZonedDateTime.of(sdt.toLocalDate(), LocalTime.of(22,0), ZoneId.of("America/New_York"));
+        return true;
     }
 
     public void onCancel(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/view/Appointments.fxml"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 750, 550);
+        Scene scene = new Scene(root, 1100, 550);
         stage.setTitle("Appointments");
         stage.setScene(scene);
         stage.show();

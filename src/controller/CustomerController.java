@@ -89,7 +89,7 @@ public class CustomerController implements Initializable {
     public void onAppointments(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/view/Appointments.fxml"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 750, 550);
+        Scene scene = new Scene(root, 1100, 550);
         stage.setTitle("Appointments");
         stage.setScene(scene);
         stage.show();
@@ -117,9 +117,8 @@ public class CustomerController implements Initializable {
         try{
             Customers selectedCustomer = (Customers) customerTable.getSelectionModel().getSelectedItem();
             int id = selectedCustomer.getCustomerId();
-            System.out.println(id);
 
-            ObservableList<Integer> associatedAppointments = DatabaseAppointments.getAssociatedAppointments(id);
+            ObservableList<Appointments> associatedAppointments = DatabaseAppointments.getAssociatedAppointments(id);
 
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete Selected Customer?");
             Optional<ButtonType> result = alert.showAndWait();
@@ -129,13 +128,18 @@ public class CustomerController implements Initializable {
                 }
                 else {
                     DatabaseCustomers.deleteCustomer(id);
+                    ErrorHandling.displayInformation("Successfully deleted Customer");
                     customerTable.getSelectionModel().clearSelection();
-                    System.out.println("Successfully deleted Customer");
+                    Parent root = FXMLLoader.load(getClass().getResource("/view/Customers.fxml"));
+                    Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                    Scene scene = new Scene(root, 1100, 550);
+                    stage.setTitle("Customers");
+                    stage.setScene(scene);
+                    stage.show();
                 }
 
         } catch (Exception e) {
             ErrorHandling.displayError("Please select a Customer to delete");
         }
-
     }
-    }
+}
