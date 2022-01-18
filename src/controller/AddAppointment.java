@@ -40,6 +40,7 @@ public class AddAppointment implements Initializable{
     public ComboBox userIDComboBox;
     public ComboBox customerIDComboBox;
     public ComboBox<Contacts> contactComboBox;
+    public TextField location;
 
 
     public void onAdd(ActionEvent actionEvent) {
@@ -49,6 +50,7 @@ public class AddAppointment implements Initializable{
             String description = appointmentDescription.getText();
             int contactID = contactComboBox.getSelectionModel().getSelectedItem().getContactID();
             String type = appointmentType.getText();
+            String loca = location.getText();
 
             Customers selectedCustomer = (Customers) customerIDComboBox.getSelectionModel().getSelectedItem();
             int customerId = selectedCustomer.getCustomerId();
@@ -63,7 +65,7 @@ public class AddAppointment implements Initializable{
             LocalDateTime endDateTime = LocalDateTime.of(startDate, endTime);
 
             if(checkForAptOverlap(customerId, startDateTime, endDateTime) && checkBusinessHours(startDateTime, endDateTime)) {
-                DatabaseAppointments.addAppointment(title, description, type, startDateTime, endDateTime, activeUser, customerId, userID, contactID);
+                DatabaseAppointments.addAppointment(title, description, loca, type, startDateTime, endDateTime, activeUser, customerId, userID, contactID);
             }
             else{
                 ErrorHandling.displayError("There is an overlap of appointments with this Customer.");
@@ -98,7 +100,23 @@ public class AddAppointment implements Initializable{
     public boolean checkBusinessHours(LocalDateTime sdt, LocalDateTime edt){
         ZonedDateTime businessStart = ZonedDateTime.of(sdt.toLocalDate(), LocalTime.of(8,0), ZoneId.of("America/New_York"));
         ZonedDateTime businessEnd = ZonedDateTime.of(sdt.toLocalDate(), LocalTime.of(22,0), ZoneId.of("America/New_York"));
-        return true;
+
+        ZonedDateTime startDate = sdt.atZone(ZoneId.systemDefault());
+        ZonedDateTime endDate = edt.atZone(ZoneId.systemDefault());
+
+        if (startDate.isAfter(businessEnd) || startDate.isBefore(businessStart)){
+            ErrorHandling.displayError("Appointment does not fall withing business hours. 8am - 10pm EST");
+            return false;
+        }
+
+        if (endDate.isAfter(businessEnd) || endDate.isBefore(businessStart)){
+            System.out.println("Statement 2 was reached");
+            return false;
+        }
+        else{
+            System.out.println("Statement 3 was reached");
+            return true;
+        }
     }
 
     public void onCancel(ActionEvent actionEvent) throws IOException {

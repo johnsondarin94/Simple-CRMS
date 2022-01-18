@@ -42,7 +42,6 @@ public class DatabaseCustomers {
                 Countries countries = new Countries(countryId, country);
                 FirstLevelDivisions fld = new FirstLevelDivisions(divisionId, division);
 
-
                 Customers c = new Customers(customerId, customerName, customerAddress, customerZipCode, customerPhone,
                         countries, fld);
 

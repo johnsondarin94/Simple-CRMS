@@ -39,6 +39,7 @@ public class UpdateAppointment implements Initializable {
     public ComboBox appointmentUserID;
     public Button updateButton;
     public ComboBox<Contacts> updateAppointmentContact;
+    public TextField updateLocation;
 
     private Appointments appointmentToModify = null;
 
@@ -97,6 +98,7 @@ public class UpdateAppointment implements Initializable {
         int id = Integer.parseInt(appointmentID.getText());
         String title = appointmentTitle.getText();
         String description = appointmentDescription.getText();
+        String location = updateLocation.getText();
         String type = appointmentType.getText();
         int contactID = updateAppointmentContact.getSelectionModel().getSelectedItem().getContactID();
 
@@ -116,6 +118,6 @@ public class UpdateAppointment implements Initializable {
 
         LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime);
 
-        DatabaseAppointments.updateAppointment(id, title, description, type, startDateTime, endDateTime, activeUser, customerId, userID, contactID);
+        DatabaseAppointments.updateAppointment(id, title, description, location, type, startDateTime, endDateTime, activeUser, customerId, userID, contactID);
     }
 }

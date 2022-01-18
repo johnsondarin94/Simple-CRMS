@@ -7,7 +7,7 @@
 <AnchorPane prefHeight="550.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AppointmentsController">
    <children>
       <Pane prefHeight="200.0" prefWidth="200.0" />
-      <Label layoutX="300.0" layoutY="53.0" text="Appointments">
+      <Label layoutX="356.0" layoutY="25.0" text="Appointments">
          <font>
             <Font size="30.0" />
          </font></Label>
@@ -29,5 +29,10 @@
             <TableColumn fx:id="userID" minWidth="0.0" text="User ID" />
         </columns>
       </TableView>
+      <RadioButton fx:id="sbmRB" layoutX="756.0" layoutY="83.0" mnemonicParsing="false" onAction="#onSortMonth" text="Sort by Month">
+         <toggleGroup>
+            <ToggleGroup fx:id="rbGroup" />
+         </toggleGroup></RadioButton>
+      <RadioButton fx:id="sbwRB" layoutX="756.0" layoutY="109.0" mnemonicParsing="false" onAction="#onSortWeek" text="Sort by Week" toggleGroup="$rbGroup" />
    </children>
 </AnchorPane>

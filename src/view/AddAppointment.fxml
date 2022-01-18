@@ -24,5 +24,6 @@
       <Button fx:id="addButton" layoutX="259.0" layoutY="435.0" mnemonicParsing="false" onAction="#onAdd" text="Add" />
       <Button fx:id="cancelButton" layoutX="357.0" layoutY="435.0" mnemonicParsing="false" onAction="#onCancel" text="Cancel" />
       <ComboBox fx:id="contactComboBox" layoutX="259.0" layoutY="344.0" prefWidth="150.0" promptText="Contact" />
+      <TextField fx:id="location" layoutX="31.0" layoutY="399.0" prefHeight="25.0" prefWidth="200.0" promptText="Location" />
    </children>
 </AnchorPane>

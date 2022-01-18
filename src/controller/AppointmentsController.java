@@ -10,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -40,6 +41,8 @@ public class AppointmentsController implements Initializable {
 
     private static Appointments appointmentHandOff = null;
     public Button deleteButton;
+    public RadioButton sbmRB;
+    public RadioButton sbwRB;
 
     public void onUpdate(ActionEvent actionEvent) throws IOException {
 
@@ -96,7 +99,6 @@ public class AppointmentsController implements Initializable {
             endDateAndTime.setCellValueFactory(new PropertyValueFactory<>("endDateTime"));
             customerID.setCellValueFactory(new PropertyValueFactory<>("customerId"));
             userID.setCellValueFactory(new PropertyValueFactory<>("userId"));
-
         }
     }
 
@@ -111,5 +113,12 @@ public class AppointmentsController implements Initializable {
             ErrorHandling.displayError("Please select an Appointment to delete");
         }
 
+    }
+
+    public void onSortMonth(ActionEvent actionEvent) {
+
+    }
+
+    public void onSortWeek(ActionEvent actionEvent) {
     }
 }

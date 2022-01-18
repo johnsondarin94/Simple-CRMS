@@ -101,7 +101,7 @@ public class DatabaseAppointments {
         return appointmentsList;
     }
 
-    public static void addAppointment(String title, String description, String type, LocalDateTime startDateTime, LocalDateTime endDateTime, String createdBy, int customerId, int userId, int contactID){
+    public static void addAppointment(String title, String description, String location, String type, LocalDateTime startDateTime, LocalDateTime endDateTime, String createdBy, int customerId, int userId, int contactID){
         try{
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String s = dtf.format(startDateTime);
@@ -118,13 +118,13 @@ public class DatabaseAppointments {
 
             ps.setString(1, title);
             ps.setString(2, description);
-            ps.setString(3, "test");
+            ps.setString(3, location);
             ps.setString(4, type);
             ps.setTimestamp(5, st);
             ps.setTimestamp(6, et);
-            ps.setDate(7, Date.valueOf(LocalDate.now())); //FIX ME POPULATE WITH LOCAL DATE AND TIME
+            ps.setDate(7, Date.valueOf(LocalDate.now()));
             ps.setString(8,  createdBy);
-            ps.setDate(9, Date.valueOf(LocalDate.now()));//FIX ME POPULATE WITH LAST UPDATE DATE AND TIME
+            ps.setDate(9, Date.valueOf(LocalDate.now()));
             ps.setString(10, createdBy);
             ps.setInt(11, customerId);
             ps.setInt(12, userId);
@@ -137,7 +137,7 @@ public class DatabaseAppointments {
             throwables.printStackTrace();
         }
     }
-    public static void updateAppointment(int id, String title, String description, String type, LocalDateTime startDateTime, LocalDateTime endDateTime, String activeUser, int customerId, int userId, int contactId){
+    public static void updateAppointment(int id, String title, String description, String location, String type, LocalDateTime startDateTime, LocalDateTime endDateTime, String activeUser, int customerId, int userId, int contactId){
         Date updateTime = Date.valueOf(LocalDate.now());
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String s = dtf.format(startDateTime);
@@ -147,8 +147,6 @@ public class DatabaseAppointments {
 
         Timestamp st = Timestamp.valueOf(startDateTime);
         Timestamp et = Timestamp.valueOf(endDateTime);
-
-        String location = "test";
 
         try{
 

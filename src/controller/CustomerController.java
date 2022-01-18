@@ -99,7 +99,7 @@ public class CustomerController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         ObservableList<Customers> customerList = DatabaseCustomers.getAllCustomers();
-        for(Customers C : customerList){
+        for(Customers c : customerList){
             customerTable.setItems(customerList);
             customerId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
             customerName.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -108,9 +108,7 @@ public class CustomerController implements Initializable {
             phoneNumber.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
             division.setCellValueFactory(new PropertyValueFactory<>("division"));
             country.setCellValueFactory(new PropertyValueFactory<>("country"));
-
         }
-
     }
 
     public void onDelete(ActionEvent actionEvent) {
@@ -128,7 +126,7 @@ public class CustomerController implements Initializable {
                 }
                 else {
                     DatabaseCustomers.deleteCustomer(id);
-                    ErrorHandling.displayInformation("Successfully deleted Customer");
+                    ErrorHandling.displayInformation("Successfully deleted Customer: " + selectedCustomer.getName());
                     customerTable.getSelectionModel().clearSelection();
                     Parent root = FXMLLoader.load(getClass().getResource("/view/Customers.fxml"));
                     Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
