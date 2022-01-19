@@ -109,4 +109,9 @@ public class Appointments {
     public void setUserId(int userId) {
         this.userId = userId;
     }
+
+    @Override
+    public String toString() {
+        return (appointment_ID + " " + title + " " + type + " " + description + " " + startDateTime + " " + endDateTime + " " + customerId);
+    }
 }

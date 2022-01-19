@@ -1,5 +1,6 @@
 package controller;
 
+import Database.DatabaseAppointments;
 import Database.DatabaseReports;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,6 +14,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
+import model.Appointments;
+import model.Contacts;
 
 import java.io.IOException;
 import java.net.URL;
@@ -48,6 +51,24 @@ public class Reports implements Initializable {
             reportField.appendText("Report: Total Customer Appointments by Month: \n");
             for(String s : monthList){
                 reportField.appendText(s + "\n");
+            }
+        }
+
+        if(reportCombo.getSelectionModel().getSelectedItem() == r2){
+
+            ObservableList<Contacts> contacts = DatabaseReports.getContacts();
+
+            for(Contacts c : contacts){
+                int id = c.getContactID();
+                reportField.appendText(c.getContactName() + ": \n\n");
+                ObservableList<Appointments> apts = DatabaseReports.getContactAppointments(id);
+                for(Appointments a : apts) {
+                    reportField.appendText(a + "\n");
+                    if(apts.isEmpty()){
+                        reportField.appendText("Contact has an open schedule.");
+                    }
+                }
+                reportField.appendText("\n");
             }
         }
     }

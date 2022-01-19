@@ -20,7 +20,7 @@ public class DatabaseAppointments {
         try {
             String sql = "SELECT appointments.Appointment_ID, appointments.Title, appointments.Description, appointments.Location, " +
                     "contacts.Contact_ID, contacts.Contact_Name, contacts.Email, appointments.Type, appointments.Start, appointments.End, " +
-                    "appointments.Customer_ID, appointments.User_ID FROM appointments INNER JOIN contacts ON contacts.Contact_ID = appointments.Contact_ID";
+                    "appointments.Customer_ID, appointments.User_ID FROM appointments INNER JOIN contacts ON contacts.Contact_ID = appointments.Contact_ID ORDER BY appointments.Contact_ID";
 
             PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(sql);
 
