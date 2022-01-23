@@ -29,7 +29,6 @@ public class UpdateAppointment implements Initializable {
     public Button cancelButton;
     public ComboBox appointmentCustomerID;
     public DatePicker appointmentStartDate;
-    public DatePicker appointmentEndDate;
     public TextField appointmentID;
     public TextField appointmentTitle;
     public TextArea appointmentDescription;
@@ -46,22 +45,10 @@ public class UpdateAppointment implements Initializable {
     public void onCancel(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/view/Appointments.fxml"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 750, 550);
+        Scene scene = new Scene(root, 1100, 550);
         stage.setTitle("Appointments");
         stage.setScene(scene);
         stage.show();
-    }
-
-    public static ObservableList<LocalTime> getHours(){
-        ObservableList<LocalTime> hours = FXCollections.observableArrayList();
-        LocalTime hour = LocalTime.of(0, 0);
-        System.out.println(hour);
-        for(int i = 0; i < 24; i++){
-            hour = hour.plusHours(1);
-
-            hours.add(hour);
-        }
-        return hours;
     }
 
     @Override
@@ -72,7 +59,7 @@ public class UpdateAppointment implements Initializable {
         appointmentUserID.setItems(users);
         ObservableList<Contacts> contacts = DatabaseAppointments.getAllContacts();
         updateAppointmentContact.setItems(contacts);
-        ObservableList<LocalTime> hours = getHours();
+        ObservableList<LocalTime> hours = Appointments.getHours();
         appointmentStartTime.setItems(hours);
         appointmentEndTime.setItems(hours);
 
@@ -82,22 +69,20 @@ public class UpdateAppointment implements Initializable {
         appointmentTitle.setText(String.valueOf(appointmentToModify.getTitle()));
         appointmentDescription.setText(String.valueOf(appointmentToModify.getDescription()));
         appointmentType.setText(String.valueOf(appointmentToModify.getType()));
+        updateLocation.setText(String.valueOf(appointmentToModify.getLocation()));
         appointmentStartDate.setValue(appointmentToModify.getStartDateTime().toLocalDate());
         appointmentStartTime.setValue(appointmentToModify.getStartDateTime().toLocalTime());
-        appointmentEndDate.setValue(appointmentToModify.getEndDateTime().toLocalDate());
         appointmentEndTime.setValue(appointmentToModify.getEndDateTime().toLocalTime());
-        appointmentCustomerID.setValue(appointmentToModify.getCustomerId());
-        appointmentUserID.setValue(appointmentToModify.getUserId());
+        appointmentCustomerID.setValue(DatabaseCustomers.getUpdateCustomer(appointmentToModify.getCustomerId()));
+        appointmentUserID.setValue(DatabaseUsers.getSpecificUser(appointmentToModify.getUserId()));
         updateAppointmentContact.setValue(appointmentToModify.getContact());
-
-
     }
 
     public void onUpdate(ActionEvent actionEvent) {
         String activeUser = Login.getUserHandoff().getUserName();
         int id = Integer.parseInt(appointmentID.getText());
         String title = appointmentTitle.getText();
-        String description = appointmentDescription.getText();
+        String description = String.valueOf(appointmentDescription.getText());
         String location = updateLocation.getText();
         String type = appointmentType.getText();
         int contactID = updateAppointmentContact.getSelectionModel().getSelectedItem().getContactID();
@@ -112,11 +97,8 @@ public class UpdateAppointment implements Initializable {
         LocalTime startTime = appointmentStartTime.getSelectionModel().getSelectedItem();
 
         LocalDateTime startDateTime = LocalDateTime.of(startDate, startTime);
-
-        LocalDate endDate = appointmentEndDate.getValue();
         LocalTime endTime = appointmentEndTime.getSelectionModel().getSelectedItem();
-
-        LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime);
+        LocalDateTime endDateTime = LocalDateTime.of(startDate, endTime);
 
         DatabaseAppointments.updateAppointment(id, title, description, location, type, startDateTime, endDateTime, activeUser, customerId, userID, contactID);
     }

@@ -19,6 +19,7 @@ import controller.Login;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -34,7 +35,6 @@ public class CustomerController implements Initializable {
     public TableColumn address;
     public TableColumn zipCode;
     public TableColumn phoneNumber;
-    public TableColumn createdBy;
 
     private static Customers customerHandOff = null;
     public Button deleteButton;
@@ -80,7 +80,7 @@ public class CustomerController implements Initializable {
     public void onReports(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/view/Reports.fxml"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 1050, 500);
+        Scene scene = new Scene(root, 850, 650);
         stage.setTitle("Reports");
         stage.setScene(scene);
         stage.show();
@@ -89,14 +89,29 @@ public class CustomerController implements Initializable {
     public void onAppointments(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/view/Appointments.fxml"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 1100, 550);
+        Scene scene = new Scene(root, 1000, 550);
         stage.setTitle("Appointments");
         stage.setScene(scene);
         stage.show();
     }
 
+    public void checkForAppointments(){
+        ObservableList<Appointments> apts = DatabaseAppointments.getAllAppointments();
+        LocalDateTime ldt = LocalDateTime.now().plusMinutes(15);
+        for(Appointments a : apts){
+            if((a.getStartDateTime().isBefore(ldt)) && (a.getStartDateTime().isAfter(ldt.minusMinutes(15)))){
+                System.out.println("There is an appointment within 15 minutes");
+            }
+            else{
+                System.out.println("There are no upcoming appointments");
+            }
+        }
+
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        checkForAppointments();
 
         ObservableList<Customers> customerList = DatabaseCustomers.getAllCustomers();
         for(Customers c : customerList){

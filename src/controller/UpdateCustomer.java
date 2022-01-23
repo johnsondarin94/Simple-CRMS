@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import model.Countries;
 import model.Customers;
 import model.FirstLevelDivisions;
+import util.ErrorHandling;
 
 import java.io.IOException;
 import java.net.URL;
@@ -27,15 +28,12 @@ public class UpdateCustomer implements Initializable{
     public TextField updateCustomerAddress;
     public TextField updateCustomerZip;
     public TextField updateCustomerId;
-   // public ComboBox<FirstLevelDivisions> updateCustomerState;
     public ComboBox<Countries> updateCustomerCountry;
-
     public Button cancelButton;
     public Button updateButton;
     public ComboBox<FirstLevelDivisions> stateProvince;
 
     private Customers customerToModify = null;
-
 
     public void onCancel(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/view/Customers.fxml"));
@@ -55,6 +53,7 @@ public class UpdateCustomer implements Initializable{
         int customerDivisionID = stateProvince.getSelectionModel().getSelectedItem().getDivisionID();
 
         DatabaseCustomers.updateCustomer(customerId, customerName, customerPhone, customerAddress, customerZip, customerDivisionID);
+        ErrorHandling.displayInformation("Customer successfully updated!");
 
     }
 

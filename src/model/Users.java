@@ -10,7 +10,6 @@ public class Users {
 
     }
 
-
     public Users(int userID, String userName, String passWord, boolean active) {
         this.userID = userID;
         this.userName = userName;

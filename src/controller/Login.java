@@ -88,8 +88,6 @@ public class Login implements Initializable {
         return userHandoff;
     }
 
-
-
     public void onLogin(ActionEvent actionEvent) throws IOException {
         for(Users u : users){
             if(userName.getText().equals(u.getUserName())){

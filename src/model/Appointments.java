@@ -1,7 +1,11 @@
 package model;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.sql.Date;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class Appointments {
     private int appointment_ID;
@@ -108,6 +112,18 @@ public class Appointments {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public static ObservableList<LocalTime> getHours(){
+        ObservableList<LocalTime> hours = FXCollections.observableArrayList();
+        LocalTime hour = LocalTime.of(0, 0);
+        System.out.println(hour);
+        for(int i = 0; i < 24; i++){
+            hour = hour.plusHours(1);
+
+            hours.add(hour);
+        }
+        return hours;
     }
 
     @Override

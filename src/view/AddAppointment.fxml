@@ -11,7 +11,7 @@
          <font>
             <Font size="30.0" />
          </font></Label>
-      <ComboBox fx:id="customerIDComboBox" layoutX="259.0" layoutY="263.0" onAction="#onCustomerID" prefWidth="150.0" promptText="Customer ID" />
+      <ComboBox fx:id="customerIDComboBox" layoutX="259.0" layoutY="263.0" prefWidth="150.0" promptText="Customer ID" />
       <DatePicker fx:id="appointmentStartDate" layoutX="259.0" layoutY="116.0" promptText="Start Date" />
       <TextField fx:id="appointmentId" editable="false" layoutX="31.0" layoutY="116.0" prefHeight="25.0" prefWidth="200.0" promptText="Appointment ID - Auto Generated" />
       <TextField fx:id="appointmentTitle" layoutX="31.0" layoutY="154.0" prefHeight="25.0" prefWidth="200.0" promptText="Title" />

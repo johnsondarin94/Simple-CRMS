@@ -19,6 +19,7 @@ import model.Contacts;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Time;
 import java.util.ResourceBundle;
 
 public class Reports implements Initializable {
@@ -33,43 +34,67 @@ public class Reports implements Initializable {
     public void onReturn(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/view/Customers.fxml"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 750, 550);
+        Scene scene = new Scene(root, 1100, 550);
         stage.setTitle("Customers");
         stage.setScene(scene);
         stage.show();
     }
 
+    public void reportByTypeMonth(){
+        ObservableList<String> typeList = DatabaseReports.getReportByType();
+        ObservableList<String> monthList = DatabaseReports.getReportByMonth();
+
+        reportField.appendText("Report: Total Customer Appointments by Type: \n");
+        for(String s : typeList){
+            reportField.appendText(s + "\n");
+        }
+        reportField.appendText("Report: Total Customer Appointments by Month: \n");
+        for(String s : monthList){
+            reportField.appendText(s + "\n");
+        }
+    }
+
+    public void reportByContactSchedule(){
+        ObservableList<Contacts> contacts = DatabaseReports.getContacts();
+
+        for(Contacts c : contacts){
+            int id = c.getContactID();
+            reportField.appendText(c.getContactName() + ": \n\n");
+            ObservableList<Appointments> apts = DatabaseReports.getContactAppointments(id);
+            for(Appointments a : apts) {
+                reportField.appendText(a + "\n");
+
+                if(apts.isEmpty()){
+                    reportField.appendText("Contact has an open schedule.");
+                }
+            }
+            reportField.appendText("\n");
+        }
+    }
+
+    public void reportByTotalHours(){
+        ObservableList<Appointments> appointments = DatabaseAppointments.getAllAppointments();
+        int totalHours = 0;
+
+        for(Appointments a : appointments){
+            totalHours += a.getEndDateTime().getHour() - a.getStartDateTime().getHour();
+
+        }
+        reportField.appendText("Total hours for upcoming appointments: " +totalHours);
+    }
+
     public void onGenerate(ActionEvent actionEvent) {
         if(reportCombo.getSelectionModel().getSelectedItem() == r1){
-            ObservableList<String> typeList = DatabaseReports.getReportByType();
-            ObservableList<String> monthList = DatabaseReports.getReportByMonth();
-
-            reportField.appendText("Report: Total Customer Appointments by Type: \n");
-            for(String s : typeList){
-                reportField.appendText(s + "\n");
-            }
-            reportField.appendText("Report: Total Customer Appointments by Month: \n");
-            for(String s : monthList){
-                reportField.appendText(s + "\n");
-            }
+            reportField.setText(null);
+            reportByTypeMonth();
         }
-
         if(reportCombo.getSelectionModel().getSelectedItem() == r2){
-
-            ObservableList<Contacts> contacts = DatabaseReports.getContacts();
-
-            for(Contacts c : contacts){
-                int id = c.getContactID();
-                reportField.appendText(c.getContactName() + ": \n\n");
-                ObservableList<Appointments> apts = DatabaseReports.getContactAppointments(id);
-                for(Appointments a : apts) {
-                    reportField.appendText(a + "\n");
-                    if(apts.isEmpty()){
-                        reportField.appendText("Contact has an open schedule.");
-                    }
-                }
-                reportField.appendText("\n");
-            }
+            reportField.setText(null);
+            reportByContactSchedule();
+        }
+        if(reportCombo.getSelectionModel().getSelectedItem() == r3){
+            reportField.setText(null);
+            reportByTotalHours();
         }
     }
 

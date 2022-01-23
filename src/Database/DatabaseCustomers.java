@@ -54,6 +54,42 @@ public class DatabaseCustomers {
     return customerList;
     }
 
+    public static Customers getUpdateCustomer(int customerID){
+        Customers customers = null;
+        try{
+            String sql = "select customers.Customer_ID, customers.Customer_Name, customers.Address, customers.Postal_Code, \n" +
+                    "\tcustomers.Phone, countries.Country, countries.Country_ID, first_level_divisions.Division_ID, first_level_divisions.Division FROM customers INNER JOIN first_level_divisions\n" +
+                    "\tON customers.Division_ID = first_level_divisions.Division_ID INNER JOIN countries ON first_level_divisions.Country_ID = countries.Country_ID WHERE customers.Customer_ID ='"+customerID+"'";
+
+            PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                int customerId = rs.getInt("Customer_ID");
+                String customerName = rs.getString("Customer_Name");
+                String customerAddress = rs.getString("Address");
+                String customerZipCode = rs.getString("Postal_Code");
+                String customerPhone = rs.getString("Phone");
+                String country = rs.getString("Country");
+                int countryId = rs.getInt("Country_ID");
+                int divisionId = rs.getInt("Division_ID");
+                String division = rs.getString("Division");
+
+                Countries countries = new Countries(countryId, country);
+                FirstLevelDivisions fld = new FirstLevelDivisions(divisionId, division);
+
+                Customers c = new Customers(customerId, customerName, customerAddress, customerZipCode, customerPhone,
+                        countries, fld);
+                customers = c;
+                
+            }
+            
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return customers;
+    }
+
     public static void addCustomer(String customerName, String customerAddress, String customerZipCode, String customerPhone, String createdBy, String lastUpdatedBy, int divisionID) {
         try {
             LocalDate nowDate = LocalDate.now();

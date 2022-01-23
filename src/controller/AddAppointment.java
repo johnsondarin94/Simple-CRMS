@@ -18,11 +18,8 @@ import model.Contacts;
 import model.Customers;
 import model.Users;
 import util.ErrorHandling;
-
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Date;
-import java.sql.Timestamp;
 import java.time.*;
 import java.util.ResourceBundle;
 
@@ -47,7 +44,7 @@ public class AddAppointment implements Initializable{
         try{
             String activeUser = Login.getUserHandoff().getUserName();
             String title = appointmentTitle.getText();
-            String description = appointmentDescription.getText();
+            String description = String.valueOf(appointmentDescription.getText());
             int contactID = contactComboBox.getSelectionModel().getSelectedItem().getContactID();
             String type = appointmentType.getText();
             String loca = location.getText();
@@ -64,15 +61,20 @@ public class AddAppointment implements Initializable{
             LocalDateTime startDateTime = LocalDateTime.of(startDate, startTime);
             LocalDateTime endDateTime = LocalDateTime.of(startDate, endTime);
 
-            if(checkForAptOverlap(customerId, startDateTime, endDateTime) && checkBusinessHours(startDateTime, endDateTime)) {
+            if(checkForAptOverlap(customerId, startDateTime, endDateTime) && checkBusinessHours(startDateTime, endDateTime) && checkInverseHours(startDateTime, endDateTime)) {
                 DatabaseAppointments.addAppointment(title, description, loca, type, startDateTime, endDateTime, activeUser, customerId, userID, contactID);
             }
-            else{
-                ErrorHandling.displayError("There is an overlap of appointments with this Customer.");
-            }
+
         } catch (NullPointerException e) {
             ErrorHandling.displayError("Please ensure all fields are populated.");
         }
+    }
+    public boolean checkInverseHours(LocalDateTime sdt, LocalDateTime edt){
+        if(sdt.isAfter(edt) || edt.isBefore(sdt) || sdt.isEqual(edt)){
+            ErrorHandling.displayError("Please check start and date times for chronological order.");
+            return false;
+        }
+        return true;
     }
 
     public boolean checkForAptOverlap(int customerId, LocalDateTime sdt, LocalDateTime edt) {
@@ -83,12 +85,15 @@ public class AddAppointment implements Initializable{
             LocalDateTime end = oLap.getEndDateTime();
 
             if ((sdt.isAfter(start) || sdt.isEqual(start)) && sdt.isBefore(end)) {
+                ErrorHandling.displayError("There is an overlap of appointments with this Customer.");
                 return false;
             }
             if (edt.isAfter(start) && (edt.isBefore(end) || edt.isEqual(end))) {
+                ErrorHandling.displayError("There is an overlap of appointments with this Customer.");
                 return false;
             }
             if ((sdt.isBefore(start) || sdt.isEqual(start) && (edt.isAfter(end) || edt.isEqual(end)))) {
+                ErrorHandling.displayError("There is an overlap of appointments with this Customer.");
                 return false;
             } else {
                 return true;
@@ -128,20 +133,7 @@ public class AddAppointment implements Initializable{
         stage.show();
     }
 
-    public void onCustomerID(ActionEvent actionEvent) {
-    }
 
-    public static ObservableList<LocalTime> getHours(){
-        ObservableList<LocalTime> hours = FXCollections.observableArrayList();
-        LocalTime hour = LocalTime.of(0, 0);
-        System.out.println(hour);
-        for(int i = 0; i < 24; i++){
-            hour = hour.plusHours(1);
-
-            hours.add(hour);
-        }
-        return hours;
-    }
 
     public void onStartTime(ActionEvent actionEvent) {
 
@@ -161,7 +153,7 @@ public class AddAppointment implements Initializable{
         userIDComboBox.setItems(users);
         ObservableList<Contacts> contacts = DatabaseAppointments.getAllContacts();
         contactComboBox.setItems(contacts);
-        ObservableList<LocalTime> hours = getHours();
+        ObservableList<LocalTime> hours = Appointments.getHours();
         appointmentStartTime.setItems(hours);
         appointmentEndTime.setItems(hours);
 
