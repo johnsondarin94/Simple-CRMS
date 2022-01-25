@@ -2,6 +2,7 @@ package controller;
 
 import Database.DatabaseAppointments;
 import Database.DatabaseCustomers;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -21,6 +22,7 @@ import util.ErrorHandling;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 public class AppointmentsController implements Initializable {
@@ -43,6 +45,7 @@ public class AppointmentsController implements Initializable {
     public Button deleteButton;
     public RadioButton sbmRB;
     public RadioButton sbwRB;
+    public RadioButton noFilterRB;
 
     public void onUpdate(ActionEvent actionEvent) throws IOException {
 
@@ -115,10 +118,71 @@ public class AppointmentsController implements Initializable {
 
     }
 
-    public void onSortMonth(ActionEvent actionEvent) {
+    //public void populateTable
 
-    }
+    public void onSortMonth(ActionEvent actionEvent) {
+        ObservableList<Appointments> appointments = DatabaseAppointments.getAllAppointments();
+        ObservableList<Appointments> filteredAppointments = FXCollections.observableArrayList();;
+        LocalDateTime datePlusMonth = LocalDateTime.now().plusMonths(1);
+
+            for (Appointments a : appointments) {
+                if (a.getStartDateTime().isBefore(datePlusMonth) || a.getStartDateTime().isEqual(datePlusMonth)) {
+                     filteredAppointments.add(a);
+                }
+            }
+            appointmentsTable.setItems(filteredAppointments);
+            appointmentID.setCellValueFactory(new PropertyValueFactory<>("appointment_ID"));
+            title.setCellValueFactory(new PropertyValueFactory<>("title"));
+            description.setCellValueFactory(new PropertyValueFactory<>("description"));
+            location.setCellValueFactory(new PropertyValueFactory<>("location"));
+            contact.setCellValueFactory(new PropertyValueFactory<>("contact"));
+            type.setCellValueFactory(new PropertyValueFactory<>("type"));
+            startDateandTime.setCellValueFactory(new PropertyValueFactory<>("startDateTime"));
+            endDateAndTime.setCellValueFactory(new PropertyValueFactory<>("endDateTime"));
+            customerID.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+            userID.setCellValueFactory(new PropertyValueFactory<>("userId"));
+
+        }
 
     public void onSortWeek(ActionEvent actionEvent) {
+        ObservableList<Appointments> appointments = DatabaseAppointments.getAllAppointments();
+        ObservableList<Appointments> filteredAppointments = FXCollections.observableArrayList();
+        LocalDateTime datePlusWeek = LocalDateTime.now().plusWeeks(1);
+
+        for(Appointments a: appointments){
+            if(a.getStartDateTime().isBefore(datePlusWeek) || a.getStartDateTime().isEqual(datePlusWeek)){
+                filteredAppointments.add(a);
+
+                System.out.println("WE MADE IT HERE");
+            }
+        }
+        appointmentsTable.setItems(filteredAppointments);
+        appointmentID.setCellValueFactory(new PropertyValueFactory<>("appointment_ID"));
+        title.setCellValueFactory(new PropertyValueFactory<>("title"));
+        description.setCellValueFactory(new PropertyValueFactory<>("description"));
+        location.setCellValueFactory(new PropertyValueFactory<>("location"));
+        contact.setCellValueFactory(new PropertyValueFactory<>("contact"));
+        type.setCellValueFactory(new PropertyValueFactory<>("type"));
+        startDateandTime.setCellValueFactory(new PropertyValueFactory<>("startDateTime"));
+        endDateAndTime.setCellValueFactory(new PropertyValueFactory<>("endDateTime"));
+        customerID.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        userID.setCellValueFactory(new PropertyValueFactory<>("userId"));
+    }
+
+    public void onNoFilter(ActionEvent actionEvent) {
+        ObservableList<Appointments> appointments = DatabaseAppointments.getAllAppointments();
+        for(Appointments A : appointments){
+            appointmentsTable.setItems(appointments);
+            appointmentID.setCellValueFactory(new PropertyValueFactory<>("appointment_ID"));
+            title.setCellValueFactory(new PropertyValueFactory<>("title"));
+            description.setCellValueFactory(new PropertyValueFactory<>("description"));
+            location.setCellValueFactory(new PropertyValueFactory<>("location"));
+            contact.setCellValueFactory(new PropertyValueFactory<>("contact"));
+            type.setCellValueFactory(new PropertyValueFactory<>("type"));
+            startDateandTime.setCellValueFactory(new PropertyValueFactory<>("startDateTime"));
+            endDateAndTime.setCellValueFactory(new PropertyValueFactory<>("endDateTime"));
+            customerID.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+            userID.setCellValueFactory(new PropertyValueFactory<>("userId"));
+        }
     }
 }

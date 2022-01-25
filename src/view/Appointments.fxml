@@ -34,5 +34,6 @@
             <ToggleGroup fx:id="rbGroup" />
          </toggleGroup></RadioButton>
       <RadioButton fx:id="sbwRB" layoutX="756.0" layoutY="109.0" mnemonicParsing="false" onAction="#onSortWeek" text="Sort by Week" toggleGroup="$rbGroup" />
+      <RadioButton fx:id="noFilterRB" layoutX="756.0" layoutY="60.0" mnemonicParsing="false" onAction="#onNoFilter" selected="true" text="No Filter" toggleGroup="$rbGroup" />
    </children>
 </AnchorPane>
