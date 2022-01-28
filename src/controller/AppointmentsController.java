@@ -91,17 +91,7 @@ public class AppointmentsController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ObservableList<Appointments> appointments = DatabaseAppointments.getAllAppointments();
         for(Appointments A : appointments){
-            appointmentsTable.setItems(appointments);
-            appointmentID.setCellValueFactory(new PropertyValueFactory<>("appointment_ID"));
-            title.setCellValueFactory(new PropertyValueFactory<>("title"));
-            description.setCellValueFactory(new PropertyValueFactory<>("description"));
-            location.setCellValueFactory(new PropertyValueFactory<>("location"));
-            contact.setCellValueFactory(new PropertyValueFactory<>("contact"));
-            type.setCellValueFactory(new PropertyValueFactory<>("type"));
-            startDateandTime.setCellValueFactory(new PropertyValueFactory<>("startDateTime"));
-            endDateAndTime.setCellValueFactory(new PropertyValueFactory<>("endDateTime"));
-            customerID.setCellValueFactory(new PropertyValueFactory<>("customerId"));
-            userID.setCellValueFactory(new PropertyValueFactory<>("userId"));
+            refreshAppointments(appointments);
         }
     }
 
@@ -109,54 +99,18 @@ public class AppointmentsController implements Initializable {
         try{
             appointmentHandOff = (Appointments) appointmentsTable.getSelectionModel().getSelectedItem();
             int id = getAppointmentHandOff().getAppointment_ID();
+            String type = getAppointmentHandOff().getType();
             DatabaseAppointments.deleteAppointment(id);
             appointmentsTable.getSelectionModel().clearSelection();
-            ErrorHandling.displayInformation("Appointment Deleted.");
+            ErrorHandling.displayInformation("Appointment Deleted.\n" +"Appointment ID: "+id+ "Appointment Type: "+type);
         } catch (Exception e) {
             ErrorHandling.displayError("Please select an Appointment to delete");
         }
 
     }
 
-    //public void populateTable
-
-    public void onSortMonth(ActionEvent actionEvent) {
-        ObservableList<Appointments> appointments = DatabaseAppointments.getAllAppointments();
-        ObservableList<Appointments> filteredAppointments = FXCollections.observableArrayList();;
-        LocalDateTime datePlusMonth = LocalDateTime.now().plusMonths(1);
-
-            for (Appointments a : appointments) {
-                if (a.getStartDateTime().isBefore(datePlusMonth) || a.getStartDateTime().isEqual(datePlusMonth)) {
-                     filteredAppointments.add(a);
-                }
-            }
-            appointmentsTable.setItems(filteredAppointments);
-            appointmentID.setCellValueFactory(new PropertyValueFactory<>("appointment_ID"));
-            title.setCellValueFactory(new PropertyValueFactory<>("title"));
-            description.setCellValueFactory(new PropertyValueFactory<>("description"));
-            location.setCellValueFactory(new PropertyValueFactory<>("location"));
-            contact.setCellValueFactory(new PropertyValueFactory<>("contact"));
-            type.setCellValueFactory(new PropertyValueFactory<>("type"));
-            startDateandTime.setCellValueFactory(new PropertyValueFactory<>("startDateTime"));
-            endDateAndTime.setCellValueFactory(new PropertyValueFactory<>("endDateTime"));
-            customerID.setCellValueFactory(new PropertyValueFactory<>("customerId"));
-            userID.setCellValueFactory(new PropertyValueFactory<>("userId"));
-
-        }
-
-    public void onSortWeek(ActionEvent actionEvent) {
-        ObservableList<Appointments> appointments = DatabaseAppointments.getAllAppointments();
-        ObservableList<Appointments> filteredAppointments = FXCollections.observableArrayList();
-        LocalDateTime datePlusWeek = LocalDateTime.now().plusWeeks(1);
-
-        for(Appointments a: appointments){
-            if(a.getStartDateTime().isBefore(datePlusWeek) || a.getStartDateTime().isEqual(datePlusWeek)){
-                filteredAppointments.add(a);
-
-                System.out.println("WE MADE IT HERE");
-            }
-        }
-        appointmentsTable.setItems(filteredAppointments);
+    public void refreshAppointments(ObservableList<Appointments> appointmentsList){
+        appointmentsTable.setItems(appointmentsList);
         appointmentID.setCellValueFactory(new PropertyValueFactory<>("appointment_ID"));
         title.setCellValueFactory(new PropertyValueFactory<>("title"));
         description.setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -169,20 +123,37 @@ public class AppointmentsController implements Initializable {
         userID.setCellValueFactory(new PropertyValueFactory<>("userId"));
     }
 
+    public void onSortMonth(ActionEvent actionEvent) {
+        ObservableList<Appointments> appointments = DatabaseAppointments.getAllAppointments();
+        ObservableList<Appointments> filteredAppointments = FXCollections.observableArrayList();;
+        LocalDateTime datePlusMonth = LocalDateTime.now().plusMonths(1);
+
+            for (Appointments a : appointments) {
+                if (a.getStartDateTime().isBefore(datePlusMonth) || a.getStartDateTime().isEqual(datePlusMonth)) {
+                     filteredAppointments.add(a);
+                }
+            }
+            refreshAppointments(filteredAppointments);
+        }
+
+    public void onSortWeek(ActionEvent actionEvent) {
+        ObservableList<Appointments> appointments = DatabaseAppointments.getAllAppointments();
+        ObservableList<Appointments> filteredAppointments = FXCollections.observableArrayList();
+        LocalDateTime datePlusWeek = LocalDateTime.now().plusWeeks(1);
+
+        for(Appointments a: appointments){
+            if(a.getStartDateTime().isBefore(datePlusWeek) || a.getStartDateTime().isEqual(datePlusWeek)){
+                filteredAppointments.add(a);
+
+            }
+        }
+        refreshAppointments(filteredAppointments);
+    }
+
     public void onNoFilter(ActionEvent actionEvent) {
         ObservableList<Appointments> appointments = DatabaseAppointments.getAllAppointments();
         for(Appointments A : appointments){
-            appointmentsTable.setItems(appointments);
-            appointmentID.setCellValueFactory(new PropertyValueFactory<>("appointment_ID"));
-            title.setCellValueFactory(new PropertyValueFactory<>("title"));
-            description.setCellValueFactory(new PropertyValueFactory<>("description"));
-            location.setCellValueFactory(new PropertyValueFactory<>("location"));
-            contact.setCellValueFactory(new PropertyValueFactory<>("contact"));
-            type.setCellValueFactory(new PropertyValueFactory<>("type"));
-            startDateandTime.setCellValueFactory(new PropertyValueFactory<>("startDateTime"));
-            endDateAndTime.setCellValueFactory(new PropertyValueFactory<>("endDateTime"));
-            customerID.setCellValueFactory(new PropertyValueFactory<>("customerId"));
-            userID.setCellValueFactory(new PropertyValueFactory<>("userId"));
+            refreshAppointments(appointments);
         }
     }
 }

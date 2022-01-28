@@ -16,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import util.ErrorHandling;
 import controller.Login;
+import util.Navigation;
 
 import java.io.IOException;
 import java.net.URL;
@@ -41,22 +42,40 @@ public class CustomerController implements Initializable {
     public TableColumn country;
     public TableColumn division;
 
+    Navigation navigate = (actionEvent, path, title, x, y) -> {
+        Parent root = FXMLLoader.load(getClass().getResource(path));
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root, x, y);
+        stage.setTitle(title);
+        stage.setScene(scene);
+        stage.show();
+    };
+
+
     public void onSignOff(ActionEvent actionEvent) throws IOException {
+        navigate.navigate(actionEvent, "/view/Login.fxml", "Login", 275, 350 );
+        /*
         Parent root = FXMLLoader.load(getClass().getResource("/view/Login.fxml"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(root, 275, 350);
         stage.setTitle("Login");
         stage.setScene(scene);
         stage.show();
+        */
+
     }
 
     public void onAdd(ActionEvent actionEvent) throws IOException {
+        navigate.navigate(actionEvent, "/view/AddCustomer.fxml", "Add Customer", 450,500);
+        /*
         Parent root = FXMLLoader.load(getClass().getResource("/view/AddCustomer.fxml"));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(root, 450, 500);
         stage.setTitle("Add Customer");
         stage.setScene(scene);
         stage.show();
+        */
+
     }
 
     public void onUpdate(ActionEvent actionEvent) throws IOException {
@@ -106,7 +125,6 @@ public class CustomerController implements Initializable {
                 System.out.println("There are no upcoming appointments");
             }
         }
-
     }
 
     @Override
