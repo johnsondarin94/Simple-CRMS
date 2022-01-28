@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 import model.Appointments;
 import model.Customers;
 import util.ErrorHandling;
+import util.Navigation;
 
 import java.io.IOException;
 import java.net.URL;
@@ -47,17 +48,21 @@ public class AppointmentsController implements Initializable {
     public RadioButton sbwRB;
     public RadioButton noFilterRB;
 
+    Navigation navigate = (actionEvent, path, title, x, y) -> {
+        Parent root = FXMLLoader.load(getClass().getResource(path));
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root, x, y);
+        stage.setTitle(title);
+        stage.setScene(scene);
+        stage.show();
+    };
+
     public void onUpdate(ActionEvent actionEvent) throws IOException {
 
         try {
             appointmentHandOff = (Appointments) appointmentsTable.getSelectionModel().getSelectedItem();
 
-            Parent root = FXMLLoader.load(getClass().getResource("/view/UpdateAppointment.fxml"));
-            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root, 450, 500);
-            stage.setTitle("Update Appointments");
-            stage.setScene(scene);
-            stage.show();
+            navigate.navigate(actionEvent, "/view/UpdateAppointment.fxml", "Update Appointments", 450, 500);
 
         } catch (IOException e) {
             ErrorHandling.displayError("Please select an Appointment to Update");
@@ -69,22 +74,11 @@ public class AppointmentsController implements Initializable {
     }
 
     public void onAdd(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/view/AddAppointment.fxml"));
-        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 450, 500);
-        stage.setTitle("Add Appointments");
-        stage.setScene(scene);
-        stage.show();
+        navigate.navigate(actionEvent, "/view/AddAppointment.fxml", "Add Appointments", 450, 550);
     }
 
     public void onCancel(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/view/Customers.fxml"));
-        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 1100, 550);
-        stage.setTitle("Customers");
-        stage.setScene(scene);
-        stage.show();
-
+        navigate.navigate(actionEvent, "/view/Customers.fxml", "Customers", 1100, 550);
     }
 
     @Override

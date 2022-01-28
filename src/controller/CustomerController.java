@@ -51,42 +51,18 @@ public class CustomerController implements Initializable {
         stage.show();
     };
 
-
     public void onSignOff(ActionEvent actionEvent) throws IOException {
         navigate.navigate(actionEvent, "/view/Login.fxml", "Login", 275, 350 );
-        /*
-        Parent root = FXMLLoader.load(getClass().getResource("/view/Login.fxml"));
-        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 275, 350);
-        stage.setTitle("Login");
-        stage.setScene(scene);
-        stage.show();
-        */
-
     }
 
     public void onAdd(ActionEvent actionEvent) throws IOException {
         navigate.navigate(actionEvent, "/view/AddCustomer.fxml", "Add Customer", 450,500);
-        /*
-        Parent root = FXMLLoader.load(getClass().getResource("/view/AddCustomer.fxml"));
-        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 450, 500);
-        stage.setTitle("Add Customer");
-        stage.setScene(scene);
-        stage.show();
-        */
-
     }
 
     public void onUpdate(ActionEvent actionEvent) throws IOException {
         try {
             customerHandOff = (Customers) customerTable.getSelectionModel().getSelectedItem();
-            Parent root = FXMLLoader.load(getClass().getResource("/view/UpdateCustomer.fxml"));
-            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root, 450, 500);
-            stage.setTitle("Update Customer");
-            stage.setScene(scene);
-            stage.show();
+            navigate.navigate(actionEvent, "/view/UpdateCustomer.fxml", "Update Customer", 450, 500 );
         } catch (Exception e){
             ErrorHandling.displayError("No Customer selected.");
         }
@@ -97,21 +73,11 @@ public class CustomerController implements Initializable {
     }
 
     public void onReports(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/view/Reports.fxml"));
-        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 850, 650);
-        stage.setTitle("Reports");
-        stage.setScene(scene);
-        stage.show();
+        navigate.navigate(actionEvent, "/view/Reports.fxml", "Reports", 850, 650);
     }
 
     public void onAppointments(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/view/Appointments.fxml"));
-        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 1000, 550);
-        stage.setTitle("Appointments");
-        stage.setScene(scene);
-        stage.show();
+        navigate.navigate(actionEvent, "/view/Appointments.fxml", "Appointments", 1000, 550);
     }
 
     public void checkForAppointments(){
@@ -161,12 +127,7 @@ public class CustomerController implements Initializable {
                     DatabaseCustomers.deleteCustomer(id);
                     ErrorHandling.displayInformation("Successfully deleted Customer: " + selectedCustomer.getName());
                     customerTable.getSelectionModel().clearSelection();
-                    Parent root = FXMLLoader.load(getClass().getResource("/view/Customers.fxml"));
-                    Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-                    Scene scene = new Scene(root, 1100, 550);
-                    stage.setTitle("Customers");
-                    stage.setScene(scene);
-                    stage.show();
+                    navigate.navigate(actionEvent, "/view/Customers.fxml", "Customers", 1100, 550);
                 }
 
         } catch (Exception e) {

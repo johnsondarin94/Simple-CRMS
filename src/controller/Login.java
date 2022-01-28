@@ -12,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.Users;
 import util.ErrorHandling;
+import util.Navigation;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -39,11 +40,18 @@ public class Login implements Initializable {
     DateTimeFormatter dtfFrance = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
     ObservableList<Users> users = DatabaseUsers.getUsers();
 
+    Navigation navigate = (actionEvent, path, title, x, y) -> {
+        Parent root = FXMLLoader.load(getClass().getResource(path));
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root, x, y);
+        stage.setTitle(title);
+        stage.setScene(scene);
+        stage.show();
+    };
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
        // Locale.setDefault(new Locale("fr"));
-
-
         ResourceBundle rb = ResourceBundle.getBundle("Nat_fr", Locale.getDefault());
         ZoneId zoneId = ZoneId.systemDefault();
         dateContainer.setText(String.valueOf(zoneId));
@@ -57,8 +65,6 @@ public class Login implements Initializable {
         } catch (Exception e) {
             System.out.println("Language pack not found");
         }
-
-
     }
 
     public void writer(boolean bool) throws IOException {
@@ -96,12 +102,7 @@ public class Login implements Initializable {
                     userHandoff = u;
                     String name = u.getUserName();
                     writer(true);
-                    Parent root = FXMLLoader.load(getClass().getResource("/view/Customers.fxml"));
-                    Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-                    Scene scene = new Scene(root, 1100, 550);
-                    stage.setTitle("Customers");
-                    stage.setScene(scene);
-                    stage.show();
+                    navigate.navigate(actionEvent,"/view/Customers.fxml", "Customers", 1100, 550);
                     ErrorHandling.displayInformation("Welcome " + name);
                     break;
                 }

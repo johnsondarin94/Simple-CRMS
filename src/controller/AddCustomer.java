@@ -17,6 +17,7 @@ import model.Countries;
 import model.FirstLevelDivisions;
 import model.Users;
 import util.ErrorHandling;
+import util.Navigation;
 
 import java.io.IOException;
 import java.net.URL;
@@ -33,13 +34,17 @@ public class AddCustomer implements Initializable {
     public ComboBox<Countries> addCustomerCountryComboBox;
     public ComboBox<FirstLevelDivisions> stateProvinceComboBox;
 
-    public void onCancel(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/view/Customers.fxml"));
+    Navigation navigate = (actionEvent, path, title, x, y) -> {
+        Parent root = FXMLLoader.load(getClass().getResource(path));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 1100, 550);
-        stage.setTitle("Customers");
+        Scene scene = new Scene(root, x, y);
+        stage.setTitle(title);
         stage.setScene(scene);
         stage.show();
+    };
+
+    public void onCancel(ActionEvent actionEvent) throws IOException {
+        navigate.navigate(actionEvent, "/view/Customers.fxml", "Customers", 1100, 550);
     }
 
     public void onAdd(ActionEvent actionEvent) throws IOException {
@@ -53,17 +58,11 @@ public class AddCustomer implements Initializable {
 
             DatabaseCustomers.addCustomer(customerName, address, zipCode, phone, activeUser, activeUser, divisionID);
             ErrorHandling.displayInformation("Customer Successfully added!");
-            Parent root = FXMLLoader.load(getClass().getResource("/view/Customers.fxml"));
-            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root, 1100, 550);
-            stage.setTitle("Customers");
-            stage.setScene(scene);
-            stage.show();
+            navigate.navigate(actionEvent,"/view/Customers.fxml" ,"Customers", 1100, 550);
 
         } catch (NullPointerException e) {
             ErrorHandling.displayError("Please ensure all fields are populated.");
         }
-
     }
 
     public void onStateProvince(ActionEvent actionEvent) {
@@ -77,8 +76,7 @@ public class AddCustomer implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ObservableList<Countries> countries = DatabaseLocations.getAllCountries();
         addCustomerCountryComboBox.setItems(countries);
-    }
-
+        }
     }
 
 

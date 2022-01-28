@@ -58,7 +58,8 @@ public class UpdateCustomer implements Initializable{
     }
 
     public void onCustomerCountry(ActionEvent actionEvent) {
-        ObservableList<FirstLevelDivisions> firstLevelDivisions = DatabaseLocations.getSelectedFirstLevelDivisions(updateCustomerCountry.getSelectionModel().getSelectedItem().getCountryID());
+        ObservableList<FirstLevelDivisions> firstLevelDivisions = DatabaseLocations.getSelectedFirstLevelDivisions
+                (updateCustomerCountry.getSelectionModel().getSelectedItem().getCountryID());
 
         stateProvince.setItems(firstLevelDivisions);
     }

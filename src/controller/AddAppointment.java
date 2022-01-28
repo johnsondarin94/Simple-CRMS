@@ -18,6 +18,8 @@ import model.Contacts;
 import model.Customers;
 import model.Users;
 import util.ErrorHandling;
+import util.Navigation;
+
 import java.io.IOException;
 import java.net.URL;
 import java.time.*;
@@ -38,6 +40,15 @@ public class AddAppointment implements Initializable{
     public ComboBox customerIDComboBox;
     public ComboBox<Contacts> contactComboBox;
     public TextField location;
+
+    Navigation navigate = (actionEvent, path, title, x, y) -> {
+        Parent root = FXMLLoader.load(getClass().getResource(path));
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root, x, y);
+        stage.setTitle(title);
+        stage.setScene(scene);
+        stage.show();
+    };
 
 
     public void onAdd(ActionEvent actionEvent) {
@@ -63,9 +74,10 @@ public class AddAppointment implements Initializable{
 
             if(checkForAptOverlap(customerId, startDateTime, endDateTime) && checkBusinessHours(startDateTime, endDateTime) && checkInverseHours(startDateTime, endDateTime)) {
                 DatabaseAppointments.addAppointment(title, description, loca, type, startDateTime, endDateTime, activeUser, customerId, userID, contactID);
+                navigate.navigate(actionEvent, "/view/Appointments.fxml", "Appointments", 1100, 550);
             }
 
-        } catch (NullPointerException e) {
+        } catch (NullPointerException | IOException e) {
             ErrorHandling.displayError("Please ensure all fields are populated.");
         }
     }
@@ -125,24 +137,7 @@ public class AddAppointment implements Initializable{
     }
 
     public void onCancel(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/view/Appointments.fxml"));
-        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 1100, 550);
-        stage.setTitle("Appointments");
-        stage.setScene(scene);
-        stage.show();
-    }
-
-
-
-    public void onStartTime(ActionEvent actionEvent) {
-
-    }
-
-    public void onEndTime(ActionEvent actionEvent) {
-    }
-
-    public void onUserID(ActionEvent actionEvent) {
+        navigate.navigate(actionEvent, "/view/Appointments.fxml", "Appointments", 1100, 550);
     }
 
     @Override
