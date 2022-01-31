@@ -8,7 +8,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**Main Class used to start the Application*/
 public class Main extends Application {
+
+    /**Loads the application
+     * @param stage Sets the stage*/
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/view/Login.fxml"));
@@ -17,6 +21,7 @@ public class Main extends Application {
         stage.show();
     }
 
+    /**Main Method connects to database and launches application.*/
     public static void main(String[] args){
         DatabaseConnection.openConnection();
         DatabaseCustomers.getAllCustomers();

@@ -111,7 +111,6 @@ public class DatabaseAppointments {
 
             Timestamp st = Timestamp.valueOf(startDateTime);
             Timestamp et = Timestamp.valueOf(endDateTime);
-            System.out.println(st);
 
             PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("INSERT INTO appointments(Title, Description, Location, Type, Start, End, Create_Date, Created_By, " +
                     "Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -131,7 +130,6 @@ public class DatabaseAppointments {
             ps.setInt(13, contactID);
 
             ps.executeUpdate();
-            System.out.println("Successfully added appointment");
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -155,7 +153,6 @@ public class DatabaseAppointments {
                     "Customer_ID='"+customerId+"', User_ID='"+userId+"', Contact_ID='"+contactId+"' WHERE Appointment_ID='"+id+"'");
 
             ps.executeUpdate();
-            System.out.println("Successfully updated appointment");
 
         } catch (Exception g) {
             g.printStackTrace();
@@ -169,8 +166,6 @@ public class DatabaseAppointments {
             PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("DELETE FROM appointments WHERE Appointment_ID='"+appointmentId+"'");
 
             ps.executeUpdate();
-
-            System.out.println("Successfully deleted Appointment from database.");
 
         } catch(SQLException throwables){
 

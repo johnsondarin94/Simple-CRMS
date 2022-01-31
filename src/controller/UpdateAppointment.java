@@ -17,6 +17,8 @@ import model.Appointments;
 import model.Contacts;
 import model.Customers;
 import model.Users;
+import util.ErrorHandling;
+import util.Navigation;
 
 import java.io.IOException;
 import java.net.URL;
@@ -42,13 +44,17 @@ public class UpdateAppointment implements Initializable {
 
     private Appointments appointmentToModify = null;
 
-    public void onCancel(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/view/Appointments.fxml"));
+    Navigation navigate = (actionEvent, path, title, x, y) -> {
+        Parent root = FXMLLoader.load(getClass().getResource(path));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 1100, 550);
-        stage.setTitle("Appointments");
+        Scene scene = new Scene(root, x, y);
+        stage.setTitle(title);
         stage.setScene(scene);
         stage.show();
+    };
+
+    public void onCancel(ActionEvent actionEvent) throws IOException {
+        navigate.navigate(actionEvent, "/view/Appointments.fxml", "Appointments", 1100, 550);
     }
 
     @Override
@@ -78,7 +84,7 @@ public class UpdateAppointment implements Initializable {
         updateAppointmentContact.setValue(appointmentToModify.getContact());
     }
 
-    public void onUpdate(ActionEvent actionEvent) {
+    public void onUpdate(ActionEvent actionEvent) throws IOException {
         String activeUser = Login.getUserHandoff().getUserName();
         int id = Integer.parseInt(appointmentID.getText());
         String title = appointmentTitle.getText();
@@ -101,5 +107,7 @@ public class UpdateAppointment implements Initializable {
         LocalDateTime endDateTime = LocalDateTime.of(startDate, endTime);
 
         DatabaseAppointments.updateAppointment(id, title, description, location, type, startDateTime, endDateTime, activeUser, customerId, userID, contactID);
+        ErrorHandling.displayInformation("Appointment successfully updated");
+        navigate.navigate(actionEvent, "/view/Appointments.fxml", "Appointments", 1000, 550);
     }
 }

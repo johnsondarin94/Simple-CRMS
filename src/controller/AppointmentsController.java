@@ -94,9 +94,14 @@ public class AppointmentsController implements Initializable {
             appointmentHandOff = (Appointments) appointmentsTable.getSelectionModel().getSelectedItem();
             int id = getAppointmentHandOff().getAppointment_ID();
             String type = getAppointmentHandOff().getType();
-            DatabaseAppointments.deleteAppointment(id);
-            appointmentsTable.getSelectionModel().clearSelection();
-            ErrorHandling.displayInformation("Appointment Deleted.\n" +"Appointment ID: "+id+ "Appointment Type: "+type);
+
+            if(ErrorHandling.displayConfirmation("Are you sure you want to delete appointment?")) {
+                DatabaseAppointments.deleteAppointment(id);
+                ErrorHandling.displayInformation("Appointment Deleted.\n" + "Appointment ID: " + id + " Appointment Type: " + type);
+                appointmentsTable.getSelectionModel().clearSelection();
+                navigate.navigate(actionEvent, "/view/Appointments.fxml", "Appointments", 1000, 550);
+            }
+
         } catch (Exception e) {
             ErrorHandling.displayError("Please select an Appointment to delete");
         }

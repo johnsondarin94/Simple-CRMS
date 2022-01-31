@@ -16,6 +16,7 @@ import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import model.Appointments;
 import model.Contacts;
+import util.Navigation;
 
 import java.io.IOException;
 import java.net.URL;
@@ -72,12 +73,17 @@ public class Reports implements Initializable {
         }
     }
 
+    public interface CalculateTotalHours{
+        int calculate(int hour1, int hour2);
+    }
+
     public void reportByTotalHours(){
         ObservableList<Appointments> appointments = DatabaseAppointments.getAllAppointments();
         int totalHours = 0;
 
         for(Appointments a : appointments){
-            totalHours += a.getEndDateTime().getHour() - a.getStartDateTime().getHour();
+            CalculateTotalHours calculateTotalHours = (hour1, hour2) -> hour1 - hour2;
+            totalHours += calculateTotalHours.calculate(a.getEndDateTime().getHour(), a.getStartDateTime().getHour());
 
         }
         reportField.appendText("Total hours for upcoming appointments: " +totalHours);

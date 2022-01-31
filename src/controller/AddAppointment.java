@@ -50,7 +50,6 @@ public class AddAppointment implements Initializable{
         stage.show();
     };
 
-
     public void onAdd(ActionEvent actionEvent) {
         try{
             String activeUser = Login.getUserHandoff().getUserName();
@@ -74,6 +73,7 @@ public class AddAppointment implements Initializable{
 
             if(checkForAptOverlap(customerId, startDateTime, endDateTime) && checkBusinessHours(startDateTime, endDateTime) && checkInverseHours(startDateTime, endDateTime)) {
                 DatabaseAppointments.addAppointment(title, description, loca, type, startDateTime, endDateTime, activeUser, customerId, userID, contactID);
+                ErrorHandling.displayInformation("Successfully created appointment.\n" + title);
                 navigate.navigate(actionEvent, "/view/Appointments.fxml", "Appointments", 1100, 550);
             }
 
@@ -95,19 +95,27 @@ public class AddAppointment implements Initializable{
         for (Appointments oLap : overlapList) {
             LocalDateTime start = oLap.getStartDateTime();
             LocalDateTime end = oLap.getEndDateTime();
+            if(overlapList.isEmpty()){
+                System.out.println("Statement 0 was reached");
+                return true;
+            }
 
             if ((sdt.isAfter(start) || sdt.isEqual(start)) && sdt.isBefore(end)) {
                 ErrorHandling.displayError("There is an overlap of appointments with this Customer.");
+                System.out.println("Statement 1 was reached");
                 return false;
             }
             if (edt.isAfter(start) && (edt.isBefore(end) || edt.isEqual(end))) {
                 ErrorHandling.displayError("There is an overlap of appointments with this Customer.");
+                System.out.println("Statement 2 was reached");
                 return false;
             }
             if ((sdt.isBefore(start) || sdt.isEqual(start) && (edt.isAfter(end) || edt.isEqual(end)))) {
                 ErrorHandling.displayError("There is an overlap of appointments with this Customer.");
+                System.out.println("Statement 3 was reached");
                 return false;
             } else {
+                System.out.println("Statement 4 was reached");
                 return true;
             }
         }
@@ -127,11 +135,10 @@ public class AddAppointment implements Initializable{
         }
 
         if (endDate.isAfter(businessEnd) || endDate.isBefore(businessStart)){
-            System.out.println("Statement 2 was reached");
+            ErrorHandling.displayError("Appointment does not fall withing business hours. 8am - 10pm EST");
             return false;
         }
         else{
-            System.out.println("Statement 3 was reached");
             return true;
         }
     }

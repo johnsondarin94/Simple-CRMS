@@ -2,6 +2,7 @@ package controller;
 
 import Database.DatabaseAppointments;
 import Database.DatabaseCustomers;
+import javafx.collections.FXCollections;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Appointments;
@@ -82,13 +83,20 @@ public class CustomerController implements Initializable {
 
     public void checkForAppointments(){
         ObservableList<Appointments> apts = DatabaseAppointments.getAllAppointments();
+        ObservableList<Appointments> upcomingApts = FXCollections.observableArrayList();
         LocalDateTime ldt = LocalDateTime.now().plusMinutes(15);
         for(Appointments a : apts){
             if((a.getStartDateTime().isBefore(ldt)) && (a.getStartDateTime().isAfter(ldt.minusMinutes(15)))){
-                System.out.println("There is an appointment within 15 minutes");
+                upcomingApts.add(a);
             }
-            else{
-                System.out.println("There are no upcoming appointments");
+        }
+        if(upcomingApts.isEmpty()){
+            ErrorHandling.displayInformation("There are no upcoming Appointments");
+        }
+        else{
+            for(Appointments apt: upcomingApts){
+                ErrorHandling.displayInformation("There is an appointment within 15 minutes.\n" +
+                        "Title: " +apt.getTitle()+ "Type: " +apt.getType());
             }
         }
     }
@@ -96,7 +104,6 @@ public class CustomerController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         checkForAppointments();
-
         ObservableList<Customers> customerList = DatabaseCustomers.getAllCustomers();
         for(Customers c : customerList){
             customerTable.setItems(customerList);

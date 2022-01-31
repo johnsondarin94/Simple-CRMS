@@ -17,6 +17,7 @@ import model.Countries;
 import model.Customers;
 import model.FirstLevelDivisions;
 import util.ErrorHandling;
+import util.Navigation;
 
 import java.io.IOException;
 import java.net.URL;
@@ -35,16 +36,20 @@ public class UpdateCustomer implements Initializable{
 
     private Customers customerToModify = null;
 
-    public void onCancel(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/view/Customers.fxml"));
+    Navigation navigate = (actionEvent, path, title, x, y) -> {
+        Parent root = FXMLLoader.load(getClass().getResource(path));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 1100, 550);
-        stage.setTitle("Customers");
+        Scene scene = new Scene(root, x, y);
+        stage.setTitle(title);
         stage.setScene(scene);
         stage.show();
+    };
+
+    public void onCancel(ActionEvent actionEvent) throws IOException {
+        navigate.navigate(actionEvent, "/view/Customers.fxml", "Customers", 1100, 550);
     }
 
-    public void onUpdate(ActionEvent actionEvent) {
+    public void onUpdate(ActionEvent actionEvent) throws IOException {
         int customerId = Integer.parseInt(updateCustomerId.getText());
         String customerName = updateCustomerName.getText();
         String customerPhone = updateCustomerPhone.getText();
@@ -54,6 +59,7 @@ public class UpdateCustomer implements Initializable{
 
         DatabaseCustomers.updateCustomer(customerId, customerName, customerPhone, customerAddress, customerZip, customerDivisionID);
         ErrorHandling.displayInformation("Customer successfully updated!");
+        navigate.navigate(actionEvent, "/view/Customers.fxml", "Customers", 1100, 550);
 
     }
 
