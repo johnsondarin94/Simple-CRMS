@@ -27,6 +27,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ResourceBundle;
 
+/**Controller Class for UpdateAppointments*/
 public class UpdateAppointment implements Initializable {
     public Button cancelButton;
     public ComboBox appointmentCustomerID;
@@ -53,37 +54,16 @@ public class UpdateAppointment implements Initializable {
         stage.show();
     };
 
+    /**LAMDA 1 IS USED HERE MOST METHODS USED FOR NAVIGATION WILL USE SAID LAMBDA. JUSTIFICATION: CLEANS UP CODE,
+     * SIGNIFICANTLY REDUCING CODE BLOAT FROM 6 LINES OF CODE DOWN TO 1 PER METHOD USED FOR NAVIGATION.
+     * Method used when cancel button is pressed.
+     * @param actionEvent Action Event for Cancel Button*/
     public void onCancel(ActionEvent actionEvent) throws IOException {
         navigate.navigate(actionEvent, "/view/Appointments.fxml", "Appointments", 1100, 550);
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        ObservableList<Customers> customers = DatabaseCustomers.getAllCustomers();
-        appointmentCustomerID.setItems(customers);
-        ObservableList<Users> users = DatabaseUsers.getUsers();
-        appointmentUserID.setItems(users);
-        ObservableList<Contacts> contacts = DatabaseAppointments.getAllContacts();
-        updateAppointmentContact.setItems(contacts);
-        ObservableList<LocalTime> hours = Appointments.getHours();
-        appointmentStartTime.setItems(hours);
-        appointmentEndTime.setItems(hours);
-
-        appointmentToModify = AppointmentsController.getAppointmentHandOff();
-
-        appointmentID.setText(String.valueOf(appointmentToModify.getAppointment_ID()));
-        appointmentTitle.setText(String.valueOf(appointmentToModify.getTitle()));
-        appointmentDescription.setText(String.valueOf(appointmentToModify.getDescription()));
-        appointmentType.setText(String.valueOf(appointmentToModify.getType()));
-        updateLocation.setText(String.valueOf(appointmentToModify.getLocation()));
-        appointmentStartDate.setValue(appointmentToModify.getStartDateTime().toLocalDate());
-        appointmentStartTime.setValue(appointmentToModify.getStartDateTime().toLocalTime());
-        appointmentEndTime.setValue(appointmentToModify.getEndDateTime().toLocalTime());
-        appointmentCustomerID.setValue(DatabaseCustomers.getUpdateCustomer(appointmentToModify.getCustomerId()));
-        appointmentUserID.setValue(DatabaseUsers.getSpecificUser(appointmentToModify.getUserId()));
-        updateAppointmentContact.setValue(appointmentToModify.getContact());
-    }
-
+    /**Gathers all information entered and passes it to DatabaseAppointments.updateAppointment. LAMBDA 1 IS ALSO USED HERE
+     * @param actionEvent Action Event for Update Button*/
     public void onUpdate(ActionEvent actionEvent) throws IOException {
         String activeUser = Login.getUserHandoff().getUserName();
         int id = Integer.parseInt(appointmentID.getText());
@@ -109,5 +89,33 @@ public class UpdateAppointment implements Initializable {
         DatabaseAppointments.updateAppointment(id, title, description, location, type, startDateTime, endDateTime, activeUser, customerId, userID, contactID);
         ErrorHandling.displayInformation("Appointment successfully updated");
         navigate.navigate(actionEvent, "/view/Appointments.fxml", "Appointments", 1000, 550);
+    }
+
+    /**Initialize method for UpdateAppointment populates all fields on the form with data grabbed from Appointments Controller*/
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        ObservableList<Customers> customers = DatabaseCustomers.getAllCustomers();
+        appointmentCustomerID.setItems(customers);
+        ObservableList<Users> users = DatabaseUsers.getUsers();
+        appointmentUserID.setItems(users);
+        ObservableList<Contacts> contacts = DatabaseAppointments.getAllContacts();
+        updateAppointmentContact.setItems(contacts);
+        ObservableList<LocalTime> hours = Appointments.getHours();
+        appointmentStartTime.setItems(hours);
+        appointmentEndTime.setItems(hours);
+
+        appointmentToModify = AppointmentsController.getAppointmentHandOff();
+
+        appointmentID.setText(String.valueOf(appointmentToModify.getAppointment_ID()));
+        appointmentTitle.setText(String.valueOf(appointmentToModify.getTitle()));
+        appointmentDescription.setText(String.valueOf(appointmentToModify.getDescription()));
+        appointmentType.setText(String.valueOf(appointmentToModify.getType()));
+        updateLocation.setText(String.valueOf(appointmentToModify.getLocation()));
+        appointmentStartDate.setValue(appointmentToModify.getStartDateTime().toLocalDate());
+        appointmentStartTime.setValue(appointmentToModify.getStartDateTime().toLocalTime());
+        appointmentEndTime.setValue(appointmentToModify.getEndDateTime().toLocalTime());
+        appointmentCustomerID.setValue(DatabaseCustomers.getUpdateCustomer(appointmentToModify.getCustomerId()));
+        appointmentUserID.setValue(DatabaseUsers.getSpecificUser(appointmentToModify.getUserId()));
+        updateAppointmentContact.setValue(appointmentToModify.getContact());
     }
 }

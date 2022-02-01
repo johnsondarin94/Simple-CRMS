@@ -11,7 +11,11 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+/**DatabaseReports Class retrieves data from database to generate reports.*/
 public class DatabaseReports {
+
+    /**Queries a list of all types, counts total types and groups appointments to their respective type.
+     * @return ObservableList of strings each containing the type.*/
     public static ObservableList<String> getReportByType(){
         ObservableList<String> typeList = FXCollections.observableArrayList();
         try{
@@ -35,6 +39,9 @@ public class DatabaseReports {
         return typeList;
     }
 
+    /**Queries a list of all months where there are upcoming appointments. Adds total number of appointments for each
+     * respective month.
+     * @return ObservableList Strings each containing a month and total appointments for that month.*/
     public static ObservableList<String> getReportByMonth(){
         ObservableList<String> monthList = FXCollections.observableArrayList();
         try{
@@ -57,6 +64,7 @@ public class DatabaseReports {
         return monthList;
     }
 
+    /*
     public static ObservableList<Contacts> getContacts(){
         ObservableList<Contacts> contactsList = FXCollections.observableArrayList();
 
@@ -81,7 +89,10 @@ public class DatabaseReports {
         }
         return contactsList;
     }
-
+*/
+    /**Queries a contacts upcoming appointments and adds them to a list. Passes in a contact ID and queries appointments where contactID matches appointment.
+     * @param contactID Desired contactID (int) passed in to retrieve respecitve appointments.
+     * @return ObservableList of Appointments objects. */
     public static ObservableList<Appointments> getContactAppointments(int contactID){
         ObservableList<Appointments> contactsAppointments = FXCollections.observableArrayList();
 

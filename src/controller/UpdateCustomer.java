@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**Controller Class for UpdateCustomer*/
 public class UpdateCustomer implements Initializable{
     public TextField updateCustomerName;
     public TextField updateCustomerPhone;
@@ -36,6 +37,7 @@ public class UpdateCustomer implements Initializable{
 
     private Customers customerToModify = null;
 
+
     Navigation navigate = (actionEvent, path, title, x, y) -> {
         Parent root = FXMLLoader.load(getClass().getResource(path));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -45,10 +47,16 @@ public class UpdateCustomer implements Initializable{
         stage.show();
     };
 
+    /**LAMDA 1 IS USED HERE MOST METHODS USED FOR NAVIGATION WILL USE SAID LAMBDA. JUSTIFICATION: CLEANS UP CODE,
+     * SIGNIFICANTLY REDUCING CODE BLOAT FROM 6 LINES OF CODE DOWN TO 1 PER METHOD USED FOR NAVIGATION.
+     * Method used when cancel button is pressed.
+     * @param actionEvent Action Event for Cancel Button*/
     public void onCancel(ActionEvent actionEvent) throws IOException {
         navigate.navigate(actionEvent, "/view/Customers.fxml", "Customers", 1100, 550);
     }
 
+    /**Gathers all information entered in and sends it to DatabaseCustomers.updateCustomer. LAMBDA 1 is also used here.
+     * @param actionEvent Action Event for Update Button*/
     public void onUpdate(ActionEvent actionEvent) throws IOException {
         int customerId = Integer.parseInt(updateCustomerId.getText());
         String customerName = updateCustomerName.getText();
@@ -63,6 +71,8 @@ public class UpdateCustomer implements Initializable{
 
     }
 
+    /**Populates States/Province combo box when user selects a country
+     * @param actionEvent Action Event for States/Province combo box*/
     public void onCustomerCountry(ActionEvent actionEvent) {
         ObservableList<FirstLevelDivisions> firstLevelDivisions = DatabaseLocations.getSelectedFirstLevelDivisions
                 (updateCustomerCountry.getSelectionModel().getSelectedItem().getCountryID());
@@ -70,6 +80,7 @@ public class UpdateCustomer implements Initializable{
         stateProvince.setItems(firstLevelDivisions);
     }
 
+    /**Initialize method for Update Customers. Populates Country Combo Box with an Observable List of Countries.*/
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ObservableList<Countries> countries = DatabaseLocations.getAllCountries();

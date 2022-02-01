@@ -25,7 +25,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.time.*;
 
-
+/**Login Controller for Login*/
 public class Login implements Initializable {
     public Label dateContainer;
     public TextField passWord;
@@ -49,24 +49,9 @@ public class Login implements Initializable {
         stage.show();
     };
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        Locale.setDefault(new Locale("fr"));
-        ResourceBundle rb = ResourceBundle.getBundle("Nat_fr", Locale.getDefault());
-        ZoneId zoneId = ZoneId.systemDefault();
-        dateContainer.setText(String.valueOf(zoneId));
-        try {
-            if (Locale.getDefault().getLanguage().equals("fr")) {
-                welcomeLabel.setText(rb.getString("Please") + " " + rb.getString("Login"));
-                loginButton.setText(rb.getString("Login"));
-                userName.setPromptText(rb.getString("Username"));
-                passWord.setPromptText(rb.getString("Password"));
-            }
-        } catch (Exception e) {
-            System.out.println("Language pack not found");
-        }
-    }
-
+    /**Writer method writes to a text file each time a login attempt is made. Takes in a boolean to determine whether
+     * the login attempt was successful or not.
+     * @param bool Boolean lets the method know if the login was a success or not and how to handle it.*/
     public void writer(boolean bool) throws IOException {
 
         File loginAttempts = new File("Login Attempts.txt");
@@ -90,10 +75,15 @@ public class Login implements Initializable {
         pw.close();
     }
 
+    /**UserHandOff method returns the active user. Used throughout the application.
+     * @return Returns a Users object*/
     public static Users getUserHandoff(){
         return userHandoff;
     }
 
+    /**Method handles logging in, validating credentials and sending a boolean to the writer depending on outcome.
+     * On successful login, method grabs User information and stores it for later use.
+     * @param actionEvent Login Action Event*/
     public void onLogin(ActionEvent actionEvent) throws IOException {
         for(Users u : users){
             if(userName.getText().equals(u.getUserName())){
@@ -117,6 +107,26 @@ public class Login implements Initializable {
                 ErrorHandling.displayError("Username not found");
                break;
             }
+        }
+    }
+
+    /**Initialize method for the Login controller. Method grabs computer locale and changes login screen language from
+     * either French or English depending on location. Localization is done using a Resource Bundle */
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        Locale.setDefault(new Locale("fr"));
+        ResourceBundle rb = ResourceBundle.getBundle("Nat_fr", Locale.getDefault());
+        ZoneId zoneId = ZoneId.systemDefault();
+        dateContainer.setText(String.valueOf(zoneId));
+        try {
+            if (Locale.getDefault().getLanguage().equals("fr")) {
+                welcomeLabel.setText(rb.getString("Please") + " " + rb.getString("Login"));
+                loginButton.setText(rb.getString("Login"));
+                userName.setPromptText(rb.getString("Username"));
+                passWord.setPromptText(rb.getString("Password"));
+            }
+        } catch (Exception e) {
+            System.out.println("Language pack not found");
         }
     }
 }

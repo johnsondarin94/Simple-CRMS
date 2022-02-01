@@ -15,7 +15,12 @@ import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**DatabaseCustomers handles all queries related to Customers objects. Handles retrieving, inserting, updating and deleting
+ * of all customers objects.*/
 public class DatabaseCustomers {
+
+    /**Queries a list of all Customers, creates the Customers objects and adds them to an observable list
+     * @return Observable List of Customers objects*/
     public static ObservableList<Customers> getAllCustomers() {
 
         ObservableList<Customers> customerList = FXCollections.observableArrayList();
@@ -54,6 +59,9 @@ public class DatabaseCustomers {
     return customerList;
     }
 
+    /**Queries a specified Customer based on a customer ID and creates a Customers object.
+     * @param customerID ID(int) used to retrieve desired customer
+     * @return Customers object*/
     public static Customers getUpdateCustomer(int customerID){
         Customers customers = null;
         try{
@@ -90,6 +98,14 @@ public class DatabaseCustomers {
         return customers;
     }
 
+    /**Inserts a customer into the database. Takes in customers necessary column data and inserts into database.
+     * @param customerName Customers Name(String)
+     * @param customerAddress Customers Address (String)
+     * @param customerZipCode Customers Zip Code(String)
+     * @param customerPhone  Customers Phone Number (String)
+     * @param createdBy Created By(String) retrieved from active user.
+     * @param lastUpdatedBy Last Updated By (String) retrieved from active user
+     * @param divisionID Division ID (int) retrieved from first level divisions combo box*/
     public static void addCustomer(String customerName, String customerAddress, String customerZipCode, String customerPhone, String createdBy, String lastUpdatedBy, int divisionID) {
         try {
             LocalDate nowDate = LocalDate.now();
@@ -98,7 +114,6 @@ public class DatabaseCustomers {
 
             DateTimeFormatter formatter =
                     DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
 
             PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("INSERT INTO customers SET Customer_Name='"+customerName+"', " +
                     "Address='"+customerAddress+"', Postal_Code='"+customerZipCode+"', " + "Phone='"+customerPhone+"', "+ "Create_Date='"+nowDateTime+"', "+
@@ -111,6 +126,13 @@ public class DatabaseCustomers {
         }
     }
 
+    /**Updates a customer in the database. Takes in necessary data and replaces a customer in database with matching ID
+     * @param customerId Customer ID (int) used to locate and replace desired customer
+     * @param customerName Customer Name (String)
+     * @param customerAddress Customers Address (String)
+     * @param customerZipCode Customers ZipCode (String)
+     * @param customerPhone Customers Phone Number (String)
+     * @param customerDivisionID Customers State or Province ID (int)*/
     public static void updateCustomer(int customerId, String customerName, String customerAddress, String customerZipCode, String customerPhone, int customerDivisionID){
         LocalDateTime updateTime = LocalDateTime.now();
         String lastUpdatedBy = Login.getUserHandoff().getUserName();
@@ -128,6 +150,8 @@ public class DatabaseCustomers {
         }
     }
 
+    /**Removes desired customer from database. Takes in a customer ID to locate intended customer.
+     * @param customerId Customer ID (int) used to find customer*/
     public static void deleteCustomer(int customerId){
         try{
 

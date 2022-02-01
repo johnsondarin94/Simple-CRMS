@@ -26,6 +26,8 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
+/**Controller Class for Appointments page. Displays a complete or filtered (by month or week) list of all appointments.
+ * Handles navigation to Add or Update Appointments as well as the deletion of an appointment.*/
 public class AppointmentsController implements Initializable {
     public Button updateButton;
     public Button addButton;
@@ -57,6 +59,9 @@ public class AppointmentsController implements Initializable {
         stage.show();
     };
 
+    /**Method grabs selection appointment or displays error if there are no selected appointments. Also sends user to
+     * the Update Appointments Page. LAMBDA 1 IS USED HERE.
+     * @param actionEvent Action Event for the Update button*/
     public void onUpdate(ActionEvent actionEvent) throws IOException {
 
         try {
@@ -69,26 +74,27 @@ public class AppointmentsController implements Initializable {
         }
     }
 
+    /**Method returns an Appointment. Used to pass to Update Appointments page and deleting an appointment.
+     * @return Return Appointment*/
     public static Appointments getAppointmentHandOff(){
         return appointmentHandOff;
     }
 
+    /**Method navigates User to Add Appointments Page. LAMBDA 1 IS USED HERE
+     * @param actionEvent Action Event for Add Button*/
     public void onAdd(ActionEvent actionEvent) throws IOException {
         navigate.navigate(actionEvent, "/view/AddAppointment.fxml", "Add Appointments", 450, 550);
     }
 
+    /**Method navigates user to Customers Page. LAMBDA 1 IS USED HERE.
+     * @param actionEvent Action Event for Cancel Button*/
     public void onCancel(ActionEvent actionEvent) throws IOException {
         navigate.navigate(actionEvent, "/view/Customers.fxml", "Customers", 1100, 550);
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        ObservableList<Appointments> appointments = DatabaseAppointments.getAllAppointments();
-        for(Appointments A : appointments){
-            refreshAppointments(appointments);
-        }
-    }
-
+    /**Method Handles deleting an appointment. Must have appointment selected. Displays an alert with ID and Type.
+     * LAMBDA 1 IS USED HERE
+     * @param actionEvent Action Event for Delete Button*/
     public void onDelete(ActionEvent actionEvent) {
         try{
             appointmentHandOff = (Appointments) appointmentsTable.getSelectionModel().getSelectedItem();
@@ -108,6 +114,8 @@ public class AppointmentsController implements Initializable {
 
     }
 
+    /**Method Refreshes tableview when changes are made. Calls database and generates a fresh list of appointments.
+     * @param appointmentsList ObservableList of refreshed appointments. */
     public void refreshAppointments(ObservableList<Appointments> appointmentsList){
         appointmentsTable.setItems(appointmentsList);
         appointmentID.setCellValueFactory(new PropertyValueFactory<>("appointment_ID"));
@@ -122,6 +130,8 @@ public class AppointmentsController implements Initializable {
         userID.setCellValueFactory(new PropertyValueFactory<>("userId"));
     }
 
+    /**@Method refreshes appointments tableview with a list of appointments only occurring within a months time.
+     * @param actionEvent  Action Event for Sort by Month Radio Button*/
     public void onSortMonth(ActionEvent actionEvent) {
         ObservableList<Appointments> appointments = DatabaseAppointments.getAllAppointments();
         ObservableList<Appointments> filteredAppointments = FXCollections.observableArrayList();;
@@ -135,6 +145,8 @@ public class AppointmentsController implements Initializable {
             refreshAppointments(filteredAppointments);
         }
 
+        /**Method refreshed appointments tableview with a list of appointments only occurring within a weeks time.
+         * @param actionEvent Action Event for Sort by Week Radio Button*/
     public void onSortWeek(ActionEvent actionEvent) {
         ObservableList<Appointments> appointments = DatabaseAppointments.getAllAppointments();
         ObservableList<Appointments> filteredAppointments = FXCollections.observableArrayList();
@@ -149,7 +161,18 @@ public class AppointmentsController implements Initializable {
         refreshAppointments(filteredAppointments);
     }
 
+    /**Method removes any filters from the appointments table view
+     * @param actionEvent Action Event for No Filter Radio Button*/
     public void onNoFilter(ActionEvent actionEvent) {
+        ObservableList<Appointments> appointments = DatabaseAppointments.getAllAppointments();
+        for(Appointments A : appointments){
+            refreshAppointments(appointments);
+        }
+    }
+
+    /**Initialize method populates tableview with a list of all appointments.*/
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
         ObservableList<Appointments> appointments = DatabaseAppointments.getAllAppointments();
         for(Appointments A : appointments){
             refreshAppointments(appointments);

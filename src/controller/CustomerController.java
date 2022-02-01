@@ -25,6 +25,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/**Controller Class for the Customers page. Handles navigation to other pages and displays a current list of customers*/
 public class CustomerController implements Initializable {
     public Button signOff;
     public Button updateButton;
@@ -52,14 +53,21 @@ public class CustomerController implements Initializable {
         stage.show();
     };
 
+    /**Returns user to Login Screen. LAMBDA 1 IS USED HERE.
+     * @param actionEvent  Action Event for Sign Off button*/
     public void onSignOff(ActionEvent actionEvent) throws IOException {
         navigate.navigate(actionEvent, "/view/Login.fxml", "Login", 275, 350 );
     }
 
+    /**Sends User to Add Customer Screen. LAMBDA 1 IS USED HERE.
+     * @param actionEvent Action Event for Add Button*/
     public void onAdd(ActionEvent actionEvent) throws IOException {
         navigate.navigate(actionEvent, "/view/AddCustomer.fxml", "Add Customer", 450,500);
     }
 
+    /**Retrieves selected customer from the table and navigates to Update Customer page. LAMBDA 1 IS USED HERE.
+     * @param actionEvent Action Event for Update Button (Must have Customer selected)
+     */
     public void onUpdate(ActionEvent actionEvent) throws IOException {
         try {
             customerHandOff = (Customers) customerTable.getSelectionModel().getSelectedItem();
@@ -69,18 +77,24 @@ public class CustomerController implements Initializable {
         }
     }
 
+    /**Retrieves Customers object. Used to pass Customers object to update page
+     * @return Returns Customer object*/
     public static Customers getCustomerHandOff(){
         return customerHandOff;
     }
 
+    /**Sends User to Reports Page. LAMBDA 1 IS USED HERE
+     * @param actionEvent Action Event for Reports Button*/
     public void onReports(ActionEvent actionEvent) throws IOException {
         navigate.navigate(actionEvent, "/view/Reports.fxml", "Reports", 850, 650);
     }
 
+    /**Sends User to Appointments Page. LAMBDA 1 IS USED HERE*/
     public void onAppointments(ActionEvent actionEvent) throws IOException {
         navigate.navigate(actionEvent, "/view/Appointments.fxml", "Appointments", 1000, 550);
     }
 
+    /**Method displays alert at the initialize alerting User if there is an appointment within 15 minutes of User Login.*/
     public void checkForAppointments(){
         ObservableList<Appointments> apts = DatabaseAppointments.getAllAppointments();
         ObservableList<Appointments> upcomingApts = FXCollections.observableArrayList();
@@ -101,6 +115,9 @@ public class CustomerController implements Initializable {
         }
     }
 
+
+    /**Initialize for Customers Page. Populates table view with list of all customers, and alerts user of any upcoming
+     * appointments (within 15 minutes) by calling checkForAppointments*/
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         checkForAppointments();
@@ -117,6 +134,9 @@ public class CustomerController implements Initializable {
         }
     }
 
+    /**Handles the deletion of a customer. Customer must have no appointments tied to it, Customer must also be
+     * selected for the delete to take place. LAMBDA 1 IS USED HERE.
+     * @param actionEvent Action Event for the Delete button*/
     public void onDelete(ActionEvent actionEvent) {
         try{
             Customers selectedCustomer = (Customers) customerTable.getSelectionModel().getSelectedItem();

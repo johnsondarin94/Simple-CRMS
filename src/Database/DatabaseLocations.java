@@ -9,7 +9,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**DatabaseLocations handles queries related to Country data as well as First Level Divisions Data.*/
 public class DatabaseLocations {
+
+    /**Queries a list of all countries in database and adds them to an observable list
+     * @return ObservableList Countries objects*/
     public static ObservableList<Countries> getAllCountries(){
         ObservableList<Countries> countries = FXCollections.observableArrayList();
         try{
@@ -35,6 +39,9 @@ public class DatabaseLocations {
         return countries;
     }
 
+    /**Queries a specified list of FirstLevelDivisions based on a countryID and adds them to a list
+     * @param countryID Desired countries first level divisions
+     * @return ObservableList FirstLevelDivisions objects*/
     public static ObservableList<FirstLevelDivisions> getSelectedFirstLevelDivisions(int countryID) {
         ObservableList<FirstLevelDivisions> firstleveldivisions = FXCollections.observableArrayList();
         try{

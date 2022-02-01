@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**Controller Class for Add Customer Page*/
 public class AddCustomer implements Initializable {
     public Button cancelButton;
     public TextField addCustomerPhone;
@@ -43,10 +44,15 @@ public class AddCustomer implements Initializable {
         stage.show();
     };
 
+    /**Method Navigates user to Appointments page. Any changes to Add Customer form are forgotten. LAMBDA 1 IS USED HERE.
+     * @param actionEvent Action Event for Cancel button*/
     public void onCancel(ActionEvent actionEvent) throws IOException {
         navigate.navigate(actionEvent, "/view/Customers.fxml", "Customers", 1100, 550);
     }
 
+    /**Method handles adding a customer. Takes in all information provided and sends it to the DatabaseCustomer Class
+     * to get added to the database. Must populate all fields or it will display error.
+     * @param actionEvent Action Event for Add Button.*/
     public void onAdd(ActionEvent actionEvent) throws IOException {
         try{
             String activeUser = Login.getUserHandoff().getUserName();
@@ -65,6 +71,8 @@ public class AddCustomer implements Initializable {
         }
     }
 
+    /**Method populates States/Province combo box as soon as user selects a country.
+     * @param actionEvent Action Event for StatesProvince combo box*/
     public void onStateProvince(ActionEvent actionEvent) {
         ObservableList<FirstLevelDivisions> firstLevelDivisions = DatabaseLocations.getSelectedFirstLevelDivisions(
                 addCustomerCountryComboBox.getSelectionModel().getSelectedItem().getCountryID());
@@ -72,6 +80,8 @@ public class AddCustomer implements Initializable {
         stateProvinceComboBox.setItems(firstLevelDivisions);
     }
 
+    /**Initialize method for the add Customer page. Populates Countries combo box with a list of all Countries provided
+     * by database.*/
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ObservableList<Countries> countries = DatabaseLocations.getAllCountries();

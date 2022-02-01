@@ -3,6 +3,7 @@ package Database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+/**DatabaseConnection Class opens, closes, and retrieves a connection to the database.*/
 public abstract class DatabaseConnection {
     private static final String protocol = "jdbc";
         private static final String vendor = ":mysql:";
@@ -14,6 +15,7 @@ public abstract class DatabaseConnection {
         private static final String password = "Passw0rd!"; // Password
         public static Connection connection; // Connection Interface
 
+        /**Opens a connection to the database. Called in Main*/
         public static void openConnection(){
             try{
                 Class.forName(driver);
@@ -25,10 +27,12 @@ public abstract class DatabaseConnection {
             }
         }
 
+        /**Retrieves a connection to the database.*/
         public static Connection getConnection(){
             return connection;
         }
 
+        /**Ends connection to database. Closes at ending of application.*/
         public static void closeConnection(){
             try{
                 connection.close();

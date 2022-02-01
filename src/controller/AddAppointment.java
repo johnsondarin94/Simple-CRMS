@@ -25,6 +25,7 @@ import java.net.URL;
 import java.time.*;
 import java.util.ResourceBundle;
 
+/**Controller Class for Add Appointment page.*/
 public class AddAppointment implements Initializable{
     public Button addButton;
     public Button cancelButton;
@@ -50,6 +51,10 @@ public class AddAppointment implements Initializable{
         stage.show();
     };
 
+    /**Method handles what happens when user pressed add. Grabs all entered values and makes several method calls to
+     * check for overlap, check business hours as well as chronological ordering. If all return true, method calls the
+     * appropriate database class to add appointment.
+     * @param actionEvent Action Event for Add Button*/
     public void onAdd(ActionEvent actionEvent) {
         try{
             String activeUser = Login.getUserHandoff().getUserName();
@@ -81,6 +86,11 @@ public class AddAppointment implements Initializable{
             ErrorHandling.displayError("Please ensure all fields are populated.");
         }
     }
+
+    /**Method checks to make sure end time does not fall before start time. Returns a boolean based on result.
+     * @param sdt sdt(LocalDateTime) entered by user
+     * @param edt edt(LocalDateTime) entered by user
+     * @return Returns boolean based on result*/
     public boolean checkInverseHours(LocalDateTime sdt, LocalDateTime edt){
         if(sdt.isAfter(edt) || edt.isBefore(sdt) || sdt.isEqual(edt)){
             ErrorHandling.displayError("Please check start and date times for chronological order.");
@@ -89,6 +99,11 @@ public class AddAppointment implements Initializable{
         return true;
     }
 
+    /**Method checks for appointment overlap with other appointments for a given customer.
+     * @param customerId Customer ID is used to grab associated appointments with a given customer
+     * @param sdt sdt(LocalDateTime) Start Date and Time for desired appointment
+     * @param edt edt(LocalDateTime) End Date and Time for desired appointment
+     * @return Returns boolean based on result*/
     public boolean checkForAptOverlap(int customerId, LocalDateTime sdt, LocalDateTime edt) {
         ObservableList<Appointments> overlapList = DatabaseAppointments.getAssociatedAppointments(customerId);
 
@@ -96,32 +111,37 @@ public class AddAppointment implements Initializable{
             LocalDateTime start = oLap.getStartDateTime();
             LocalDateTime end = oLap.getEndDateTime();
             if(overlapList.isEmpty()){
-                System.out.println("Statement 0 was reached");
+                //System.out.println("Statement 0 was reached");
                 return true;
             }
 
             if ((sdt.isAfter(start) || sdt.isEqual(start)) && sdt.isBefore(end)) {
                 ErrorHandling.displayError("There is an overlap of appointments with this Customer.");
-                System.out.println("Statement 1 was reached");
+                //System.out.println("Statement 1 was reached");
                 return false;
             }
             if (edt.isAfter(start) && (edt.isBefore(end) || edt.isEqual(end))) {
                 ErrorHandling.displayError("There is an overlap of appointments with this Customer.");
-                System.out.println("Statement 2 was reached");
+                //System.out.println("Statement 2 was reached");
                 return false;
             }
             if ((sdt.isBefore(start) || sdt.isEqual(start) && (edt.isAfter(end) || edt.isEqual(end)))) {
                 ErrorHandling.displayError("There is an overlap of appointments with this Customer.");
-                System.out.println("Statement 3 was reached");
+                //System.out.println("Statement 3 was reached");
                 return false;
             } else {
-                System.out.println("Statement 4 was reached");
+                //System.out.println("Statement 4 was reached");
                 return true;
             }
         }
         return true;
     }
 
+    /**Method checks desired appointment date and time with the businesses hours which are stored in EST to ensure
+     * business will be open at time of appointment.
+     * @param sdt sdt(LocalDateTime) entered by user used to compare with business hours
+     * @param edt edt(LocalDateTime) entered by user used to compare with business hours
+     * @return Returns a boolean based on result*/
     public boolean checkBusinessHours(LocalDateTime sdt, LocalDateTime edt){
         ZonedDateTime businessStart = ZonedDateTime.of(sdt.toLocalDate(), LocalTime.of(8,0), ZoneId.of("America/New_York"));
         ZonedDateTime businessEnd = ZonedDateTime.of(sdt.toLocalDate(), LocalTime.of(22,0), ZoneId.of("America/New_York"));
@@ -143,10 +163,13 @@ public class AddAppointment implements Initializable{
         }
     }
 
+    /**Method returns user to Appointments page. LAMBDA 1 IS USED HERE
+     * @param actionEvent Action Event for Cancel button*/
     public void onCancel(ActionEvent actionEvent) throws IOException {
         navigate.navigate(actionEvent, "/view/Appointments.fxml", "Appointments", 1100, 550);
     }
 
+    /**Initialize method populates Customer, Contacts, Times, and Users ComboBoxes*/
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ObservableList<Customers> customers = DatabaseCustomers.getAllCustomers();

@@ -8,8 +8,11 @@ import model.Users;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+/**DatabaseUsers Class accesses Users table. Provides 2 methods to access and retrieve Users.*/
 public class DatabaseUsers {
+
+    /**getUsers returns an observable list of all users in database.
+     * @return ObservableList of Users objects*/
     public static ObservableList<Users> getUsers(){
         ObservableList<Users> userList = FXCollections.observableArrayList();
         try{
@@ -34,6 +37,8 @@ public class DatabaseUsers {
         return userList;
     }
 
+    /**getSpecifiedUser returns a Users object with the provided userID
+     * @param userID UserID(int) of desired Users object.*/
     public static Users getSpecificUser(int userID){
         Users user = null;
         try{
