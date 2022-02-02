@@ -64,34 +64,8 @@ public class DatabaseReports {
         return monthList;
     }
 
-    /*
-    public static ObservableList<Contacts> getContacts(){
-        ObservableList<Contacts> contactsList = FXCollections.observableArrayList();
-
-        try{
-            String sql = "SELECT * from contacts";
-
-            PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(sql);
-
-            ResultSet rs = ps.executeQuery();
-
-            while(rs.next()){
-                int id = rs.getInt("Contact_ID");
-                String name = rs.getString("Contact_Name");
-                String email = rs.getString("Email");
-
-                Contacts c = new Contacts(id, name, email);
-                contactsList.add(c);
-
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return contactsList;
-    }
-*/
     /**Queries a contacts upcoming appointments and adds them to a list. Passes in a contact ID and queries appointments where contactID matches appointment.
-     * @param contactID Desired contactID (int) passed in to retrieve respecitve appointments.
+     * @param contactID Desired contactID (int) passed in to retrieve respective appointments.
      * @return ObservableList of Appointments objects. */
     public static ObservableList<Appointments> getContactAppointments(int contactID){
         ObservableList<Appointments> contactsAppointments = FXCollections.observableArrayList();

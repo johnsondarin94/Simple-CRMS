@@ -173,7 +173,6 @@ public class Appointments {
     public static ObservableList<LocalTime> getHours(){
         ObservableList<LocalTime> hours = FXCollections.observableArrayList();
         LocalTime hour = LocalTime.of(0, 0);
-        System.out.println(hour);
         for(int i = 0; i < 24; i++){
             hour = hour.plusHours(1);
 
