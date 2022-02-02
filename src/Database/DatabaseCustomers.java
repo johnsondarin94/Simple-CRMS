@@ -7,13 +7,10 @@ import javafx.collections.ObservableList;
 import model.Countries;
 import model.Customers;
 import model.FirstLevelDivisions;
-
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 
 /**DatabaseCustomers handles all queries related to Customers objects. Handles retrieving, inserting, updating and deleting
  * of all customers objects.*/
@@ -86,9 +83,8 @@ public class DatabaseCustomers {
                 Countries countries = new Countries(countryId, country);
                 FirstLevelDivisions fld = new FirstLevelDivisions(divisionId, division);
 
-                Customers c = new Customers(customerId, customerName, customerAddress, customerZipCode, customerPhone,
+                customers = new Customers(customerId, customerName, customerAddress, customerZipCode, customerPhone,
                         countries, fld);
-                customers = c;
                 
             }
             
@@ -111,9 +107,6 @@ public class DatabaseCustomers {
             LocalDate nowDate = LocalDate.now();
             LocalTime nowTime = LocalTime.now();
             LocalDateTime nowDateTime = LocalDateTime.of(nowDate, nowTime);
-
-            DateTimeFormatter formatter =
-                    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
             PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("INSERT INTO customers SET Customer_Name='"+customerName+"', " +
                     "Address='"+customerAddress+"', Postal_Code='"+customerZipCode+"', " + "Phone='"+customerPhone+"', "+ "Create_Date='"+nowDateTime+"', "+

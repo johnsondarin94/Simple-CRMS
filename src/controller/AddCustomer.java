@@ -15,7 +15,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.Countries;
 import model.FirstLevelDivisions;
-import model.Users;
 import util.ErrorHandling;
 import util.Navigation;
 
@@ -45,14 +44,16 @@ public class AddCustomer implements Initializable {
     };
 
     /**Method Navigates user to Appointments page. Any changes to Add Customer form are forgotten. LAMBDA 1 IS USED HERE.
-     * @param actionEvent Action Event for Cancel button*/
+     * @param actionEvent Action Event for Cancel button
+     * @throws IOException*/
     public void onCancel(ActionEvent actionEvent) throws IOException {
         navigate.navigate(actionEvent, "/view/Customers.fxml", "Customers", 1100, 550);
     }
 
     /**Method handles adding a customer. Takes in all information provided and sends it to the DatabaseCustomer Class
      * to get added to the database. Must populate all fields or it will display error.
-     * @param actionEvent Action Event for Add Button.*/
+     * @param actionEvent Action Event for Add Button.
+     * @throws IOException*/
     public void onAdd(ActionEvent actionEvent) throws IOException {
         try{
             String activeUser = Login.getUserHandoff().getUserName();

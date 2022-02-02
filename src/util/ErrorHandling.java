@@ -2,7 +2,6 @@ package util;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-
 import java.util.Optional;
 
 /**ErrorHandling Class provides various display boxes for clean code. Handles error messages, confirmation messages, and general information.*/

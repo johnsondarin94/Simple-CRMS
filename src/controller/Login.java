@@ -21,7 +21,6 @@ import java.io.PrintWriter;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import java.time.*;
 
@@ -37,7 +36,6 @@ public class Login implements Initializable {
 
     LocalDateTime nowDateTime = LocalDateTime.now();
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss");
-    DateTimeFormatter dtfFrance = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
     ObservableList<Users> users = DatabaseUsers.getUsers();
 
     Navigation navigate = (actionEvent, path, title, x, y) -> {
@@ -63,7 +61,7 @@ public class Login implements Initializable {
         FileWriter fw = new FileWriter(loginAttempts, true);
 
         PrintWriter pw = new PrintWriter(fw);
-        if(bool == true) {
+        if(bool) {
             pw.println("Successful Login " + nowDateTime.getDayOfWeek() + " " + nowDateTime.format(dtf));
 
         }
@@ -93,7 +91,7 @@ public class Login implements Initializable {
                     String name = u.getUserName();
                     writer(true);
                     navigate.navigate(actionEvent,"/view/Customers.fxml", "Customers", 1100, 550);
-                    ErrorHandling.displayInformation("Welcome " + name);
+                    CustomerController.checkForAppointments();
                     break;
                 }
                 else{

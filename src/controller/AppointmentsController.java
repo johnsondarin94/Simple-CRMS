@@ -1,7 +1,6 @@
 package controller;
 
 import Database.DatabaseAppointments;
-import Database.DatabaseCustomers;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,7 +16,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointments;
-import model.Customers;
 import util.ErrorHandling;
 import util.Navigation;
 
@@ -130,11 +128,11 @@ public class AppointmentsController implements Initializable {
         userID.setCellValueFactory(new PropertyValueFactory<>("userId"));
     }
 
-    /**@Method refreshes appointments tableview with a list of appointments only occurring within a months time.
+    /**Method refreshes appointments tableview with a list of appointments only occurring within a months time.
      * @param actionEvent  Action Event for Sort by Month Radio Button*/
     public void onSortMonth(ActionEvent actionEvent) {
         ObservableList<Appointments> appointments = DatabaseAppointments.getAllAppointments();
-        ObservableList<Appointments> filteredAppointments = FXCollections.observableArrayList();;
+        ObservableList<Appointments> filteredAppointments = FXCollections.observableArrayList();
         LocalDateTime datePlusMonth = LocalDateTime.now().plusMonths(1);
 
             for (Appointments a : appointments) {

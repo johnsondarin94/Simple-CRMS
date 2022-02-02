@@ -2,9 +2,7 @@ package Database;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import model.Customers;
 import model.Users;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -38,7 +36,8 @@ public class DatabaseUsers {
     }
 
     /**getSpecifiedUser returns a Users object with the provided userID
-     * @param userID UserID(int) of desired Users object.*/
+     * @param userID UserID(int) of desired Users object.
+     * @return Returns Users object using provided UserID*/
     public static Users getSpecificUser(int userID){
         Users user = null;
         try{

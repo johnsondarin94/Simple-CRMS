@@ -3,7 +3,6 @@ package controller;
 import Database.DatabaseAppointments;
 import Database.DatabaseCustomers;
 import Database.DatabaseUsers;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -22,9 +21,7 @@ import util.Navigation;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.ResourceBundle;
 
 /**Controller Class for UpdateAppointments*/
@@ -86,9 +83,87 @@ public class UpdateAppointment implements Initializable {
         LocalTime endTime = appointmentEndTime.getSelectionModel().getSelectedItem();
         LocalDateTime endDateTime = LocalDateTime.of(startDate, endTime);
 
-        DatabaseAppointments.updateAppointment(id, title, description, location, type, startDateTime, endDateTime, activeUser, customerId, userID, contactID);
-        ErrorHandling.displayInformation("Appointment successfully updated");
-        navigate.navigate(actionEvent, "/view/Appointments.fxml", "Appointments", 1000, 550);
+        if(checkForAptOverlap(customerId, startDateTime, endDateTime) && checkBusinessHours(startDateTime, endDateTime) && checkInverseHours(startDateTime, endDateTime)) {
+            DatabaseAppointments.updateAppointment(id, title, description, location, type, startDateTime, endDateTime, activeUser, customerId, userID, contactID);
+            ErrorHandling.displayInformation("Appointment successfully updated");
+            navigate.navigate(actionEvent, "/view/Appointments.fxml", "Appointments", 1000, 550);
+        }
+    }
+
+    /**Method checks to make sure end time does not fall before start time. Returns a boolean based on result.
+     * @param sdt sdt(LocalDateTime) entered by user
+     * @param edt edt(LocalDateTime) entered by user
+     * @return Returns boolean based on result*/
+    public boolean checkInverseHours(LocalDateTime sdt, LocalDateTime edt){
+        if(sdt.isAfter(edt) || edt.isBefore(sdt) || sdt.isEqual(edt)){
+            ErrorHandling.displayError("Please check start and date times for chronological order.");
+            return false;
+        }
+        return true;
+    }
+
+    /**Method checks for appointment overlap with other appointments for a given customer.
+     * @param customerId Customer ID is used to grab associated appointments with a given customer
+     * @param sdt sdt(LocalDateTime) Start Date and Time for desired appointment
+     * @param edt edt(LocalDateTime) End Date and Time for desired appointment
+     * @return Returns boolean based on result*/
+    public boolean checkForAptOverlap(int customerId, LocalDateTime sdt, LocalDateTime edt) {
+        ObservableList<Appointments> overlapList = DatabaseAppointments.getAssociatedAppointments(customerId);
+
+        for (Appointments oLap : overlapList) {
+            LocalDateTime start = oLap.getStartDateTime();
+            LocalDateTime end = oLap.getEndDateTime();
+            if(overlapList.isEmpty()){
+                //System.out.println("Statement 0 was reached");
+                return true;
+            }
+
+            if ((sdt.isAfter(start) || sdt.isEqual(start)) && sdt.isBefore(end)) {
+                ErrorHandling.displayError("There is an overlap of appointments with this Customer.");
+                //System.out.println("Statement 1 was reached");
+                return false;
+            }
+            if (edt.isAfter(start) && (edt.isBefore(end) || edt.isEqual(end))) {
+                ErrorHandling.displayError("There is an overlap of appointments with this Customer.");
+                //System.out.println("Statement 2 was reached");
+                return false;
+            }
+            if ((sdt.isBefore(start) || sdt.isEqual(start) && (edt.isAfter(end) || edt.isEqual(end)))) {
+                ErrorHandling.displayError("There is an overlap of appointments with this Customer.");
+                //System.out.println("Statement 3 was reached");
+                return false;
+            } else {
+                //System.out.println("Statement 4 was reached");
+                return true;
+            }
+        }
+        return true;
+    }
+
+    /**Method checks desired appointment date and time with the businesses hours which are stored in EST to ensure
+     * business will be open at time of appointment.
+     * @param sdt sdt(LocalDateTime) entered by user used to compare with business hours
+     * @param edt edt(LocalDateTime) entered by user used to compare with business hours
+     * @return Returns a boolean based on result*/
+    public boolean checkBusinessHours(LocalDateTime sdt, LocalDateTime edt){
+        ZonedDateTime businessStart = ZonedDateTime.of(sdt.toLocalDate(), LocalTime.of(8,0), ZoneId.of("America/New_York"));
+        ZonedDateTime businessEnd = ZonedDateTime.of(sdt.toLocalDate(), LocalTime.of(22,0), ZoneId.of("America/New_York"));
+
+        ZonedDateTime startDate = sdt.atZone(ZoneId.systemDefault());
+        ZonedDateTime endDate = edt.atZone(ZoneId.systemDefault());
+
+        if (startDate.isAfter(businessEnd) || startDate.isBefore(businessStart)){
+            ErrorHandling.displayError("Appointment does not fall withing business hours. 8am - 10pm EST");
+            return false;
+        }
+
+        if (endDate.isAfter(businessEnd) || endDate.isBefore(businessStart)){
+            ErrorHandling.displayError("Appointment does not fall withing business hours. 8am - 10pm EST");
+            return false;
+        }
+        else{
+            return true;
+        }
     }
 
     /**Initialize method for UpdateAppointment populates all fields on the form with data grabbed from Appointments Controller*/

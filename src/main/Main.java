@@ -21,7 +21,8 @@ public class Main extends Application {
         stage.show();
     }
 
-    /**Main Method connects to database and launches application.*/
+    /**Main Method connects to database and launches application.
+     * @param args */
     public static void main(String[] args){
         DatabaseConnection.openConnection();
         DatabaseCustomers.getAllCustomers();

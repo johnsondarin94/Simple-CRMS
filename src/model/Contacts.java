@@ -56,7 +56,7 @@ public class Contacts {
     }
 
     /**Override String Class to properly display Contacts Objects in the UI
-     * @Return Return Overridden String*/
+     * @return Return Overridden String*/
     @Override
     public String toString(){
         return(contactID +" - "+ contactName + " - "+ contactEmail);

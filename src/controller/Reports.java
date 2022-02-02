@@ -2,7 +2,6 @@ package controller;
 
 import Database.DatabaseAppointments;
 import Database.DatabaseReports;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -16,11 +15,10 @@ import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import model.Appointments;
 import model.Contacts;
-import util.Navigation;
+import util.ErrorHandling;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Time;
 import java.util.ResourceBundle;
 
 /**Controller Class for Reports*/
@@ -29,9 +27,9 @@ public class Reports implements Initializable {
     public Button generateButton;
     public TextArea reportField;
 
-    final String r1 = "Report - Total Apts by Type and Month";
+    final String r1 = "Total Apts by Type and Month";
     final String r2 = "Contact Schedule";
-    final String r3 = "Report 3";
+    final String r3 = "Grand Total Hours";
 
     /**Returns User to CustomerController
      * @param actionEvent Action Event for Return Button*/
@@ -111,6 +109,9 @@ public class Reports implements Initializable {
         if(reportCombo.getSelectionModel().getSelectedItem() == r3){
             reportField.setText(null);
             reportByTotalHours();
+        }
+        if(reportCombo.getSelectionModel().getSelectedItem() == null){
+            ErrorHandling.displayError("Please select an option from the combo box above.");
         }
     }
 

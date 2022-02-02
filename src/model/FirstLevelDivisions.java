@@ -4,7 +4,6 @@ package model;
 public class FirstLevelDivisions {
     private int divisionID;
     private String divisionName;
-    private int countryID;
 
     /**Constructor for a FirstLevelDivisions object
      *

@@ -2,8 +2,6 @@ package model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 

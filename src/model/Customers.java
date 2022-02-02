@@ -1,8 +1,4 @@
-
 package model;
-
-import java.sql.Date;
-import java.time.LocalDateTime;
 
 /**Customers Class provides a model for a Customers object*/
 public class Customers {

@@ -3,7 +3,6 @@ package controller;
 import Database.DatabaseAppointments;
 import Database.DatabaseCustomers;
 import Database.DatabaseUsers;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -34,7 +33,6 @@ public class AddAppointment implements Initializable{
     public TextField appointmentTitle;
     public TextArea appointmentDescription;
     public TextField appointmentType;
-    public TextField appointmentContact;
     public ComboBox<LocalTime> appointmentStartTime;
     public ComboBox<LocalTime>appointmentEndTime;
     public ComboBox userIDComboBox;

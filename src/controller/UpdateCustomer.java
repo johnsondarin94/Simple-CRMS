@@ -35,7 +35,7 @@ public class UpdateCustomer implements Initializable{
     public Button updateButton;
     public ComboBox<FirstLevelDivisions> stateProvince;
 
-    private Customers customerToModify = null;
+    private static Customers customerToModify = null;
 
 
     Navigation navigate = (actionEvent, path, title, x, y) -> {
@@ -65,7 +65,7 @@ public class UpdateCustomer implements Initializable{
         String customerZip = updateCustomerZip.getText();
         int customerDivisionID = stateProvince.getSelectionModel().getSelectedItem().getDivisionID();
 
-        DatabaseCustomers.updateCustomer(customerId, customerName, customerPhone, customerAddress, customerZip, customerDivisionID);
+        DatabaseCustomers.updateCustomer(customerId, customerName, customerAddress, customerZip, customerPhone, customerDivisionID);
         ErrorHandling.displayInformation("Customer successfully updated!");
         navigate.navigate(actionEvent, "/view/Customers.fxml", "Customers", 1100, 550);
 

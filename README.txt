@@ -5,9 +5,9 @@ add, update and delete Customers as well as appointments which are tied to custo
 relevant reports.
 
 Author: Darin Johnson
-Contact Information:
+Contact Information: djo1001@my.wgu.edu
 Student Application Version: 1.0.12
-Date: (submit date)
+Date: 2/2/22
 
 IDE: IntelliJ IDEA Community Edition 2021.1.1
 JDK: Java SE 11.0.11
@@ -19,7 +19,9 @@ respective abilities. Also on the customers page there is a redirect to the repo
 types of reports by selecting the desired report and clicking "generate" the data will populate in the text field. To
 exit the application navigate to the customers page and click sign off.
 
-Description of additional report: The additional report added provides a total hour count of all appointments.
+Description of additional report: The additional report added provides a total hour count of all upcoming appointments.
+Report was chosen because in future builds could provide functionality for more refined scheduling practices, delegating
+work more evenly and for other financial reasons. (Assuming FakeCompany INC) is a paid service.
 
 MySQL Connector version number: mysql-connector-java-8.0.25
 

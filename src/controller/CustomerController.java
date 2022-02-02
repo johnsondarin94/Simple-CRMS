@@ -16,9 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import util.ErrorHandling;
-import controller.Login;
 import util.Navigation;
-
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -68,7 +66,7 @@ public class CustomerController implements Initializable {
     /**Retrieves selected customer from the table and navigates to Update Customer page. LAMBDA 1 IS USED HERE.
      * @param actionEvent Action Event for Update Button (Must have Customer selected)
      */
-    public void onUpdate(ActionEvent actionEvent) throws IOException {
+    public void onUpdate(ActionEvent actionEvent) {
         try {
             customerHandOff = (Customers) customerTable.getSelectionModel().getSelectedItem();
             navigate.navigate(actionEvent, "/view/UpdateCustomer.fxml", "Update Customer", 450, 500 );
@@ -89,13 +87,14 @@ public class CustomerController implements Initializable {
         navigate.navigate(actionEvent, "/view/Reports.fxml", "Reports", 850, 650);
     }
 
-    /**Sends User to Appointments Page. LAMBDA 1 IS USED HERE*/
+    /**Sends User to Appointments Page. LAMBDA 1 IS USED HERE
+     * @param actionEvent Action Event for Appointments button*/
     public void onAppointments(ActionEvent actionEvent) throws IOException {
         navigate.navigate(actionEvent, "/view/Appointments.fxml", "Appointments", 1000, 550);
     }
 
     /**Method displays alert at the initialize alerting User if there is an appointment within 15 minutes of User Login.*/
-    public void checkForAppointments(){
+    public static void checkForAppointments(){
         ObservableList<Appointments> apts = DatabaseAppointments.getAllAppointments();
         ObservableList<Appointments> upcomingApts = FXCollections.observableArrayList();
         LocalDateTime ldt = LocalDateTime.now().plusMinutes(15);
@@ -110,17 +109,16 @@ public class CustomerController implements Initializable {
         else{
             for(Appointments apt: upcomingApts){
                 ErrorHandling.displayInformation("There is an appointment within 15 minutes.\n" +
-                        "Title: " +apt.getTitle()+ "Type: " +apt.getType());
+                        "ID: " +apt.getAppointment_ID()+ "Date: " +apt.getStartDateTime());
             }
         }
     }
 
 
-    /**Initialize for Customers Page. Populates table view with list of all customers, and alerts user of any upcoming
-     * appointments (within 15 minutes) by calling checkForAppointments*/
+    /**Initialize for Customers Page. Populates table view with list view of all customers.*/
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        checkForAppointments();
+
         ObservableList<Customers> customerList = DatabaseCustomers.getAllCustomers();
         for(Customers c : customerList){
             customerTable.setItems(customerList);
