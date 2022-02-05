@@ -52,9 +52,8 @@ public class AddCustomer implements Initializable {
 
     /**Method handles adding a customer. Takes in all information provided and sends it to the DatabaseCustomer Class
      * to get added to the database. Must populate all fields or it will display error.
-     * @param actionEvent Action Event for Add Button.
-     * @throws IOException*/
-    public void onAdd(ActionEvent actionEvent) throws IOException {
+     * @param actionEvent Action Event for Add Button. */
+    public void onAdd(ActionEvent actionEvent) {
         try{
             String activeUser = Login.getUserHandoff().getUserName();
             String customerName = addCustomerName.getText();
@@ -63,13 +62,23 @@ public class AddCustomer implements Initializable {
             String phone = addCustomerPhone.getText();
             int divisionID =  stateProvinceComboBox.getSelectionModel().getSelectedItem().getDivisionID();
 
-            DatabaseCustomers.addCustomer(customerName, address, zipCode, phone, activeUser, activeUser, divisionID);
-            ErrorHandling.displayInformation("Customer Successfully added!");
-            navigate.navigate(actionEvent,"/view/Customers.fxml" ,"Customers", 1100, 550);
+            if (checkPopulatedFields(customerName, address, zipCode, phone)) {
+                DatabaseCustomers.addCustomer(customerName, address, zipCode, phone, activeUser, activeUser, divisionID);
+                ErrorHandling.displayInformation("Customer Successfully added!");
+                navigate.navigate(actionEvent,"/view/Customers.fxml" ,"Customers", 1100, 550);
+            }
 
-        } catch (NullPointerException e) {
+        } catch (NullPointerException | IOException e) {
             ErrorHandling.displayError("Please ensure all fields are populated.");
         }
+    }
+
+    public boolean checkPopulatedFields(String customerName, String address, String zipCode, String phone){
+        if(customerName.isEmpty() || address.isEmpty() || zipCode.isEmpty() || phone.isEmpty()){
+            ErrorHandling.displayError("Please ensure all text fields are populated.");
+            return false;
+        }
+        return true;
     }
 
     /**Method populates States/Province combo box as soon as user selects a country.

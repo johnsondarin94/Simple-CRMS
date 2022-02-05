@@ -52,7 +52,7 @@ public class Login implements Initializable {
      * @param bool Boolean lets the method know if the login was a success or not and how to handle it.*/
     public void writer(boolean bool) throws IOException {
 
-        File loginAttempts = new File("Login Attempts.txt");
+        File loginAttempts = new File("login_activity.txt");
 
         if(!loginAttempts.exists()){
             loginAttempts.createNewFile();
@@ -112,7 +112,7 @@ public class Login implements Initializable {
      * either French or English depending on location. Localization is done using a Resource Bundle */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Locale.setDefault(new Locale("fr"));
+        //Locale.setDefault(new Locale("fr"));
         ResourceBundle rb = ResourceBundle.getBundle("Nat_fr", Locale.getDefault());
         ZoneId zoneId = ZoneId.systemDefault();
         dateContainer.setText(String.valueOf(zoneId));

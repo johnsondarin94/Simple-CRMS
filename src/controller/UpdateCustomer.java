@@ -57,18 +57,32 @@ public class UpdateCustomer implements Initializable{
 
     /**Gathers all information entered in and sends it to DatabaseCustomers.updateCustomer. LAMBDA 1 is also used here.
      * @param actionEvent Action Event for Update Button*/
-    public void onUpdate(ActionEvent actionEvent) throws IOException {
-        int customerId = Integer.parseInt(updateCustomerId.getText());
-        String customerName = updateCustomerName.getText();
-        String customerPhone = updateCustomerPhone.getText();
-        String customerAddress = updateCustomerAddress.getText();
-        String customerZip = updateCustomerZip.getText();
-        int customerDivisionID = stateProvince.getSelectionModel().getSelectedItem().getDivisionID();
+    public void onUpdate(ActionEvent actionEvent) {
+        try {
+            int customerId = Integer.parseInt(updateCustomerId.getText());
+            String customerName = updateCustomerName.getText();
+            String customerPhone = updateCustomerPhone.getText();
+            String customerAddress = updateCustomerAddress.getText();
+            String customerZip = updateCustomerZip.getText();
+            int customerDivisionID = stateProvince.getSelectionModel().getSelectedItem().getDivisionID();
 
-        DatabaseCustomers.updateCustomer(customerId, customerName, customerAddress, customerZip, customerPhone, customerDivisionID);
-        ErrorHandling.displayInformation("Customer successfully updated!");
-        navigate.navigate(actionEvent, "/view/Customers.fxml", "Customers", 1100, 550);
+            if(checkPopulatedFields(customerName, customerAddress, customerZip, customerPhone)) {
+                DatabaseCustomers.updateCustomer(customerId, customerName, customerAddress, customerZip, customerPhone, customerDivisionID);
+                ErrorHandling.displayInformation("Customer successfully updated!");
+                navigate.navigate(actionEvent, "/view/Customers.fxml", "Customers", 1100, 550);
+            }
+        }
+        catch (NumberFormatException | IOException e){
+            ErrorHandling.displayError("Please ensure all fields are populated.");
+        }
+    }
 
+    public boolean checkPopulatedFields(String customerName, String customerAddress, String customerZip, String customerPhone){
+        if(customerName.isEmpty() || customerAddress.isEmpty() || customerZip.isEmpty() || customerPhone.isEmpty()){
+            ErrorHandling.displayError("Please ensure all text fields are populated.");
+            return false;
+        }
+        return true;
     }
 
     /**Populates States/Province combo box when user selects a country
@@ -78,6 +92,12 @@ public class UpdateCustomer implements Initializable{
                 (updateCustomerCountry.getSelectionModel().getSelectedItem().getCountryID());
 
         stateProvince.setItems(firstLevelDivisions);
+
+
+        if(updateCustomerCountry.getSelectionModel().getSelectedItem().getCountryID() != customerToModify.getCountry().getCountryID()){
+            stateProvince.setValue(null);
+            stateProvince.setPromptText("State/Province");
+        }
     }
 
     /**Initialize method for Update Customers. Populates Country Combo Box with an Observable List of Countries.*/
@@ -95,5 +115,12 @@ public class UpdateCustomer implements Initializable{
         updateCustomerCountry.setValue(customerToModify.getCountry());
         stateProvince.setValue(customerToModify.getDivision());
 
+        ObservableList<FirstLevelDivisions> firstLevelDivisions = DatabaseLocations.getSelectedFirstLevelDivisions
+                (updateCustomerCountry.getSelectionModel().getSelectedItem().getCountryID());
+
+        stateProvince.setItems(firstLevelDivisions);
+
     }
+
+
 }

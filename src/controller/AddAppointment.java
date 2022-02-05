@@ -53,8 +53,8 @@ public class AddAppointment implements Initializable{
      * check for overlap, check business hours as well as chronological ordering. If all return true, method calls the
      * appropriate database class to add appointment.
      * @param actionEvent Action Event for Add Button*/
-    public void onAdd(ActionEvent actionEvent) {
-        try{
+    public void onAdd(ActionEvent actionEvent) throws IOException {
+        try {
             String activeUser = Login.getUserHandoff().getUserName();
             String title = appointmentTitle.getText();
             String description = String.valueOf(appointmentDescription.getText());
@@ -74,13 +74,16 @@ public class AddAppointment implements Initializable{
             LocalDateTime startDateTime = LocalDateTime.of(startDate, startTime);
             LocalDateTime endDateTime = LocalDateTime.of(startDate, endTime);
 
-            if(checkForAptOverlap(customerId, startDateTime, endDateTime) && checkBusinessHours(startDateTime, endDateTime) && checkInverseHours(startDateTime, endDateTime)) {
+
+            if (checkForAptOverlap(customerId, startDateTime, endDateTime) && checkBusinessHours(startDateTime, endDateTime) && checkInverseHours(startDateTime, endDateTime)
+                    && checkPopulatedFields(title, description, type, loca)) {
+
                 DatabaseAppointments.addAppointment(title, description, loca, type, startDateTime, endDateTime, activeUser, customerId, userID, contactID);
                 ErrorHandling.displayInformation("Successfully created appointment.\n" + title);
                 navigate.navigate(actionEvent, "/view/Appointments.fxml", "Appointments", 1100, 550);
             }
-
-        } catch (NullPointerException | IOException e) {
+        }
+        catch (NullPointerException e){
             ErrorHandling.displayError("Please ensure all fields are populated.");
         }
     }
@@ -108,27 +111,30 @@ public class AddAppointment implements Initializable{
         for (Appointments oLap : overlapList) {
             LocalDateTime start = oLap.getStartDateTime();
             LocalDateTime end = oLap.getEndDateTime();
+
             if(overlapList.isEmpty()){
-                //System.out.println("Statement 0 was reached");
+                System.out.println("Statement 0 was reached");
                 return true;
             }
 
             if ((sdt.isAfter(start) || sdt.isEqual(start)) && sdt.isBefore(end)) {
                 ErrorHandling.displayError("There is an overlap of appointments with this Customer.");
-                //System.out.println("Statement 1 was reached");
+                System.out.println("Statement 1 was reached");
                 return false;
             }
             if (edt.isAfter(start) && (edt.isBefore(end) || edt.isEqual(end))) {
                 ErrorHandling.displayError("There is an overlap of appointments with this Customer.");
-                //System.out.println("Statement 2 was reached");
+                System.out.println("Statement 2 was reached");
                 return false;
             }
-            if ((sdt.isBefore(start) || sdt.isEqual(start) && (edt.isAfter(end) || edt.isEqual(end)))) {
+            if ((sdt.isBefore(start) && (edt.isAfter(end)))) {
                 ErrorHandling.displayError("There is an overlap of appointments with this Customer.");
-                //System.out.println("Statement 3 was reached");
+                System.out.println("Statement 3 was reached");
                 return false;
-            } else {
-                //System.out.println("Statement 4 was reached");
+            }
+            else {
+
+                System.out.println("Statement 4 was reached");
                 return true;
             }
         }
@@ -159,6 +165,14 @@ public class AddAppointment implements Initializable{
         else{
             return true;
         }
+    }
+
+    public boolean checkPopulatedFields(String title, String description, String type, String location){
+        if(title.isEmpty() || description.isEmpty() || type.isEmpty()|| location.isEmpty()){
+            ErrorHandling.displayError("Please ensure all text fields are populated.");
+            return false;
+        }
+        return true;
     }
 
     /**Method returns user to Appointments page. LAMBDA 1 IS USED HERE

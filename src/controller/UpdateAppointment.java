@@ -61,33 +61,48 @@ public class UpdateAppointment implements Initializable {
 
     /**Gathers all information entered and passes it to DatabaseAppointments.updateAppointment. LAMBDA 1 IS ALSO USED HERE
      * @param actionEvent Action Event for Update Button*/
-    public void onUpdate(ActionEvent actionEvent) throws IOException {
-        String activeUser = Login.getUserHandoff().getUserName();
-        int id = Integer.parseInt(appointmentID.getText());
-        String title = appointmentTitle.getText();
-        String description = String.valueOf(appointmentDescription.getText());
-        String location = updateLocation.getText();
-        String type = appointmentType.getText();
-        int contactID = updateAppointmentContact.getSelectionModel().getSelectedItem().getContactID();
+    public void onUpdate(ActionEvent actionEvent) {
+        try {
+            String activeUser = Login.getUserHandoff().getUserName();
+            int id = Integer.parseInt(appointmentID.getText());
+            String title = appointmentTitle.getText();
+            String description = String.valueOf(appointmentDescription.getText());
+            String location = updateLocation.getText();
+            String type = appointmentType.getText();
+            int contactID = updateAppointmentContact.getSelectionModel().getSelectedItem().getContactID();
 
-        Customers selectedCustomer = (Customers) appointmentCustomerID.getSelectionModel().getSelectedItem();
-        int customerId = selectedCustomer.getCustomerId();
+            Customers selectedCustomer = (Customers) appointmentCustomerID.getSelectionModel().getSelectedItem();
+            int customerId = selectedCustomer.getCustomerId();
 
-        Users selectedUser = (Users) appointmentUserID.getSelectionModel().getSelectedItem();
-        int userID = selectedUser.getUserID();
+            Users selectedUser = (Users) appointmentUserID.getSelectionModel().getSelectedItem();
+            int userID = selectedUser.getUserID();
 
-        LocalDate startDate = appointmentStartDate.getValue();
-        LocalTime startTime = appointmentStartTime.getSelectionModel().getSelectedItem();
+            LocalDate startDate = appointmentStartDate.getValue();
+            LocalTime startTime = appointmentStartTime.getSelectionModel().getSelectedItem();
+            LocalTime endTime = appointmentEndTime.getSelectionModel().getSelectedItem();
 
-        LocalDateTime startDateTime = LocalDateTime.of(startDate, startTime);
-        LocalTime endTime = appointmentEndTime.getSelectionModel().getSelectedItem();
-        LocalDateTime endDateTime = LocalDateTime.of(startDate, endTime);
+            LocalDateTime startDateTime = LocalDateTime.of(startDate, startTime);
+            LocalDateTime endDateTime = LocalDateTime.of(startDate, endTime);
 
-        if(checkForAptOverlap(customerId, startDateTime, endDateTime) && checkBusinessHours(startDateTime, endDateTime) && checkInverseHours(startDateTime, endDateTime)) {
-            DatabaseAppointments.updateAppointment(id, title, description, location, type, startDateTime, endDateTime, activeUser, customerId, userID, contactID);
-            ErrorHandling.displayInformation("Appointment successfully updated");
-            navigate.navigate(actionEvent, "/view/Appointments.fxml", "Appointments", 1000, 550);
+            if (checkForAptOverlap(customerId, startDateTime, endDateTime) && checkBusinessHours(startDateTime, endDateTime) && checkInverseHours(startDateTime, endDateTime)
+                    && checkPopulatedFields(title, description, type, location)) {
+
+                DatabaseAppointments.updateAppointment(id, title, description, location, type, startDateTime, endDateTime, activeUser, customerId, userID, contactID);
+                ErrorHandling.displayInformation("Appointment successfully updated");
+                navigate.navigate(actionEvent, "/view/Appointments.fxml", "Appointments", 1000, 550);
+            }
         }
+        catch (Exception e){
+            ErrorHandling.displayError("Please ensure all fields are populated");
+        }
+    }
+
+    public boolean checkPopulatedFields(String title, String description, String type, String location){
+        if(title.isEmpty() || description.isEmpty() || type.isEmpty()|| location.isEmpty()){
+            ErrorHandling.displayError("Please ensure all text fields are populated.");
+            return false;
+        }
+        return true;
     }
 
     /**Method checks to make sure end time does not fall before start time. Returns a boolean based on result.
@@ -114,26 +129,30 @@ public class UpdateAppointment implements Initializable {
             LocalDateTime start = oLap.getStartDateTime();
             LocalDateTime end = oLap.getEndDateTime();
             if(overlapList.isEmpty()){
-                //System.out.println("Statement 0 was reached");
+                System.out.println("Statement 0 was reached");
                 return true;
             }
 
             if ((sdt.isAfter(start) || sdt.isEqual(start)) && sdt.isBefore(end)) {
+                System.out.println("Statement 1 was reached");
                 ErrorHandling.displayError("There is an overlap of appointments with this Customer.");
-                //System.out.println("Statement 1 was reached");
                 return false;
             }
             if (edt.isAfter(start) && (edt.isBefore(end) || edt.isEqual(end))) {
+                System.out.println("Statement 2 was reached");
                 ErrorHandling.displayError("There is an overlap of appointments with this Customer.");
-                //System.out.println("Statement 2 was reached");
                 return false;
             }
-            if ((sdt.isBefore(start) || sdt.isEqual(start) && (edt.isAfter(end) || edt.isEqual(end)))) {
+
+            if ((sdt.isBefore(start) && (edt.isAfter(end)))) {
+                System.out.println("Statement 3 was reached");
                 ErrorHandling.displayError("There is an overlap of appointments with this Customer.");
-                //System.out.println("Statement 3 was reached");
                 return false;
-            } else {
-                //System.out.println("Statement 4 was reached");
+            }
+
+             else {
+
+                System.out.println("Statement 4 was reached");
                 return true;
             }
         }

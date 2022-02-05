@@ -175,10 +175,22 @@ public class DatabaseAppointments {
         Timestamp et = Timestamp.valueOf(endDateTime);
 
         try{
+           PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("UPDATE appointments SET Title=?, " +
+                   "Description=?, Location=?, Type=?, Start=?, End=?, Last_Update=?, Last_Updated_By=?, Customer_ID=?, User_ID=?, " +
+                   "Contact_ID=? WHERE Appointment_ID=?");
 
-            PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("UPDATE appointments SET Title='"+title+"', Description='"+description+"'," +
-                    "Location='"+location+"', Type='"+type+"', Start='"+st+"', End='"+et+"', Last_Update='"+updateTime+"', Last_Updated_By='"+activeUser+"', " +
-                    "Customer_ID='"+customerId+"', User_ID='"+userId+"', Contact_ID='"+contactId+"' WHERE Appointment_ID='"+id+"'");
+            ps.setString(1, title);
+            ps.setString(2, description);
+            ps.setString(3, location);
+            ps.setString(4, type);
+            ps.setTimestamp(5, st);
+            ps.setTimestamp(6, et);
+            ps.setDate(7, updateTime);
+            ps.setString(8, activeUser);
+            ps.setInt(9, customerId);
+            ps.setInt(10, userId);
+            ps.setInt(11, contactId);
+            ps.setInt(12, id);
 
             ps.executeUpdate();
 
