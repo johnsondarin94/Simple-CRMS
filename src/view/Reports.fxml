@@ -4,16 +4,29 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Reports">
+<AnchorPane prefHeight="573.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Reports">
    <children>
-      <Button layoutX="678.0" layoutY="530.0" mnemonicParsing="false" onAction="#onReturn" text="Return" />
-      <ComboBox fx:id="reportCombo" layoutX="629.0" layoutY="109.0" prefWidth="150.0" promptText="Choose Report" />
-      <Button fx:id="generateButton" layoutX="678.0" layoutY="311.0" mnemonicParsing="false" onAction="#onGenerate" text="Generate" />
-      <Label layoutX="299.0" layoutY="30.0" text="Reports">
+      <Button layoutX="51.0" layoutY="507.0" mnemonicParsing="false" onAction="#onReturn" text="Return" />
+      <ComboBox fx:id="reportCombo" layoutX="41.0" layoutY="410.0" onAction="#onChooseReport" prefWidth="150.0" promptText="Choose Report" />
+      <Button fx:id="generateButton" layoutX="799.0" layoutY="410.0" mnemonicParsing="false" onAction="#onGenerate" text="Generate" />
+      <Label layoutX="424.0" layoutY="25.0" text="Reports">
          <font>
             <Font size="30.0" />
          </font>
       </Label>
-      <TextArea fx:id="reportField" layoutX="85.0" layoutY="100.0" prefHeight="435.0" prefWidth="504.0" />
+      <TableView fx:id="reportsTable" layoutX="42.0" layoutY="75.0" prefHeight="312.0" prefWidth="870.0">
+        <columns>
+          <TableColumn fx:id="aptID" prefWidth="75.0" text="Appointment ID" />
+          <TableColumn fx:id="title" prefWidth="75.0" text="Title" />
+            <TableColumn fx:id="description" prefWidth="133.0" text="Description" />
+            <TableColumn fx:id="type" prefWidth="108.0" text="Type" />
+            <TableColumn fx:id="start" prefWidth="193.0" text="Start " />
+            <TableColumn fx:id="end" prefWidth="195.0" text="End" />
+            <TableColumn fx:id="cusID" prefWidth="90.0" text="Customer ID" />
+        </columns>
+      </TableView>
+      <ComboBox fx:id="contactComboBox" disable="true" layoutX="260.0" layoutY="410.0" prefWidth="150.0" promptText="Select Contact" />
+      <ComboBox fx:id="selectMonth" disable="true" layoutX="435.0" layoutY="410.0" onAction="#onSelectMonth" prefWidth="150.0" promptText="Select Month" />
+      <ComboBox fx:id="typeCombo" disable="true" layoutX="603.0" layoutY="410.0" prefWidth="150.0" promptText="Select Type" />
    </children>
 </AnchorPane>

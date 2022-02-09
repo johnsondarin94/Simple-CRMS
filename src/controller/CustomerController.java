@@ -84,7 +84,7 @@ public class CustomerController implements Initializable {
     /**Sends User to Reports Page. LAMBDA 1 IS USED HERE
      * @param actionEvent Action Event for Reports Button*/
     public void onReports(ActionEvent actionEvent) throws IOException {
-        navigate.navigate(actionEvent, "/view/Reports.fxml", "Reports", 850, 650);
+        navigate.navigate(actionEvent, "/view/Reports.fxml", "Reports", 1000, 650);
     }
 
     /**Sends User to Appointments Page. LAMBDA 1 IS USED HERE

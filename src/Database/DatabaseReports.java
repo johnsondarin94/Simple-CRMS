@@ -16,10 +16,10 @@ public class DatabaseReports {
 
     /**Queries a list of all types, counts total types and groups appointments to their respective type.
      * @return ObservableList of strings each containing the type.*/
-    public static ObservableList<String> getReportByType(){
+    public static ObservableList<String> getReportByType(String month){
         ObservableList<String> typeList = FXCollections.observableArrayList();
         try{
-            String sql = "SELECT Type, COUNT(Type) FROM appointments GROUP BY Type";
+            String sql = "SELECT Type, MONTHNAME(Start), COUNT(Type) FROM appointments WHERE MONTHNAME(Start) = '"+month+"' GROUP BY Type";
 
             PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(sql);
 
@@ -27,9 +27,8 @@ public class DatabaseReports {
 
             while(rs.next()){
                 String type = rs.getString("Type");
-                int total = rs.getInt("COUNT(Type)");
 
-                String typeTotal = (type + ": " + total);
+                String typeTotal = (type);
                 typeList.add(typeTotal);
             }
 
@@ -53,9 +52,8 @@ public class DatabaseReports {
 
             while(rs.next()){
                 String month = rs.getString("MONTHNAME(Start)");
-                int total = rs.getInt("COUNT(MONTH(Start))");
 
-                String monthTotal = (month + ": " + total);
+                String monthTotal = (month);
                 monthList.add(monthTotal);
             }
         } catch (SQLException throwables) {
@@ -63,6 +61,48 @@ public class DatabaseReports {
         }
         return monthList;
     }
+
+    public static ObservableList<Appointments> getReportByMonthType(String month, String type){
+        ObservableList<Appointments> appointmentList = FXCollections.observableArrayList();
+        try{
+            String sql = "SELECT appointments.Appointment_ID, appointments.Title, appointments.Description, appointments.Location, " +
+                    "contacts.Contact_ID, contacts.Contact_Name, contacts.Email, appointments.Type, appointments.Start, appointments.End, " +
+                    "appointments.Customer_ID, appointments.User_ID FROM appointments INNER JOIN contacts ON contacts.Contact_ID = appointments.Contact_ID " +
+                    "WHERE MONTHNAME(Start) = '"+month+"' AND Type = '"+type+"'";
+
+            PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(sql);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                int appointmentId = rs.getInt("Appointment_ID");
+                String title = rs.getString("Title");
+                String description = rs.getString("Description");
+                String location = rs.getString("Location");
+                int contactId = rs.getInt("Contact_ID");
+                String contactName = rs.getString("Contact_Name");
+                String contactEmail = rs.getString("Email");
+                String type1 = rs.getString("Type");
+                Timestamp startDateTime = rs.getTimestamp("Start");
+                Timestamp endDateTime = rs.getTimestamp("End");
+                int customerId = rs.getInt("Customer_ID");
+                int userId = rs.getInt("User_ID");
+
+                Contacts c = new Contacts(contactId, contactName, contactEmail);
+
+                LocalDateTime sdt = startDateTime.toLocalDateTime();
+                LocalDateTime edt = endDateTime.toLocalDateTime();
+
+                Appointments a = new Appointments(appointmentId, title, description, location, c, type1, sdt, edt, customerId, userId);
+
+                appointmentList.add(a);
+            }
+            }
+        catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return appointmentList;
+        }
 
     /**Queries a contacts upcoming appointments and adds them to a list. Passes in a contact ID and queries appointments where contactID matches appointment.
      * @param contactID Desired contactID (int) passed in to retrieve respective appointments.
