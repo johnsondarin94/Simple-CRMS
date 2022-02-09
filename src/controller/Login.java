@@ -33,8 +33,6 @@ public class Login implements Initializable {
     public Label welcomeLabel;
 
     public static Users userHandoff = null;
-
-    LocalDateTime nowDateTime = LocalDateTime.now();
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss");
     ObservableList<Users> users = DatabaseUsers.getUsers();
 
@@ -62,11 +60,11 @@ public class Login implements Initializable {
 
         PrintWriter pw = new PrintWriter(fw);
         if(bool) {
-            pw.println("Successful Login " + nowDateTime.getDayOfWeek() + " " + nowDateTime.format(dtf));
+            pw.println("Successful Login " + LocalDateTime.now().getDayOfWeek() + " " + LocalDateTime.now().format(dtf));
 
         }
         else{
-            pw.println("Failed Attempt " + nowDateTime.getDayOfWeek() + " " + nowDateTime.format(dtf));
+            pw.println("Failed Attempt " + LocalDateTime.now().getDayOfWeek() + " " + LocalDateTime.now().format(dtf));
         }
 
         pw.flush();
@@ -83,6 +81,7 @@ public class Login implements Initializable {
      * On successful login, method grabs User information and stores it for later use.
      * @param actionEvent Login Action Event*/
     public void onLogin(ActionEvent actionEvent) throws IOException {
+        ResourceBundle rb = ResourceBundle.getBundle("Nat_fr", Locale.getDefault());
         for(Users u : users){
             if(userName.getText().equals(u.getUserName())){
                 if(passWord.getText().equals(u.getPassWord())){
@@ -96,14 +95,25 @@ public class Login implements Initializable {
                 }
                 else{
                     writer(false);
-                    ErrorHandling.displayError("Incorrect Password");
+                    if(Locale.getDefault().getLanguage().equals("fr")) {
+                        ErrorHandling.displayError(rb.getString("Invalid") + " " + rb.getString("Username") + " " + rb.getString("Password"));
+                    }
+                    else{
+                        ErrorHandling.displayError("Invalid Username or Password");
+                    }
                     break;
+
                 }
             }
             else{
                 writer(false);
-                ErrorHandling.displayError("Username not found");
-               break;
+                if(Locale.getDefault().getLanguage().equals("fr")) {
+                    ErrorHandling.displayError(rb.getString("Invalid") + " " + rb.getString("Username") + " " + rb.getString("Password"));
+                }
+                else{
+                    ErrorHandling.displayError("Invalid Username or Password");
+                }
+                break;
             }
         }
     }

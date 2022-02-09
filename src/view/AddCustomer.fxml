@@ -14,7 +14,7 @@
       <TextField fx:id="addCustomerName" layoutX="42.0" layoutY="198.0" promptText="Name" />
       <TextField fx:id="addCustomerAddress" layoutX="42.0" layoutY="250.0" promptText="Address" />
       <TextField fx:id="addCustomerZip" layoutX="42.0" layoutY="300.0" promptText="Postal Code" />
-      <TextField fx:id="addCustomerId" editable="false" layoutX="42.0" layoutY="146.0" promptText="ID - Auto Generated" />
+      <TextField fx:id="addCustomerId" disable="true" editable="false" layoutX="42.0" layoutY="146.0" promptText="ID - Auto Generated" />
       <ComboBox fx:id="stateProvinceComboBox" layoutX="251.0" layoutY="198.0" prefWidth="150.0" promptText="State/Province" />
       <ComboBox fx:id="addCustomerCountryComboBox" layoutX="251.0" layoutY="146.0" onAction="#onStateProvince" prefWidth="150.0" promptText="Country" />
       <Button fx:id="addButton" layoutX="98.0" layoutY="429.0" mnemonicParsing="false" onAction="#onAdd" text="Add" />

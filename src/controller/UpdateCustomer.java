@@ -72,7 +72,7 @@ public class UpdateCustomer implements Initializable{
                 navigate.navigate(actionEvent, "/view/Customers.fxml", "Customers", 1100, 550);
             }
         }
-        catch (NumberFormatException | IOException e){
+        catch (NullPointerException | IOException e){
             ErrorHandling.displayError("Please ensure all fields are populated.");
         }
     }

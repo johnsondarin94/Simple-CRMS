@@ -214,6 +214,18 @@ public class DatabaseAppointments {
         }
     }
 
+    public static void deleteAssociatedAppointments(int customerID){
+        try{
+
+            PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("DELETE FROM appointments WHERE Customer_ID='"+customerID+"'");
+
+            ps.executeUpdate();
+
+        } catch(SQLException throwables){
+
+        }
+    }
+
     /**Queries and returns an observable list of Contacts objects
      * @return Returns an observablelist of Contacts objects*/
     public static ObservableList<Contacts> getAllContacts(){

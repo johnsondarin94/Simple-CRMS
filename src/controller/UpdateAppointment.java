@@ -126,6 +126,9 @@ public class UpdateAppointment implements Initializable {
         ObservableList<Appointments> overlapList = DatabaseAppointments.getAssociatedAppointments(customerId);
 
         for (Appointments oLap : overlapList) {
+            if(oLap.getAppointment_ID() == appointmentToModify.getAppointment_ID()){
+                continue;
+            }
             LocalDateTime start = oLap.getStartDateTime();
             LocalDateTime end = oLap.getEndDateTime();
             if(overlapList.isEmpty()){

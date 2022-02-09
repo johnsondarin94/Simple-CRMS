@@ -142,20 +142,20 @@ public class CustomerController implements Initializable {
 
             ObservableList<Appointments> associatedAppointments = DatabaseAppointments.getAssociatedAppointments(id);
 
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete Selected Customer?");
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete Selected Customer? \n Deleting selected customer will remove any associated appointments");
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK)
                 if (associatedAppointments.size() >= 1) {
-                    ErrorHandling.displayError("Cannot delete Customer, has Associated Appointments");
-                }
-                else {
+                    for(Appointments a : associatedAppointments){
+                        DatabaseAppointments.deleteAssociatedAppointments(id);
+                    }
                     DatabaseCustomers.deleteCustomer(id);
-                    ErrorHandling.displayInformation("Successfully deleted Customer: " + selectedCustomer.getName());
+                    ErrorHandling.displayInformation("Customer " +selectedCustomer.getName()+ "Successfully Deleted");
                     customerTable.getSelectionModel().clearSelection();
                     navigate.navigate(actionEvent, "/view/Customers.fxml", "Customers", 1100, 550);
                 }
-
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             ErrorHandling.displayError("Please select a Customer to delete");
         }
     }
