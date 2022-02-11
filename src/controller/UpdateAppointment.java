@@ -87,9 +87,13 @@ public class UpdateAppointment implements Initializable {
             if (checkForAptOverlap(customerId, startDateTime, endDateTime) && checkBusinessHours(startDateTime, endDateTime) && checkInverseHours(startDateTime, endDateTime)
                     && checkPopulatedFields(title, description, type, location)) {
 
-                DatabaseAppointments.updateAppointment(id, title, description, location, type, startDateTime, endDateTime, activeUser, customerId, userID, contactID);
-                ErrorHandling.displayInformation("Appointment successfully updated");
-                navigate.navigate(actionEvent, "/view/Appointments.fxml", "Appointments", 1000, 550);
+                if(DatabaseAppointments.updateAppointment(id, title, description, location, type, startDateTime, endDateTime, activeUser, customerId, userID, contactID)) {
+                    ErrorHandling.displayInformation("Appointment successfully updated");
+                    navigate.navigate(actionEvent, "/view/Appointments.fxml", "Appointments", 1000, 550);
+                }
+                else{
+                    ErrorHandling.displayError("Please ensure fields do not exceed character limit (50).");
+                }
             }
         }
         catch (Exception e){

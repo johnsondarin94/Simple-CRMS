@@ -4,17 +4,16 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="573.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Reports">
+<AnchorPane prefHeight="575.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Reports">
    <children>
-      <Button layoutX="51.0" layoutY="507.0" mnemonicParsing="false" onAction="#onReturn" text="Return" />
-      <ComboBox fx:id="reportCombo" layoutX="41.0" layoutY="410.0" onAction="#onChooseReport" prefWidth="150.0" promptText="Choose Report" />
-      <Button fx:id="generateButton" layoutX="799.0" layoutY="410.0" mnemonicParsing="false" onAction="#onGenerate" text="Generate" />
+      <Button layoutX="786.0" layoutY="501.0" mnemonicParsing="false" onAction="#onReturn" text="Return" />
+      <Button fx:id="generateReport1" layoutX="225.0" layoutY="313.0" mnemonicParsing="false" onAction="#onGenReport1" text="Generate" />
       <Label layoutX="424.0" layoutY="25.0" text="Reports">
          <font>
             <Font size="30.0" />
          </font>
       </Label>
-      <TableView fx:id="reportsTable" layoutX="42.0" layoutY="75.0" prefHeight="312.0" prefWidth="870.0">
+      <TableView fx:id="reportsTable" layoutX="41.0" layoutY="106.0" prefHeight="191.0" prefWidth="870.0">
         <columns>
           <TableColumn fx:id="aptID" prefWidth="75.0" text="Appointment ID" />
           <TableColumn fx:id="title" prefWidth="75.0" text="Title" />
@@ -25,8 +24,27 @@
             <TableColumn fx:id="cusID" prefWidth="90.0" text="Customer ID" />
         </columns>
       </TableView>
-      <ComboBox fx:id="contactComboBox" disable="true" layoutX="260.0" layoutY="410.0" prefWidth="150.0" promptText="Select Contact" />
-      <ComboBox fx:id="selectMonth" disable="true" layoutX="435.0" layoutY="410.0" onAction="#onSelectMonth" prefWidth="150.0" promptText="Select Month" />
-      <ComboBox fx:id="typeCombo" disable="true" layoutX="603.0" layoutY="410.0" prefWidth="150.0" promptText="Select Type" />
+      <ComboBox fx:id="contactComboBox" layoutX="41.0" layoutY="313.0" prefWidth="150.0" promptText="Select Contact" />
+      <ComboBox fx:id="selectMonth" layoutX="40.0" layoutY="409.0" onAction="#onSelectMonth" prefWidth="150.0" promptText="Select Month" />
+      <ComboBox fx:id="typeCombo" layoutX="225.0" layoutY="409.0" prefWidth="150.0" promptText="Select Type" />
+      <Label layoutX="39.0" layoutY="86.0" text="Report By Contact Schedule">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="41.0" layoutY="380.0" text="Report by Type and Month">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Button fx:id="generateReport2" layoutX="392.0" layoutY="409.0" mnemonicParsing="false" onAction="#onGenReport2" text="Generate" />
+      <Label layoutX="42.0" layoutY="469.0" text="Report by Grand Total Hours">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Button fx:id="generateReport3" layoutX="39.0" layoutY="501.0" mnemonicParsing="false" onAction="#onGenReport3" text="Generate" />
+      <TextField fx:id="report3Field" layoutX="151.0" layoutY="501.0" prefHeight="25.0" prefWidth="290.0" promptText="Report 3 Generated Here" />
+      <TextField fx:id="report2Field" layoutX="505.0" layoutY="409.0" prefHeight="25.0" prefWidth="290.0" promptText="Report 2 Generated Here" />
    </children>
 </AnchorPane>

@@ -21,6 +21,7 @@ import util.Navigation;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.time.*;
 import java.util.ResourceBundle;
 
@@ -78,13 +79,18 @@ public class AddAppointment implements Initializable{
             if (checkForAptOverlap(customerId, startDateTime, endDateTime) && checkBusinessHours(startDateTime, endDateTime) && checkInverseHours(startDateTime, endDateTime)
                     && checkPopulatedFields(title, description, type, loca)) {
 
-                DatabaseAppointments.addAppointment(title, description, loca, type, startDateTime, endDateTime, activeUser, customerId, userID, contactID);
-                ErrorHandling.displayInformation("Successfully created appointment.\n" + title);
-                navigate.navigate(actionEvent, "/view/Appointments.fxml", "Appointments", 1100, 550);
+                if(DatabaseAppointments.addAppointment(title, description, loca, type, startDateTime, endDateTime, activeUser, customerId, userID, contactID)) {
+                    ErrorHandling.displayInformation("Successfully created appointment.\n" + title);
+                    navigate.navigate(actionEvent, "/view/Appointments.fxml", "Appointments", 1100, 550);
+                }
+                else{
+                    ErrorHandling.displayError("Please ensure fields fo not exceed character limit (50).");
+                }
             }
         }
-        catch (NullPointerException e){
-            ErrorHandling.displayError("Please ensure all fields are populated.");
+        catch (NullPointerException | SQLException e){
+            ErrorHandling.displayError("Please ensure all fields are populated or that fields do not exceed " +
+                    "character limit.");
         }
     }
 

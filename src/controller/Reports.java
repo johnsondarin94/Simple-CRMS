@@ -40,6 +40,11 @@ public class Reports implements Initializable {
     public ComboBox selectMonth;
     public ComboBox typeCombo;
     public TableColumn cusID;
+    public Button generateReport1;
+    public Button generateReport2;
+    public Button generateReport3;
+    public TextField report3Field;
+    public TextField report2Field;
 
 
     /**Returns User to CustomerController
@@ -58,23 +63,26 @@ public class Reports implements Initializable {
         String month = (String) selectMonth.getSelectionModel().getSelectedItem();
         String type1 = (String) typeCombo.getSelectionModel().getSelectedItem();
         ObservableList<Appointments> appointments =DatabaseReports.getReportByMonthType(month, type1);
-        reportsTable.setItems(appointments);
-        aptID.setCellValueFactory(new PropertyValueFactory<>("appointment_ID"));
-        title.setCellValueFactory(new PropertyValueFactory<>("title"));
-        description.setCellValueFactory(new PropertyValueFactory<>("description"));
-        type.setCellValueFactory(new PropertyValueFactory<>("type"));
-        start.setCellValueFactory(new PropertyValueFactory<>("startDateTime"));
-        end.setCellValueFactory(new PropertyValueFactory<>("endDateTime"));
-        cusID.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        int appointmentsCount = appointments.size();
+
+        report2Field.setText("Appointment count by type and month: "+appointmentsCount);
     }
 
-    /**Populates text field with a list of all contacts paired with their respective upcoming appointments.*/
+    /**Populates table view with appointments with provided contact.*/
     public void reportByContactSchedule(){
         Contacts selectedContact = (Contacts) contactComboBox.getSelectionModel().getSelectedItem();
         int id = selectedContact.getContactID();
         ObservableList<Appointments> apts = DatabaseReports.getContactAppointments(id);
 
         if(apts.isEmpty()){
+            reportsTable.setItems(apts);
+            aptID.setCellValueFactory(new PropertyValueFactory<>("appointment_ID"));
+            title.setCellValueFactory(new PropertyValueFactory<>("title"));
+            description.setCellValueFactory(new PropertyValueFactory<>("description"));
+            type.setCellValueFactory(new PropertyValueFactory<>("type"));
+            start.setCellValueFactory(new PropertyValueFactory<>("startDateTime"));
+            end.setCellValueFactory(new PropertyValueFactory<>("endDateTime"));
+            cusID.setCellValueFactory(new PropertyValueFactory<>("customerId"));
             ErrorHandling.displayInformation("Chosen Contact has no upcoming appointments.");
         }
 
@@ -97,22 +105,31 @@ public class Reports implements Initializable {
         typeCombo.setItems(typeList);
     }
 
-    public void onChooseReport(ActionEvent actionEvent) {
-        if(reportCombo.getSelectionModel().getSelectedItem() == r1){
-            contactComboBox.setDisable(true);
-            typeCombo.setDisable(false);
-            selectMonth.setDisable(false);
+    /**Generate button for report 1, calls reportByContactSchedule method
+     * @param actionEvent On button press*/
+    public void onGenReport1(ActionEvent actionEvent) {
+        try {
+            reportByContactSchedule();
+        } catch (NullPointerException e) {
+            ErrorHandling.displayError("Please select a contact from the combo box.");
         }
-        if(reportCombo.getSelectionModel().getSelectedItem() == r2){
-            selectMonth.setDisable(true);
-            typeCombo.setDisable(true);
-            contactComboBox.setDisable(false);
+    }
+
+    /**Generate button for report 2, calls reportByTypeMonth method
+     * @param actionEvent On button press*/
+    public void onGenReport2(ActionEvent actionEvent) {
+        if(selectMonth.getSelectionModel().isEmpty() || typeCombo.getSelectionModel().isEmpty()){
+            ErrorHandling.displayError("Please select a month and type from the combo boxes.");
         }
-        if(reportCombo.getSelectionModel().getSelectedItem() == r3){
-            typeCombo.setDisable(true);
-            contactComboBox.setDisable(true);
-            selectMonth.setDisable(true);
+        else {
+            reportByTypeMonth();
         }
+    }
+
+    /**Generate button for report 3, calls calls reportByTotalHours method
+     * @param actionEvent On button press*/
+    public void onGenReport3(ActionEvent actionEvent) {
+        reportByTotalHours();
     }
 
     public interface CalculateTotalHours{
@@ -131,35 +148,16 @@ public class Reports implements Initializable {
             totalHours += calculateTotalHours.calculate(a.getEndDateTime().getHour(), a.getStartDateTime().getHour());
 
         }
-        ErrorHandling.displayInformation("Total hours for upcoming appointments: " +totalHours);
+        report3Field.setText("Total hours for upcoming appointments: " +totalHours);
     }
 
-    /**Generates a report based on which report is populated in the combo box
-     * @param actionEvent Action Event for the Generate Button*/
-    public void onGenerate(ActionEvent actionEvent) {
-        if(reportCombo.getSelectionModel().getSelectedItem() == r1){
-            reportByTypeMonth();
-        }
-        if(reportCombo.getSelectionModel().getSelectedItem() == r2){
-            reportsTable.setItems(null);
-            reportByContactSchedule();
-        }
-        if(reportCombo.getSelectionModel().getSelectedItem() == r3){
-            reportByTotalHours();
-        }
-        if(reportCombo.getSelectionModel().getSelectedItem() == null){
-            ErrorHandling.displayError("Please select an option from the combo box above.");
-        }
-    }
-
-    /**Initialize method populates the combo box with each report option for the user to select.*/
+    /**Initialize method populates combo box for contacts used in Report 1, as well as a combo box of applicable months
+     * used in Report 2.*/
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ObservableList<Contacts> contactList = DatabaseAppointments.getAllContacts();
         contactComboBox.setItems(contactList);
         ObservableList<String> monthList = DatabaseReports.getReportByMonth();
         selectMonth.setItems(monthList);
-
-        reportCombo.getItems().addAll(r1, r2, r3);
     }
 }
